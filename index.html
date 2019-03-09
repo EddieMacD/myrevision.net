@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    </head>
+
+    <body>
+        <h1>Test</h1>
+        <h2 id="i"></h2>
+        <p id="test"></p>
+        
+        <button onclick="ChangeQuestion(1)">Forward</button>
+        <button onclick="ChangeQuestion(-1)">Backwards</button>
+        
+        <script>
+            var currentQuestion = 1;
+            var items = ["11111", "22222", "33333", "44444", "55555"];
+            
+            function ChangeQuestion(changeby) 
+            {
+                currentQuestion = currentQuestion + changeby; 
+                
+                if (currentQuestion <= items.length && currentQuestion >= 1)
+                {
+                document.getElementById("test").innerHTML= items[currentQuestion-1];
+                document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + items.length;
+                //console.log(currentQuestion)
+                }
+                else
+                {
+                    currentQuestion = currentQuestion - changeby;
+                    //console.log("hit limit")
+                }
+            }
+            
+            document.getElementById("test").innerHTML= items[currentQuestion-1];
+            document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + items.length;
+        </script>
+    </body>
+</html>
