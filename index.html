@@ -7,7 +7,14 @@
 
     <body>
         <h1>Test</h1>
+        
+        <p> Input: 
+            <input type="text" id="input_box">
+            <input type="button" id="input_button" value="Send Input" onclick="getCodes()">
+        </p>
+        
         <h2 id="i"></h2>
+        
         <p id="test"></p>
         
         <button onclick="ChangeQuestion(1)">Forward</button>
@@ -17,7 +24,7 @@
             var currentQuestion = 1;
             var items = [""];
             var response;
-            var numberofquestions = 1;
+            var numberofquestions = $("#input_box").val();;
             const getQuestionAPI = "https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=";
             
             function ChangeQuestion(changeby) 
@@ -36,8 +43,13 @@
                     //console.log("hit limit")
                 }
             }
-            
-            response.get(getQuestionAPI + numberofquestions.toString());
+
+	        var API = getQuestionAPI + numberofquestions;
+
+               $.get(API, function(data) {
+                    $("#resultNum").html(data.total);
+               });
+               
             console.log(response);
             //for(var i = 0; i < )
             
