@@ -6,19 +6,24 @@
     </head>
 
     <body>
-        <h1>Test</h1>
+        <h1>My Revision</h1>
         
-        <p> Input: 
+        <p id="input"> Number of Questions: 
             <input type="text" id="input_box">
-            <input type="button" id="input_button" value="Send Input" onclick="getCodes()">
+            <input type="button" id="input_button" value="Send Input" onclick="getQuestions()">
         </p>
         
         <h2 id="i"></h2>
         
-        <p id="test"></p>
+        <p id="question"></p>
         
         <button onclick="ChangeQuestion(1)">Forward</button>
         <button onclick="ChangeQuestion(-1)">Backwards</button>
+        
+        <script>
+            document.getElementById("i").style.display = "none";
+            document.getElementById("element").style.display = "none";
+        </script>
         
         <script>
             var currentQuestion = 1;
@@ -27,13 +32,12 @@
             var numberofquestions = $("#input_box").val();;
             const getQuestionAPI = "https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=";
             
-            function ChangeQuestion(changeby) 
-            {
+            function ChangeQuestion(changeby) {
                 currentQuestion = currentQuestion + changeby; 
                 
                 if (currentQuestion <= items.length && currentQuestion >= 1)
                 {
-                document.getElementById("test").innerHTML= items[currentQuestion-1];
+                document.getElementById("question").innerHTML= items[currentQuestion-1];
                 document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + items.length;
                 //console.log(currentQuestion)
                 }
@@ -44,17 +48,27 @@
                 }
             }
 
-	        var API = getQuestionAPI + numberofquestions;
+            function GetQuestion() {
+                InitialiseQuestionScreen();
+                numberofquestions = $("#input_box").val();
+	            var API = getQuestionAPI + numberofquestions;
 
-               $.get(API, function(data) {
-                    $("#resultNum").html(data.total);
-               });
+                   $.get(API, function(data) {
+                        $("#resultNum").html(data.total);
+                   });
                
-            console.log(response);
-            //for(var i = 0; i < )
+                console.log(response);
+                //for(var i = 0; i < )
             
-            document.getElementById("test").innerHTML= items[currentQuestion-1];
-            document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + items.length;
+                document.getElementById("test").innerHTML= items[currentQuestion-1];
+                document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + items.length;
+            }
+            
+            function InitialiseQuestionScreen(){
+                document.getElementById("i").style.display = "block";
+                document.getElementById("element").style.display = "block";
+                document.getElementById("question").style.display = "none";
+            }
         </script>
     </body>
 </html>
