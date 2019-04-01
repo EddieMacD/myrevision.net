@@ -15,7 +15,10 @@
         
         <script>
             var currentQuestion = 1;
-            var items = ["11111", "22222", "33333", "44444", "55555"];
+            var items = [""];
+            var response;
+            var numberofquestions = 1;
+            const getQuestionAPI = "https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=";
             
             function ChangeQuestion(changeby) 
             {
@@ -33,6 +36,10 @@
                     //console.log("hit limit")
                 }
             }
+            
+            response.get(getQuestionAPI + numberofquestions.toString());
+            console.log(response);
+            //for(var i = 0; i < )
             
             document.getElementById("test").innerHTML= items[currentQuestion-1];
             document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + items.length;
