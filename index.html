@@ -10,19 +10,21 @@
         
         <p id="input"> Number of Questions: 
             <input type="text" id="input_box">
-            <input type="button" id="input_button" value="Send Input" onclick="getQuestions()">
+            <input type="button" id="input_button" value="Send Input" onclick="GetQuestions()">
         </p>
         
         <h2 id="i"></h2>
         
         <p id="question"></p>
         
-        <button onclick="ChangeQuestion(1)">Forward</button>
-        <button onclick="ChangeQuestion(-1)">Backwards</button>
+        <p>
+            <button onclick="ChangeQuestion(1)">Forward</button>
+            <button onclick="ChangeQuestion(-1)">Backwards</button>
+        </p>
         
         <script>
             document.getElementById("i").style.display = "none";
-            document.getElementById("element").style.display = "none";
+            document.getElementById("question").style.display = "none";
         </script>
         
         <script>
