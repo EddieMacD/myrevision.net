@@ -31,7 +31,7 @@
             var currentQuestion = 1;
             var items = [""];
             var response;
-            var numberofquestions = $("#input_box").val();;
+            var numberofquestions = document.getElementById("input_box");
             const getQuestionAPI = "https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=";
             
             function ChangeQuestion(changeby) {
@@ -52,17 +52,17 @@
 
             function GetQuestions() {
                 InitialiseQuestionScreen();
-                numberofquestions = $("#input_box").val();
+                var response;
 	            var API = getQuestionAPI + numberofquestions;
 
                    $.get(API, function(data) {
-                        $("#resultNum").html(data.total);
+                        response;
                    });
                
                 console.log(response);
                 //for(var i = 0; i < )
             
-                document.getElementById("test").innerHTML= items[currentQuestion-1];
+                document.getElementById("test").innerHTML = items[currentQuestion-1];
                 document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + items.length;
             }
             
