@@ -39,7 +39,7 @@
                 
                 if (currentQuestion <= items.length && currentQuestion >= 1)
                 {
-                document.getElementById("question").innerHTML= items[currentQuestion-1];
+                document.getElementById("question").innerHTML= items[currentQuestion-1].question;
                 document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + items.length;
                 //console.log(currentQuestion)
                 }
@@ -59,10 +59,11 @@
                         response;
                    });
                
-                console.log(response);
+                console.log(JSON.stringify(response));
+                items = response.questions;
                 //for(var i = 0; i < )
             
-                //document.getElementById("test").innerHTML = items[currentQuestion-1];
+                document.getElementById("test").innerHTML = items[currentQuestion-1].question;
                 document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + items.length;
             }
             
