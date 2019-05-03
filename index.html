@@ -53,22 +53,20 @@
             function GetQuestions() {
                 InitialiseQuestionScreen();
                 
-                var request = new XMLHttpRequest();
+                $( document ).ready(function() {
+                    $( ".content a" ).each(function( index, element ) {
 
-                var request = require('request');
-
-                var options = {
-                    url: 'https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=' + numberofquestions
-                };
-
-                function callback(error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        console.log(body);
-                    }
-                }
-
-request(options, callback);
-                items = response.questions;
+                        $.ajax({
+                            url: getQuestionAPI + numberofquestions,
+                            contentType: "application/json",
+                            dataType: 'json',
+                            success: function(result){
+                                console.log(result);
+                            }
+                        })
+                    });
+                });
+                //items = response;
                 //for(var i = 0; i < )
             
                 document.getElementById("test").innerHTML = items[currentQuestion-1].question;
