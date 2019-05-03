@@ -52,14 +52,22 @@
 
             function GetQuestions() {
                 InitialiseQuestionScreen();
-                var response;
-	            var API = getQuestionAPI + numberofquestions;
+                
+                var request = new XMLHttpRequest();
 
-                   $.get(API, function(data) {
-                        response;
-                   });
-               
-                console.log(JSON.stringify(response));
+                request.open('GET', (getQuestionAPI + numberofquestions), true);
+                request.onload = function() {
+                    var data = JSON.parse(this.response);
+
+                    if (request.status >= 200 && request.status < 400) {
+                        data.forEach(movie => {
+                        console.log(movie.title);
+                        });
+                    } else {
+                        console.log('error');
+                    }
+                };
+                request.send();
                 items = response.questions;
                 //for(var i = 0; i < )
             
