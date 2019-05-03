@@ -10,7 +10,7 @@
         
         <p id="input"> Number of Questions: 
             <input type="text" id="input_box">
-            <input type="button" id="input_button" value="Send Input" onclick="GetQuestions()">
+            <button onclick="GetQuestions()">Start</button>
         </p>
         
         <h2 id="i"></h2>
@@ -22,60 +22,69 @@
             <button onclick="ChangeQuestion(-1)">Backwards</button>
         </p>
         
+        <p id="answer">
+            <input type="text" id="answer_box">
+        </p>
+            
         <script>
             document.getElementById("i").style.display = "none";
             document.getElementById("question").style.display = "none";
+            document.getElementById("answer").style.display = "none";
         </script>
         
         <script>
             var currentQuestion = 1;
-            var items = [""];
+            var questions = [""];
+            var answers = [""];
             var response;
             var numberofquestions = document.getElementById("input_box").innerHTML;
             const getQuestionAPI = "https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=";
             
             function ChangeQuestion(changeby) {
+                answers[currentQuestion-1] = document.getElementById("answer");
                 currentQuestion = currentQuestion + changeby; 
                 
-                if (currentQuestion <= items.length && currentQuestion >= 1)
+                if (currentQuestion <= questions.length && currentQuestion >= 1)
                 {
-                document.getElementById("question").innerHTML= items[currentQuestion-1].question;
-                document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + items.length;
-                //console.log(currentQuestion)
+                    document.getElementById("answer").innerHTML = answers[currentQuestion-1];
+                    document.getElementById("question").innerHTML = questions[currentQuestion-1];
+                    document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + questions.length;
+                    console.log(answers)
                 }
                 else
                 {
                     currentQuestion = currentQuestion - changeby;
-                    //console.log("hit limit")
+                    console.log(answers)
                 }
             }
 
             function GetQuestions() {
                 InitialiseQuestionScreen();
                 
-                $( document ).ready(function() {
-                    $( ".content a" ).each(function( index, element ) {
-
-                        $.ajax({
-                            url: getQuestionAPI + numberofquestions,
-                            contentType: "application/json",
-                            dataType: 'json',
-                            success: function(result){
-                                console.log(result);
-                            }
-                        })
-                    });
-                });
-                //items = response;
-                //for(var i = 0; i < )
+                var api = getQuestionAPI + numberofquestions;
+                console.log(api);
+                
+                ///Initialise API??
+                //FIND OUT HOW!!!!!!!!!!!!!
+                
+                questions = ["11111", "22222", "33333", "44444", "55555"];
+                
+                for (var i = 0; i > questions.length - 1; i++){
+                    answers.push("");
+                }
+                
+                console.log(questions);
+                console.log(answers);
+                //questions = "response";
             
-                document.getElementById("test").innerHTML = items[currentQuestion-1].question;
-                document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + items.length;
+                document.getElementById("test").innerHTML = questions[currentQuestion-1];
+                document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + questions.length;
             }
             
             function InitialiseQuestionScreen(){
                 document.getElementById("i").style.display = "block";
                 document.getElementById("question").style.display = "block";
+                document.getElementById("answer").style.display = "block";
                 document.getElementById("input").style.display = "none";
             }
         </script>
