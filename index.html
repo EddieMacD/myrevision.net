@@ -55,19 +55,19 @@
                 
                 var request = new XMLHttpRequest();
 
-                request.open('GET', (getQuestionAPI + numberofquestions), true);
-                request.onload = function() {
-                    var data = JSON.parse(this.response);
+                var request = require('request');
 
-                    if (request.status >= 200 && request.status < 400) {
-                        data.forEach(movie => {
-                        console.log(movie.title);
-                        });
-                    } else {
-                        console.log('error');
-                    }
+                var options = {
+                    url: 'https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=' + numberofquestions
                 };
-                request.send();
+
+                function callback(error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        console.log(body);
+                    }
+                }
+
+request(options, callback);
                 items = response.questions;
                 //for(var i = 0; i < )
             
