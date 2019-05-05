@@ -10,7 +10,7 @@
         
         <div id="iscreen">
             <p> Number of Questions: 
-                <input type="text" id="input_box"></input>
+                <input type="text" id="input_box" value="1"></input>
                 <button onclick="GetQuestions()">Start</button>
             </p>
         </div>
@@ -40,8 +40,7 @@
             var currentQuestion = 1;
             var questions = [""];
             var answers = [""];
-            var response;
-            var numberofquestions = document.getElementById("input_box").value;
+            var numberofquestions = "1";
             const getQuestionAPI = "https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=";
             
             function ChangeQuestion(changeby) {
@@ -65,6 +64,7 @@
             function GetQuestions() {
                 InitialiseQuestionScreen();
                 
+                numberofquestions = document.getElementById("input_box").value;
                 var api = getQuestionAPI + numberofquestions;
                 console.log(api);
                 
