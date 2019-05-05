@@ -9,7 +9,7 @@
         <h1>My Revision</h1>
         
         <p id="input"> Number of Questions: 
-            <input type="text" id="input_box">
+            <input type="text" id="input_box"></input>
             <button onclick="GetQuestions()">Start</button>
         </p>
         
@@ -37,7 +37,7 @@
             var questions = [""];
             var answers = [""];
             var response;
-            var numberofquestions = document.getElementById("input_box").innerHTML;
+            var numberofquestions = document.getElementById("input_box").value;
             const getQuestionAPI = "https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=";
             
             function ChangeQuestion(changeby) {
@@ -64,21 +64,19 @@
                 var api = getQuestionAPI + numberofquestions;
                 console.log(api);
                 
-                ///Initialise API??
-                //FIND OUT HOW!!!!!!!!!!!!!
-                
-                questions = ["11111", "22222", "33333", "44444", "55555"];
-                
-                for (var i = 0; i > questions.length - 1; i++){
-                    answers.push("");
-                }
-                
-                console.log(questions);
-                console.log(answers);
-                //questions = "response";
+                $.get(API, function(data) {
+                    questions = data;
+
+                    for (var i = 0; i > questions.length - 1; i++){
+                        answers.push("");
+                    }
+                    
+                    console.log(questions);
+                    console.log(answers);
             
-                document.getElementById("test").innerHTML = questions[currentQuestion-1];
-                document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + questions.length;
+                    document.getElementById("test").innerHTML = questions[currentQuestion-1];
+                    document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + questions.length;
+                });
             }
             
             function InitialiseQuestionScreen(){
