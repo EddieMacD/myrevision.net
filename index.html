@@ -71,8 +71,8 @@
                 $.get(api, function(data) {
                     questions = data.questions;
 
-                    for (var i = 0; i > questions.length - 1; i++){
-                        answers.push("");
+                    while(answers.length < questions.length){
+                        answers.push();
                     }
                     
                     console.log(questions);
