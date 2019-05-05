@@ -8,23 +8,27 @@
     <body>
         <h1>My Revision</h1>
         
-        <p id="input"> Number of Questions: 
-            <input type="text" id="input_box"></input>
-            <button onclick="GetQuestions()">Start</button>
-        </p>
+        <div id="iscreen">
+            <p> Number of Questions: 
+                <input type="text" id="input_box"></input>
+                <button onclick="GetQuestions()">Start</button>
+            </p>
+        </div>
         
-        <h2 id="i"></h2>
-        
-        <p id="question"></p>
-        
-        <p id="question">
-            <button onclick="ChangeQuestion(1)">Forward</button>
-            <button onclick="ChangeQuestion(-1)">Backwards</button>
-        </p>
-        
-        <p id="answer">
-            <input type="text" id="answer_box">
-        </p>
+        <div id="qscreen">
+            <h2 id="i"></h2>
+            
+            <p id="question"></p>
+            
+            <p id="question">
+                <button onclick="ChangeQuestion(1)">Forward</button>
+                <button onclick="ChangeQuestion(-1)">Backwards</button>
+            </p>
+            
+            <p id="answer">
+                <input type="text" id="answer_box">
+            </p>
+        </div>
             
         <script>
             document.getElementById("i").style.display = "none";
@@ -64,8 +68,8 @@
                 var api = getQuestionAPI + numberofquestions;
                 console.log(api);
                 
-                $.get(API, function(data) {
-                    questions = data;
+                $.get(api, function(data) {
+                    questions = data.questions;
 
                     for (var i = 0; i > questions.length - 1; i++){
                         answers.push("");
@@ -80,10 +84,8 @@
             }
             
             function InitialiseQuestionScreen(){
-                document.getElementById("i").style.display = "block";
-                document.getElementById("question").style.display = "block";
-                document.getElementById("answer").style.display = "block";
-                document.getElementById("input").style.display = "none";
+                document.getElementById("qscreen").style.display = "block";
+                document.getElementById("iscreen").style.display = "none";
             }
         </script>
     </body>
