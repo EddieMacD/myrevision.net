@@ -31,7 +31,7 @@
         </div>
             
         <script>
-            document.getElementById("qscreen").style = "none ";
+            document.getElementById("qscreen").style = "none";
         </script>
         
         <script>
@@ -66,7 +66,7 @@
                 var api = getQuestionAPI + numberofquestions;
                 console.log(api);
                 
-                $.get(api, function(data) {
+                $.getJSON(api, function(data) {
                     questions = data.questions;
 
                     while(answers.length < questions.length){
