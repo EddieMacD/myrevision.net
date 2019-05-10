@@ -67,10 +67,9 @@
                 console.log(api);
                 
                 $.getJSON(api, function(data) {
-                    questions = data.questions;
-
-                    while(answers.length < questions.length){
-                        answers.push();
+                    for(var i = 0; i < data.questions.length; i++){
+                        questions[i] = data.questions[i].Item;
+                        answers.push("");
                     }
                     
                     console.log(questions);
