@@ -32,7 +32,7 @@
             var currentQuestion = 1;
             var questions = [""];
             var answers = [""];
-            var numberofquestions = "1";
+            var numberofquestions = "";
             const getQuestionAPI = "https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=";
             
             function ChangeQuestion(changeby) {
@@ -62,7 +62,7 @@
                 
                 $.getJSON(api, function(data) {
                     for(var i = 0; i < data.questions.length; i++){
-                        questions[i] = data.questions[i].Item;
+                        questions[i] = data.questions[i].Item.question;
                         if(i != 0){
                             answers.push("");
                         }
@@ -71,7 +71,7 @@
                     console.log(questions);
                     console.log(answers);
             
-                    document.getElementById("question").innerHTML = questions[currentQuestion-1].;
+                    document.getElementById("question").innerHTML = questions[currentQuestion-1];
                     document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + questions.length;
                 });
             }
