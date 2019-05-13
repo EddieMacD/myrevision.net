@@ -31,6 +31,7 @@
         <script>
             var currentQuestion = 1;
             var questions = [""];
+            var ids = [0];
             var answers = [""];
             var numberofquestions = "";
             const getQuestionAPI = "https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=";
@@ -44,12 +45,10 @@
                     document.getElementById("answer_box").value = answers[currentQuestion-1];
                     document.getElementById("question").innerHTML = questions[currentQuestion-1];
                     document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + questions.length;
-                    console.log(answers)
                 }
                 else
                 {
                     currentQuestion = currentQuestion - changeby;
-                    console.log(answers)
                 }
             }
 
@@ -65,10 +64,16 @@
                         questions[i] = data.questions[i].Item.question;
                         if(i != 0){
                             answers.push("");
+                            ids.push(data.questions[i].Item.id);
+                        }
+                        else
+                        {
+                            id[0] = data.questions[i].Item.id;
                         }
                     }
                     
                     console.log(questions);
+                    console.log(id);
                     console.log(answers);
             
                     document.getElementById("question").innerHTML = questions[currentQuestion-1];
