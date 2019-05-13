@@ -15,25 +15,19 @@
             </p>
         </div>
         
-        <div id="qscreen">
+        <div id="qscreen" style="none">
             <h2 id="i"></h2>
             
             <p id="question"></p>
             
-            <p id="question">
+            <p>
                 <button onclick="ChangeQuestion(1)">Forward</button>
                 <button onclick="ChangeQuestion(-1)">Backwards</button>
             </p>
             
-            <p id="answer">
-                <input type="text" id="answer_box">
-            </p>
+            <input type="text" id="answer_box" value=""></input>
         </div>
             
-        <script>
-            document.getElementById("qscreen").style = "none";
-        </script>
-        
         <script>
             var currentQuestion = 1;
             var questions = [""];
@@ -42,12 +36,12 @@
             const getQuestionAPI = "https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=";
             
             function ChangeQuestion(changeby) {
-                answers[currentQuestion-1] = document.getElementById("answer");
+                answers[currentQuestion-1] = document.getElementById("answer_box").value;
                 currentQuestion = currentQuestion + changeby; 
                 
                 if (currentQuestion <= questions.length && currentQuestion >= 1)
                 {
-                    document.getElementById("answer").innerHTML = answers[currentQuestion-1];
+                    document.getElementById("answer_box").value = answers[currentQuestion-1];
                     document.getElementById("question").innerHTML = questions[currentQuestion-1];
                     document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + questions.length;
                     console.log(answers)
@@ -69,13 +63,15 @@
                 $.getJSON(api, function(data) {
                     for(var i = 0; i < data.questions.length; i++){
                         questions[i] = data.questions[i].Item;
-                        answers.push("");
+                        if(i != 0){
+                            answers.push("");
+                        }
                     }
                     
                     console.log(questions);
                     console.log(answers);
             
-                    document.getElementById("test").innerHTML = questions[currentQuestion-1];
+                    document.getElementById("question").innerHTML = questions[currentQuestion-1].;
                     document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + questions.length;
                 });
             }
