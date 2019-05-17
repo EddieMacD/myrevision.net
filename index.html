@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>MyRevision.net</title>
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <link rel='stylesheet' href='/style.css'>
+
     </head>
 
     <body>
@@ -26,6 +28,7 @@
             </p>
             
             <input type="text" id="answer_box" value=""></input>
+            <button onclick="SubmitAnswers()" id="submit_button" style="display: none;">Submit Answers</button>
         </div>
             
         <script>
@@ -35,6 +38,7 @@
             var answers = [""];
             var numberofquestions = "";
             const getQuestionAPI = "https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=";
+            //const submitAnswersAPI = ""
             
             function ChangeQuestion(changeby) {
                 answers[currentQuestion-1] = document.getElementById("answer_box").value;
@@ -45,6 +49,14 @@
                     document.getElementById("answer_box").value = answers[currentQuestion-1];
                     document.getElementById("question").innerHTML = questions[currentQuestion-1];
                     document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + questions.length;
+                    
+                    if (currentQuestion = questions.length){
+                        document.getElementById("submit_button").style.display = "block";
+
+                    }
+                    else{
+                        document.getElementById("submit_button").style.display = "none";
+                    }
                 }
                 else
                 {
@@ -79,6 +91,10 @@
                     document.getElementById("question").innerHTML = questions[currentQuestion-1];
                     document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + questions.length;
                 });
+            }
+            
+            function SubmitAnswers() {
+                //var api = submitAnswersAPI + answers + ids;
             }
             
             function InitialiseQuestionScreen(){
