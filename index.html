@@ -27,18 +27,35 @@
                 <button onclick="ChangeQuestion(-1)">Backwards</button>
             </p>
             
-            <input type="text" id="answer_box" value=""></input>
-            <button onclick="SubmitAnswers()" id="submit_button" style="display: none;">Submit Answers</button>
+            <p>
+                <input type="text" id="answer_box" value=""></input>
+                <button onclick="SubmitAnswers()" id="submit_button" style="display: none;">Submit Answers</button>
+            </p>
+        </div>
+        
+        <div id="ascreen" style="display: none;">
+            <p id="correct"><p>
+            <br>
+            
+            <p>You entered this:</p>
+            <ol id="userAnswers">
+            </ol>
+            <br>
+            
+            <p>The correct answers are:</p>
+            <ol id="correctAnswers">
+            </ol>
         </div>
             
         <script>
             var currentQuestion = 1;
+            var correct = 0;
             var questions = [""];
             var ids = [0];
             var answers = [""];
             var numberofquestions = "";
             const getQuestionAPI = "https://qg7wae0zml.execute-api.eu-west-1.amazonaws.com/live?numberofquestions=";
-            //const submitAnswersAPI = ""
+            const submitAnswersAPI = ""
             
             function ChangeQuestion(changeby) {
                 answers[currentQuestion-1] = document.getElementById("answer_box").value;
@@ -50,9 +67,8 @@
                     document.getElementById("question").innerHTML = questions[currentQuestion-1];
                     document.getElementById("i").innerHTML = "Question " + currentQuestion + "/" + questions.length;
                     
-                    if (currentQuestion = questions.length){
+                    if (currentQuestion == questions.length){
                         document.getElementById("submit_button").style.display = "block";
-
                     }
                     else{
                         document.getElementById("submit_button").style.display = "none";
@@ -78,8 +94,7 @@
                             answers.push("");
                             ids.push(data.questions[i].Item.id);
                         }
-                        else
-                        {
+                        else{
                             ids[0] = data.questions[i].Item.id;
                         }
                     }
@@ -94,12 +109,32 @@
             }
             
             function SubmitAnswers() {
-                //var api = submitAnswersAPI + answers + ids;
+                InitialiseAnswerScreen();
+                
+                var api = submitAnswersAPI + answers + ids;
+                console.log(api);
+                
+                $.getJSON(api, function(data) {
+                    document.getElementById("correct").innerHTML = "You got " + data.correct + "/" +  + " correct.";
+                    
+                    for(var i = 0; i < answers.length; i++){
+                        document.getElementById("userAnswers").append("<li>" + answers[i] + "</li>" );
+                    }
+                    
+                    for(var i = 0; i < data.answers.length; i++){
+                        document.getElementById("correctAnswers").append( '<li>' + data.answers[i].Item.answer + '</li>' );
+                    }
+                });
             }
             
             function InitialiseQuestionScreen(){
-                document.getElementById("qscreen").style.display = "block";
                 document.getElementById("iscreen").style.display = "none";
+                document.getElementById("qscreen").style.display = "block";
+            }
+            
+            function InitialiseAnswerScreen(){
+                document.getElementById("qscreen").style.display = "none";
+                document.getElementById("ascreen").style.display = "block";
             }
         </script>
     </body>
