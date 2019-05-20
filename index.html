@@ -114,6 +114,8 @@
                 var api = submitAnswersAPI + answers + ids;
                 console.log(api);
                 
+                answers[currentQuestion-1] = document.getElementById("answer_box").value;
+                
                 $.getJSON(api, function(data) {
                     document.getElementById("correct").innerHTML = "You got " + data.correct + "/" +  + " correct.";
                     
