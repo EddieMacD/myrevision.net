@@ -1,0 +1,20 @@
+<section class="page-title bg-2" style="background-image: url('{{.Params.Bg_image | absURL}}');">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="block">
+          <h1>{{ .Title }}</h1>
+          <h2>{{ .Params.Subtitle }}</h2>
+          <p>{{ .Params.Description | markdownify }}</p>
+          <p class="title-plaintext">{{ .Params.PlainText | markdownify }}</p>
+        </div>
+      </div>
+    </div>    
+  </div>  
+</section>
+
+{{ if .Params.showFloatLogo }}
+<div class="title-float-logo">
+  <img src="{{ .Params.floatLogo | relURL }}">
+</div>
+{{ end }}  

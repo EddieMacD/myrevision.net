@@ -1,0 +1,30 @@
+.bg-1 {
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+
+	@include tablet {
+		background-attachment: scroll;
+	}
+}
+
+.bg-2 {
+	background-size: cover;
+	background-attachment: fixed;
+
+	@include tablet {
+		background-attachment: scroll;
+	}
+}
+
+.bg-3 {
+	background-size: cover;	
+	background-repeat: no-repeat;	
+}
+
+.bg-4 {
+	background-image: url('../images/backgrounds/joined_hands.jpg');
+	background-size: cover;	
+	background-repeat: no-repeat;	
+	background-position: center;
+}

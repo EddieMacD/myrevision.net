@@ -1,0 +1,49 @@
+############################### Banner ##############################
+banner:
+  enable : true
+  bg_image : ""
+  bg_overlay : true
+  title : "MyRevision.net"
+  content : ""
+  content_subline: ""
+  button:
+    enable : false
+    label : "Discover Our Project"
+    link : "project"
+
+############################# About #################################
+about:
+  enable : true
+  title : "About Us"
+  description : ""
+  content : ""
+  image : ""
+  buttonLink: ""
+  buttonLabel: "Learn More >"
+
+
+######################### Portfolio ###############################
+portfolio:
+  enable : true
+  bg_image : ""
+  title : ""
+  description: ""
+    
+  portfolioItem:
+  - title : ""  
+  - title : ""  
+  - title : ""  
+    
+  portfolioFooter: ""
+      
+  
+############################ call to action ###########################
+cta: 
+  enable : false
+  bg_image : ""
+  title : "Contact us today"
+  content : "TODO: Call to action text"
+  button:
+    enable : true
+    label : "Contact us"
+    link : "contact"

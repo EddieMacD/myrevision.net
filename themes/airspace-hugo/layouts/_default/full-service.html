@@ -1,0 +1,39 @@
+{{ define "main" }}
+
+{{ partial "page-title.html" . }}
+
+{{ $data := index site.Data site.Language.Lang }}
+
+<!-- Main content -->
+<section class="main-content section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="about-img">
+          <img class="img-responsive" src="{{ site.BaseURL }}/{{ .Page.Params.feature_image}}"  alt="{{ .Title }}">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="content-text">      
+          {{ .Content }}      
+        </div>  
+      </div>
+    </div>    
+  </div>
+</section>
+
+
+
+<!-- Service -->
+{{ if $data.service.service.enable }}
+{{ partial "service.html" . }}
+{{ end }}
+<!-- /service -->
+
+<!-- Call to action -->
+{{ if $data.service.cta.enable }}
+{{ partial "cta.html" . }}
+{{ end }}
+<!-- /Call to action -->
+
+{{ end }}

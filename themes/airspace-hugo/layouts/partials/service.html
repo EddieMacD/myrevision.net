@@ -1,0 +1,64 @@
+
+<!-- Service title -->
+{{ $data := index site.Data site.Language.Lang }}
+{{ with $data.service.service }}
+<section class="service service-header">
+  <div class="container">
+    <div class="row">
+      <div class="section-title">
+        <h2>{{ .title | markdownify }}</h2>
+        <p>{{ .description | markdownify }}</p>
+      </div>
+      <!--
+      <ul class="service-category-list">
+        {{ range .service_category }}
+        <li class="service-category-list-item"><a href="{{ site.BaseURL }}/{{.link}}" alt="{{.title  | markdownify }}">{{.title  | markdownify }}</a></li>
+        {{ end }}
+        </ul>
+      -->
+    </div>
+  </div>
+</section>
+{{ end }}
+
+<!-- Features service categories -->
+{{ if $data.service.featured_service.enable }}
+{{ with $data.service.featured_service }}
+<section class="service-arrow">
+  <div class="container-fluid">
+    <div class="row">
+      {{ range .service_item }}
+      <a href="{{ site.BaseURL }}/{{ .link }}">
+        <div class="col-md-4 bg-primary bg-{{ .color }}">
+          <div class="block">
+            <i class="{{ .icon }}"></i>
+            <h3>{{ .name | markdownify }}</h3>
+            <p>{{ .content | markdownify }}</p>
+          </div>
+        </div>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
+{{ end }}
+
+<!-- Detailed services -->
+{{ with $data.service.service }}
+<section class="service">
+  <div class="container">
+    <div class="row">
+      {{ range .service_item }}
+      <div class="col-sm-6 col-md-3">
+        <div class="service-item">
+          <i class="icon {{ .icon }}"></i>
+          <h4>{{ .name | markdownify }}</h4>
+          <p>{{ .content | markdownify }}</p>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

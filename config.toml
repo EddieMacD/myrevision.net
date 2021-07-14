@@ -1,0 +1,156 @@
+baseURL = "https://myrevision.net"
+languageCode = "en-us"
+title = "MyRevision.net"
+theme = "airspace-hugo"
+
+# post pagination
+paginate = "4"
+# post excerpt
+summaryLength = "30"
+# disqus short name
+disqusShortname = "" # get your shortname form here : https://disqus.com
+# disable language
+disableLanguages = ["Fr"]
+
+################################# Outputs #################################
+# hugo outputs
+[outputs]
+home = ["HTML"]
+
+# render unsafe html
+[markup.goldmark.renderer]
+unsafe = true
+
+
+#################################### Plugins ##############################
+
+# CSS Plugins
+[[params.plugins.css]]
+link = "plugins/bootstrap/bootstrap.min.css"
+attributes = "media='screen'"
+
+[[params.plugins.css]]
+link = "plugins/Ionicons/css/ionicons.min.css"
+attributes = ""
+
+[[params.plugins.css]]
+link = "plugins/magnific-popup/magnific-popup.min.css"
+attributes = ""
+
+[[params.plugins.css]]
+link = "plugins/slick/slick.css"
+attributes = ""
+
+# JS Plugins
+[[params.plugins.js]]
+link = "plugins/jQuery/jquery.min.js"
+attributes = ""
+
+[[params.plugins.js]]
+link = "plugins/bootstrap/bootstrap.min.js"
+attributes = ""
+
+[[params.plugins.js]]
+link = "plugins/slick/slick.min.js"
+attributes = ""
+
+[[params.plugins.js]]
+link = "plugins/magnific-popup/magnific-popup.min.js"
+attributes = ""
+
+[[params.plugins.js]]
+link = "plugins/shuffle/shuffle.min.js"
+attributes = ""
+
+
+
+
+
+#################### default parameters ################################
+[params]
+logo = ""
+logo_width = "185px"
+# Meta data
+description = "TODO: meta description"
+author = "MyRevision.net"
+# Contact Information
+mobile = "TODO: phone number"
+email = "TODO: email@email.com"
+location = "TODO: address"
+# contact form action
+contact_form_action = "TODO: contact us" 
+# Google Analitycs
+google_analitycs_id = "" # Your ID# search
+# multi-author support (if set to true, you must use an Array in the author field)
+multi_author = false
+
+# Preloader
+[params.preloader]
+enable = true
+preloader = "" # use .png , .svg or .gif format
+
+# cookies
+[params.cookies]
+enable = false
+expire_days = 2
+
+############################# social site ########################
+[[params.social]]
+title = "G+"
+enable = false
+icon = "ion-social-googleplus-outline" #ionicon pack v2 : https://ionicons.com/v2/
+link = "#"
+
+[[params.social]]
+title = "LinkedIn"
+enable = false
+icon = "ion-social-linkedin-outline" #ionicon pack v2 : https://ionicons.com/v2/
+link = "#"
+
+[[params.social]]
+title = "Pinterest"
+enable = false
+icon = "ion-social-pinterest-outline" #ionicon pack v2 : https://ionicons.com/v2/
+link = "#"
+
+[[params.social]]
+title = "Dribble"
+enable = false
+icon = "ion-social-dribbble-outline" #ionicon pack v2 : https://ionicons.com/v2/
+link = "#"
+
+[[params.social]]
+title = "Twitter"
+enable = false
+icon = "ion-social-twitter-outline" #ionicon pack v2 : https://ionicons.com/v2/
+link = "#"
+
+[[params.social]]
+title = "Facebok"
+enable = false
+icon = "ion-social-facebook-outline" #ionicon pack v2 : https://ionicons.com/v2/
+link = "#"
+
+
+################################ English Language ########################
+[Languages.en]
+languageName = "En"
+languageCode = "en-us"
+contentDir = "content/english"
+weight = 1
+# copyright
+copyright = "TODO: copyright"
+
+
+######################### english navigation #############################
+# main menu
+[[Languages.en.menu.main]]
+name = "Home"
+URL = "/"
+weight = 1
+
+# footer menu
+[[Languages.en.menu.footer]]
+name = "Privacy Policy"
+URL = "privacy-policy"
+weight = 6
