@@ -68,8 +68,8 @@ attributes = ""
 
 #################### default parameters ################################
 [params]
-logo = ""
-logo_width = "185px"
+logo = "/images/logo.png"
+logo_width = "252px"
 # Meta data
 description = "TODO: meta description"
 author = "MyRevision.net"
@@ -143,10 +143,10 @@ copyright = "TODO: copyright"
 
 
 ######################### english navigation #############################
-# main menu
+
 [[Languages.en.menu.main]]
-name = "Home"
-URL = "/"
+name = "Do Questions"
+URL = "/questions"
 weight = 1
 
 # footer menu

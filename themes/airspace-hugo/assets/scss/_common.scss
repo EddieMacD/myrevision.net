@@ -190,58 +190,6 @@ input[type="tel"] {
   }
 }
 
-/* boxes */
-
-.box-header{
-  text-align: center;
-  background-color: $light-grey;
-
-  .section-title {
-		margin-bottom: 0;
-    text-transform: uppercase;
-	}
-
-	p {
-		color: $light;
-	}
-}
-
-.secondary-box-header{
-  text-align: center;
-  background-color: $secondary-color;
-
-  .secondary-section-title {
-    margin-bottom: 0;
-    text-transform: uppercase;
-    color: $light;
-  }
-
-  p {
-    color: $light;
-  }
-}
-.box-content{
-   color: $light;
-
-  .block {
-    padding: 70px 30px;
-
-    i {
-      font-size: 40px;
-    }
-
-    p,span {
-      color: $light;
-    }
-
-    h3{
-      text-transform: uppercase;
-    }
-  }
-}
-
-
-
 /* backgrouds */
 
 .bg-shadow {
@@ -533,7 +481,6 @@ input[type="tel"] {
 
   .tab-content {
     padding: 20px;
-    border: 1px solid $border-color;
   }
 }
 

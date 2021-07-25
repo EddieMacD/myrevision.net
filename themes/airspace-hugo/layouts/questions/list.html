@@ -1,0 +1,105 @@
+{{ define "main" }}
+
+<!-- {{ partial "page-title.html" . }} -->
+
+{{ $data := index site.Data site.Language.Lang }}
+
+<script language="javascript" src="../scripts/questions.js"></script>
+
+<!-- Main content -->
+<section class="main-content section">
+
+  <!-- Question filtering -->
+    <div class="container">
+      <div class="form-group" id="frm-filter">
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="numberOfQuestions">Number of Questions: </label>
+          </div>
+          <div class="col-sm-9">
+            <select name="numberOfQuestions" id="numberOfQuestions" class="form-control">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-xs-2 mx-auto">
+            <button type="submit" class="btn btn-submit btn-questions" onclick="startQuestions()">Start Questions</button>
+          </div>
+        </div>
+      </div>
+  </div>
+
+      <!-- Do questions -->
+      <div class="form-group" id="frm-questions" style="display: none">
+      <div class="container-fluid">
+            <div class="question-bar" id="question-bar">
+            </div>
+      </div>
+
+      <div class="container">
+        <div class="question-box" id="question-box">
+          <div class="row">
+            <div class="col-xs-6 question-title" id="question-title">Question x</div>
+            <div class="col-xs-6 question-title" id="question-title">
+              <button type="button" class="btn btn-bookmark">Bookmark</button>
+            </div>
+          </div>              
+          
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="question-text" id="question-text">question text</div>
+            </div>
+          </div>              
+          
+          <div class="row">
+            <div class="col-xs-12">
+              <input class="form-control" id="answer-box" type="text"></input>
+            </div>            
+          </div>            
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-6">
+            <button type="button" class="btn btn-prev" onclick="selectPrevQuestion()">&lt; Previous</button>
+          </div>            
+          <div class="col-xs-6">
+            <button type="button" class="btn btn-next" onclick="selectNextQuestion()">Next &gt;</button>
+          </div>            
+        </div>
+        <div class="row">
+          <div class="col-xs-2 mx-auto ans-button" style="display: none">
+            <button type="submit" class="btn btn-submit" onclick="submitAnswers()">Submit Answers</button>
+          </div>
+        </div> 
+      </div>
+    </div>
+
+
+
+        <!-- Review answers -->
+  <div id="frm-answers" style="display: none">
+    <div class="container">
+      <div class="row">
+          <div class="col-xs-6 user-score">
+            <span id="user-score-value">x</span>/<span id="total-score-value">y</span>
+          </div>
+          <div class="col-xs-6 user-message" id="user-message">
+            user message
+          </div>
+      </div>
+    </div>
+
+    <div class="container-fluid" id="answer-container">
+    </div>
+
+  </div>
+</section>
+
+{{ end }}

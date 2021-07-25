@@ -1,15 +1,17 @@
 $light: #fff;
-$primary-color: rgb(64, 64, 64);
-$secondary-color: rgb(64, 0, 0);
-$tertiary-color: rgb(0, 0, 64);
-$light-orange: rgb(255,147,0);
-$very_light_orange: rgb(255, 246, 233);
-$success: #1bbb1b;
 $black: #000;
-$alert:#c7254e;
-$border-color:#dedede;
+$primary-color: rgb(16, 16, 16);
+$secondary-color: rgb(128, 0, 0);
+$tertiary-color: rgb(0, 0, 128);
+$correct: rgb(0, 185, 0);
+$alright: rgb(216, 108, 0);
+$incorrect: rgb(209, 38, 38);
 $primary-font:'Avenir Next', sans-serif;
 $secondary-font:'Helvetica', serif;
 $icon-font: 'themefisher-font';
-$text-color: #3f3f3f;
-$light-grey: rgb(210,210,210);
+$text-color: rgb(64, 64, 64);
+
+$block-background: rgb(225, 225, 225);
+$border-color: rgb(0, 0, 0);
+$submit-button: rgb(0,128, 0);
+$header-background: rgb(200, 200, 200);

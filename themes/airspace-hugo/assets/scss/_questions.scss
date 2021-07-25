@@ -1,0 +1,167 @@
+.teststyle{
+    border: 1px red solid;
+}
+
+.form-group{
+    label{
+        text-transform: uppercase;
+        color: $secondary-color;
+    }
+}
+
+.btn-questions{
+    margin-top: 25px;
+}
+
+.question-bar{
+    overflow-x: auto;
+    overflow-y: hidden;
+    line-height: 65px;
+    white-space: nowrap;
+    margin-bottom: 15px;
+}
+
+.question-block{
+    background-color: $block-background;
+
+    border-color: $border-color;
+    border-width: 1px;
+    border-style: solid;
+
+    display: inline;
+    padding: 20px;
+
+    font-size: 20px;
+    color: $tertiary-color;
+
+    margin-left: 10px;
+
+    user-select: none;
+}
+
+.selected-block{
+    color: $block-background;
+    background-color: $tertiary-color;
+}
+
+.question-box{
+    margin: 15px;
+
+    padding: 20px;
+
+    border-style: solid;
+    border-color: $border-color;
+    border-width: 2px;
+    background-color: $block-background;
+}
+
+.question-title{
+    font-size: 30px;
+    color: $secondary-color;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.btn-bookmark{
+    float: right;
+    color: $secondary-color;
+    font-size: 15px;
+}
+
+.bookmark-icon{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    border: 1px red solid;
+    z-index: 9;
+    display: none;
+}
+
+.question-text{
+    font-size: 20px;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.btn-prev{
+    color: $tertiary-color;
+    float: left;
+}
+
+.btn-next{
+    color: $tertiary-color;
+    float: right;
+}
+
+.ans-button{
+    margin-top: 20px;
+}
+
+.btn-submit{
+    background-color: $submit-button;
+    color: $light;
+}
+
+.user-score{
+    font-weight: 800;
+    font-size: 40px;
+    text-align: center;
+}
+
+.user-message{
+    font-size: 40px;
+    text-align: center;
+}
+
+.green-text{
+    color: $correct;
+}
+
+.amber-text{
+    color: $alright;
+}
+
+.red-text{
+    color: $incorrect;
+}
+
+.header-bar{
+    border-width: 1px;
+    border-bottom-style: solid;
+    font-size: 20px;
+}
+
+.header-bar[aria-expanded=false] .ion-android-arrow-dropup-circle{
+    display: none;
+}
+
+.header-bar[aria-expanded=true] .ion-android-arrow-dropdown-circle{
+    display: none;
+}
+
+.symbol{
+    float: right;
+    font-size: 30px;
+}
+
+.question-number{
+    color: $tertiary-color;
+}
+
+.marked-answers{
+    border-top-style: solid;
+    border-width: 1px;
+
+    margin-top: 5px;
+
+    p{
+        font-size: 18px;
+        margin-top: 5px;
+        margin-bottom: 0px;
+        text-transform: uppercase;
+        color: $tertiary-color;
+    }
+}

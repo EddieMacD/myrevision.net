@@ -41,9 +41,9 @@ portfolio:
 cta: 
   enable : false
   bg_image : ""
-  title : "Contact us today"
+  title : "Start a set of questions"
   content : "TODO: Call to action text"
   button:
     enable : true
-    label : "Contact us"
-    link : "contact"
+    label : "Start questions"
+    link : "questions"
