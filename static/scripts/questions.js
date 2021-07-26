@@ -7,6 +7,10 @@ var userSession = {};
 
 //The onclick for the start questions button - handles loading the questions from the API and modifying the web page to show the user the question form
 async function startQuestions(){
+    //Disable the button
+    ///Prevents double-clicks which cause generation bugs
+    $(".btn-questions").attr("disabled", "disabled");
+
     //Variables
     ///The number of questions to be generated - taken from user input
     var numOfQuestions = $("#numberOfQuestions").val();
@@ -96,7 +100,7 @@ function displayQuestion(index) {
     $("#question-block" + index).addClass("selected-block")
 
     ///Store the  text in the answer box as a user answer
-    userSession.userAnswers[userSession.currentQuestion] = $("#answer-box").val();
+    userSession.userAnswers[userSession.currentQuestion] = $("#answer-box").val().trim();
     ///Update the answer box with the current user answer for the new question
     $("#answer-box").val(userSession.userAnswers[index]);
 
@@ -154,6 +158,9 @@ function selectNextQuestion() {
 
 //The onclick for the submit answers button - handles loading the answers from the API, marking the questions and modifying the web page to show the user the answer form
 async function submitAnswers() {
+    //Disable button
+    $(".btn-submit").attr("disabled", "disabled");
+
     //Variables
     ///Makes sure the current user change is recorded
     userSession.userAnswers[userSession.currentQuestion] = $("#answer-box").val();
@@ -326,5 +333,4 @@ function buildAnswerDiv(index) {
 
     ///Combines every element of the array into one string and returns it
     return answerDiv.join("");
-
 }
