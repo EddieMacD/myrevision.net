@@ -47,8 +47,11 @@
 
     border-style: solid;
     border-color: $border-color;
-    border-width: 2px;
-    background-color: $block-background;
+    border-width: 1px;
+    border-radius: 15px;
+
+    //background-color: $block-background;
+    background-image: radial-gradient(circle at center, $block-background, darken($block-background, 5%));
 }
 
 .question-title{

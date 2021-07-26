@@ -32,7 +32,7 @@ async function startQuestions(){
     userSession.indexes = results.indexes;
 
     ///Declaring an array of length numOfQuestions - populated with empty strings. Prevents index errors and allows for re-doing questions 
-    userSession.userAnswers = new Array(numOfQuestions).fill("");
+    userSession.userAnswers = new Array(numOfQuestions).fill(" ");
 
     //Updating the user display
     displayQuestionScreen();
@@ -215,11 +215,15 @@ function markAnswers() {
 
     ///Loops through each question
     for (var i = 0; i < userSession.questions.length; i++) {
-        ///If the user answer is the same as the correct answer
-        if(userSession.userAnswers[i].toLowerCase() === userSession.correctAnswers[i].toLowerCase()) {
-            ///Update the user session to show that this question is correct
-            userSession.correct[i] = true;
-            userSession.numCorrect++;
+        ///If the box has been looked at
+        if(userSession.userAnswers[i] != undefined)
+        {
+            ///If the user answer is the same as the correct answer
+            if(userSession.userAnswers[i].toLowerCase() === userSession.correctAnswers[i]) {
+                ///Update the user session to show that this question is correct
+                userSession.correct[i] = true;
+                userSession.numCorrect++;
+            }
         }
     }
 }
