@@ -1,7 +1,3 @@
-.teststyle{
-    border: 1px red solid;
-}
-
 .form-group{
     label{
         text-transform: uppercase;
@@ -68,15 +64,9 @@
     font-size: 15px;
 }
 
-.bookmark-icon{
-    width: 20px;
-    height: 20px;
-    position: absolute;
-    top: -10px;
-    left: 10px;
-    border: 1px red solid;
-    z-index: 9;
-    display: none;
+.bookmark{
+    color: $bookmark;
+    font-size: 20px;
 }
 
 .question-text{
