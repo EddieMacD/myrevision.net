@@ -12,10 +12,71 @@
   <!-- Question filtering -->
   <div class="container">
     <div class="form-group" id="frm-filter">
-      <!-- Number of questions input -->
-      <div class="row">
+      <!-- Qualification input -->
+      <div class="row filter-row">
         <div class="col-sm-3">
-          <label for="numberOfQuestions">Number of Questions: </label>
+          <label class="form-group-label" for="qualification">Qualification: </label>
+        </div>
+        <div class="col-sm-9">
+          <select name="qualification" id="qualification" class="form-control" onchange="newQualification()"></select>
+        </div>
+      </div>
+
+      <!-- Exam board input -->
+      <div class="row filter-row">
+        <div class="col-sm-3">
+          <label class="form-group-label" for="examBoard">Exam Board: </label>
+        </div>
+        <div class="col-sm-9">
+          <select name="examBoard" id="examBoard" class="form-control" onchange="newExamBoard()"></select>
+        </div>
+      </div>
+
+      <!-- Subject input -->
+      <div class="row filter-row">
+        <div class="col-sm-3">
+          <label class="form-group-label" for="subject">Subject: </label>
+        </div>
+        <div class="col-sm-9">
+          <select name="subject" id="subject" class="form-control" onchange="newSubject()"></select>
+        </div>
+      </div>
+
+      <!-- Topic input -->
+      <div class="row topic-header" id="topic-header">
+        <div class="col-sm-3">
+          <label class="form-group-label" for="subject">Topics: </label>
+        </div>
+        <div class="col-sm-9">
+          <div class="topic-header-collapse">
+            <div class="row">
+              <div class="col-sm-6 topic-header-left" data-toggle="collapse" data-target="#topic-select" aria-expanded="false" aria-controls="topic-select">
+                <label id="num-topics-selected">Selected: n</label>
+              </div>
+              <div class="col-sm-4 topic-header-middle">
+                <input type="checkbox" class="check-box select-all" onchange="selectAll('sections','selectAll')" value="" id="sections"/>
+                <label for="sections" class="check-box-label">Select All</label>
+              </div>
+              <div class="col-sm-2 topic-header-right" data-toggle="collapse" data-target="#topic-select" aria-expanded="false" aria-controls="topic-select">
+                <i class="ion-chevron-down topic-symbol"></i><i class="ion-chevron-up topic-symbol"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">
+          <div class="topic-select collapse" id="topic-select"></div>
+        </div>
+      </div>
+
+      <br>
+
+      <!-- Number of questions input -->
+      <div class="row filter-row">
+        <div class="col-sm-3">
+          <label for="numberOfQuestions" class="form-group-label">Number of Questions: </label>
         </div>
         <div class="col-sm-9">
           <select name="numberOfQuestions" id="numberOfQuestions" class="form-control">
@@ -30,6 +91,7 @@
       <!-- Submit button -->
       <div class="row">
         <div class="col-xs-2 mx-auto">
+          <!-- <button type="submit" class="btn btn-submit btn-questions" onclick="startQuestions()" disabled="disabled">Start Questions</button> -->
           <button type="submit" class="btn btn-submit btn-questions" onclick="startQuestions()">Start Questions</button>
         </div>
       </div>
@@ -54,16 +116,16 @@
           </div>
         </div>              
         
+        <!-- The question itself -->
         <div class="row">
           <div class="col-xs-12">
-            <!-- The question itself -->
             <div class="question-text" id="question-text">question text</div>
           </div>
         </div>              
-        
+
+        <!-- The user input box -->
         <div class="row">
-          <div class="col-xs-12">
-            <!-- The user input box -->
+          <div class="col-xs-12" id="user-input">
             <input class="form-control" id="answer-box" type="text"></input>
           </div>            
         </div>            
@@ -80,6 +142,7 @@
           <button type="button" class="btn btn-next" onclick="selectNextQuestion()">Next <i class="ion-arrow-right-b arrow"></i></button>
         </div>            
       </div>
+
       <!-- Submit answers button -->
       <div class="row">
         <div class="col-xs-2 mx-auto ans-button" style="display: none">

@@ -1,8 +1,13 @@
-.form-group{
-    label{
-        text-transform: uppercase;
-        color: $secondary-color;
-    }
+.test-style{
+    border-color: red;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.form-group-label{
+    text-transform: uppercase;
+    color: $secondary-color;
+    vertical-align: bottom;
 }
 
 .btn-questions{
@@ -130,6 +135,7 @@
 .header-bar{
     border-width: 1px;
     border-bottom-style: solid;
+    border-color: $border-color;
     font-size: 20px;
 }
 
@@ -153,6 +159,7 @@
 .marked-answers{
     border-top-style: solid;
     border-width: 1px;
+    border-color: $border-color;
 
     margin-top: 5px;
 
@@ -163,4 +170,79 @@
         text-transform: uppercase;
         color: $tertiary-color;
     }
+}
+
+.topic-header-collapse{
+    border-style: solid;
+    border-color: $border-color-subtle;
+    border-width: 1px;
+    border-radius: 1px;
+
+    min-height: 32px;
+
+    vertical-align: bottom;
+
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.topic-header-left{
+    text-align: left;
+}
+
+.topic-header-middle{
+    text-align: center;
+}
+
+.topic-header-right{
+    text-align: right;
+
+}
+
+.topic-header-right[aria-expanded=false] .ion-chevron-up{
+    display: none;
+}
+
+.topic-header-right[aria-expanded=true] .ion-chevron-down{
+    display: none;
+}
+
+.topic-symbol{
+    font-size: 10px;
+    color: $text-subtle;
+    padding-left: 27px;
+}
+
+.topic-select{
+    border-style: solid;
+    border-color: $border-color-subtle;
+    border-width: 1px;
+    border-radius: 1px;
+
+    padding: 10px;
+}
+
+.topic-row{
+    flex-wrap: wrap;
+    align-items: top;
+}
+
+.child-box{
+    margin-left: 30px !important;
+}
+
+.check-box{
+    vertical-align: top;
+    margin-right: 5px !important;
+}
+
+.check-box-label{
+    font-weight: 400;
+    text-transform: none;
+    color: $text-subtle;
+}
+
+.filter-row{
+    margin-bottom: 10px;
+
 }

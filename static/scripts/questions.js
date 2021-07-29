@@ -13,50 +13,83 @@ async function startQuestions(){
 
     //Variables
     ///The number of questions to be generated - taken from user input
-    var numOfQuestions = $("#numberOfQuestions").val();
+    var postBody = {};
+    postBody.numOfQuestions = $("#numberOfQuestions").val();
 
     ///The location of the questions inside the object store. Uses standard URI encoding. To be customisable in stage 2
-    userSession.filePath = "iGCSE/CIE/Computer%20Science/";
+    userSession.filePath = "iGCSE/Cambridge/Computer Science/";
+    postBody.filePath = userSession.filePath;
+    //postBody.topics = compileThemes();
 
     ///The full api to be called for questions
-    var api = compileQuestionAPI(numOfQuestions);
+    var api = compileQuestionAPI();
+
 
     ///A temporary object to store all of the input from the api, once the data has been returned
-    var results = await getAPIResult(api);
+    console.log(JSON.stringify(postBody))
+    //var results = await getPostAPIResult(api, postBody);
+    //console.log(results);
 
     ///A way of filling the results object with data for testing without calling the api
-    //var results = {"questions":["What is a user defined data structure to store multiple pieces of data?","What types of construct ask a computer to complete an instruction multiple times?","What type of subroutine returns an output?","Which datatype functions as a collection of symbols?","Which datatype stores whole numbers?"],"indexes":["0021","0011","0008","0015","0019"]};
+    var results = {"questions": {"questions": [{"type": "calculation","numAnswers": "1","text": [{"q": "01001010 in denary?"}]},{"type": "gapFill","numAnswers": "1","text": [{"q": "Binary numbers are stored using base __."}]},{"type": "multipleChoice","numAnswers": "2","text": [{"q": "Which of these are equivalent to 8KB?"},{"q": "16384 nibbles"},{"q": "1/128 MB"},{"q": "0.128 MB"},{"q": "80008 bits"}]},{"type": "gapFill","numAnswers": "2","text": [{"q": "Megabytes are each worth ____ kilobytes, which are each worth ____ bytes."}]},{"type": "stringMatch","numAnswers": "2","text": [{"q": "What are the digits in a binary number?"}]}],"indexes": ["0010","0020","0014","0019","0002"]}};
+    //console.log(JSON.stringify(results.questions));
+
 
     ///Populating the user session object with the data from the api call
-    userSession.questions = results.questions;
-    userSession.indexes = results.indexes;
+    userSession.questions = results.questions.questions;
+    userSession.indexes = results.questions.indexes;
 
     ///Declaring an array of length numOfQuestions - populated with empty strings. Prevents index errors and allows for re-doing questions 
-    userSession.userAnswers = new Array(numOfQuestions).fill(" ");
+    userSession.userAnswers = new Array(postBody.numOfQuestions).fill([]);
 
     //Updating the user display
     displayQuestionScreen();
 }
 
+function compileThemes() {
+    var themes = [];
+
+    $(".child-box").each(function(index, element) {
+        if($(element).prop('checked')){
+            themes.push($(element).attr("id"));
+        }
+    });
+
+    return themes;
+}
+
 //Takes in a number of questions and returns a fully formatted question api to be called for data 
-///numOfQuestions: a number containing the numbor of questions a user has chosen to do.
-function compileQuestionAPI(numOfQuestions) {
+function compileQuestionAPI() {
     //Variables
     ///The string that will contain the uri, to be returned at the end of the function
     var uri = "";
     
     //Concatenating URI
     ///Takes the api root, the number of questions and the file path and creates a uri for the api
-    uri = apiRoot + "/questions?filePath=" + userSession.filePath + "&numOfQuestions=" + numOfQuestions;
+    uri = apiRoot + "/questions";
 
     ///For testing 
     //console.log(uri);
     return uri;
 }
 
+async function getPostAPIResult(api, postBody) {
+    //console.log(api);
+
+    //Get result
+    ///Uses jquery to easily call the api
+    return new Promise((resolve, reject) => {
+        $.post(api, JSON.stringify(postBody), data => {
+            resolve(data)
+        }, "json");
+    });
+}
+
 //A function to get the results from a given api
 ///api: the api to get results from
-async function getAPIResult(api) {
+async function getAPIGetResult(api) {
+    //console.log(api);
+
     //Get result
     ///Uses a promise structure to allow the use of the await keyword when calling the function. Easy way of making asyncronous code syncronous in javascript 
     return new Promise((resolve, reject) => {
@@ -80,7 +113,11 @@ function displayQuestionScreen() {
     ///Generates the appropriate number of question blocks for the question bar and implements them
     for(var i = 0; i < userSession.questions.length; i++) {
         $("#question-bar").append("<div class='question-block' id='question-block" + i + "' onclick='displayQuestion(" + i + ")'>" + (i + 1) + "</div>");
+
+        userSession.userAnswers[i] = new Array(parseInt(userSession.questions[i].numAnswers)).fill("");
     }
+
+    userSession.currentQuestion = -1;
 
     ///Displays the first question
     displayQuestion(0);
@@ -93,16 +130,13 @@ function displayQuestion(index) {
     ///Change the question title to display the correct number
     $("#question-title").text("Question " + (index + 1));
     ///Update the question text to be the new question
-    $("#question-text").text(userSession.questions[index]);
+    $("#question-text").text(userSession.questions[index].text[0].q);
     ///Remove the class "selected-block" from all question blocks
     $(".question-block").removeClass("selected-block");
     ///Add the class "selected-block" to the block that corresponds to the current question
     $("#question-block" + index).addClass("selected-block")
 
-    ///Store the  text in the answer box as a user answer
-    userSession.userAnswers[userSession.currentQuestion] = $("#answer-box").val().trim();
-    ///Update the answer box with the current user answer for the new question
-    $("#answer-box").val(userSession.userAnswers[index]);
+    displayAnswerConsole(index);
 
     //Update the current question in the user object
     userSession.currentQuestion = index;
@@ -124,7 +158,80 @@ function displayQuestion(index) {
     }
 
     //Select the answer box
-    $("#answer-box").focus();
+    $("#answer-box0").focus();
+}
+
+function displayAnswerConsole(index) {
+    if(userSession.currentQuestion != -1){
+        switch(userSession.questions[userSession.currentQuestion].type)
+        {
+            case "multipleChoice":
+                storeMultipleChoice();
+                break;
+
+            case "boxMatch":
+                break;
+
+            default:
+                storeBasicQuestion();
+                break;
+        }
+    }
+
+    $("#user-input").empty();
+
+    switch(userSession.questions[index].type)
+    {
+        case "multipleChoice":
+            loadMultipleChoice(index);
+            break;
+
+        case "boxMatch":
+            break;
+
+        default:
+            loadBasicQuestion(index)
+            break;
+    }
+}
+
+function storeMultipleChoice() {
+    userSession.userAnswers[userSession.currentQuestion] = [];
+
+    $(".multiple-choice-box").each((index, element) => {
+        if($(element).prop('checked')){
+            userSession.userAnswers[userSession.currentQuestion].push($(element).val());
+        }
+    });
+}
+
+function storeBasicQuestion() {
+    ///Store the  text in the answer box as a user answer
+    for(var i = 0; i < userSession.userAnswers[userSession.currentQuestion].length; i++) { 
+        userSession.userAnswers[userSession.currentQuestion][i] = $("#answer-box" + i).val().trim();
+    }
+}
+
+function loadMultipleChoice(index) {
+    for(var i = 1; i < userSession.questions[index].text.length; i++)
+    {
+        var tempText = userSession.questions[index].text[i].q;
+
+        $("#user-input").append('<input type="checkbox" class="multiple-choice-box check-box" value="' + tempText + '" id="answer-box' + (i - 1) + '"/>');
+        $("#user-input").append('<label class="answer-box-label" for="answer-box' + (i - 1) + '">' + tempText + '</label><br/>');
+
+        if(userSession.userAnswers[index].includes(tempText)){
+            $("#answer-box" + (i - 1)).prop('checked', true);
+        }
+    }
+}
+
+function loadBasicQuestion(index) {
+    for(var i = 0; i < parseInt(userSession.questions[index].numAnswers); i++){
+        $("#user-input").append("<input class='form-control' id='answer-box" + i + "' type='text'></input>");
+        ///Update the answer box with the current user answer for the new question
+        $("#answer-box" + i).val(userSession.userAnswers[index][i]);
+    }
 }
 
 //Bookmark a question for the user
@@ -172,7 +279,7 @@ async function submitAnswers() {
     ///The full api to be called for the correct answers
     var api = compileAnswerAPI();
     ///A temporary object to store the results from the api call
-    var response = await getAPIResult(api);
+    var response = await getAPIGetResult(api);
 
     ///Updating the user session object with the correct answers from the object store
     userSession.correctAnswers = response.answers;
@@ -338,3 +445,221 @@ function buildAnswerDiv(index) {
     ///Combines every element of the array into one string and returns it
     return answerDiv.join("");
 }
+
+async function loadQualification() {
+    var qualifications = [];
+    userSession.filePath = $("#qualification").val() + "/";
+    var api = apiRoot + "/filters";
+
+    qualifications = await getAPIGetResult(api);
+
+    $("#qualification").empty();
+
+    qualifications.filters.qualifications.forEach(element => {
+        $("#qualification").append(newSelectItem(element.q));
+    });
+
+    newQualification();
+}
+
+async function newQualification() {
+    var examBoards = [];
+    userSession.filePath = encodeURIComponent($("#qualification").val()) + "/";
+    var api = filterAPI(userSession.filePath, false);
+
+    examBoards = await getAPIGetResult(api);
+
+    $("#examBoard").empty();
+    $("#subject").empty();
+    $("#topic-select").empty();
+
+    examBoards.filters.examBoards.forEach(element => {
+        $("#examBoard").append(newSelectItem(element.e));
+    });
+
+    newExamBoard();
+}
+
+async function newExamBoard() {
+    var subjects = [];
+    userSession.filePath = encodeURIComponent($("#qualification").val()) + "/" + encodeURIComponent($("#examBoard").val()) + "/";
+    var api = filterAPI(userSession.filePath, false);
+
+    subjects = await getAPIGetResult(api);
+
+    $("#subject").empty();
+    $("#topic-select").empty();
+
+    subjects.filters.subjects.forEach(element => {
+        $("#subject").append(newSelectItem(element.s));
+    });
+
+    newSubject();
+}
+
+async function newSubject() {
+    var topics = [];
+    userSession.filePath = encodeURIComponent($("#qualification").val()) + "/" + encodeURIComponent($("#examBoard").val()) + "/" + encodeURIComponent($("#subject").val()) + "/";
+    var api = filterAPI(userSession.filePath, true);
+
+    topics = await getAPIGetResult(api);
+
+
+
+    userSession.topics = topics.filters;
+
+    console.log(userSession.topics);
+
+    loadTopics();
+}
+
+function loadTopics() {
+    var topicSelector = [];
+
+    userSession.topics.sections.forEach(section => {
+        "<div class='topic-section'>"
+        topicSelector.push(newThemeBox(section.s, "sections", false));
+
+        userSession.topics[section.s].forEach((topic, i) => {
+            topicSelector.push(newThemeBox(topic.t, section.s, true));
+        });
+
+        topicSelector.push("</div>");
+    });
+
+    $("#topic-select").empty();
+    $("#topic-select").append(topicSelector.join(""));
+
+    selectAll("sections");
+}
+
+function filterAPI(filePath, topics) {
+    var uri = "";
+    uri = apiRoot + "/filters?filePath=" + filePath;
+
+    if(topics) {
+        uri += "&topics=true";
+    }
+
+    return uri;
+}
+
+function newSelectItem(text) {
+    var option = "<option value='" + text + "'>" + text + "</option>";
+    return option
+}
+
+function textToCSS(text){
+    var output = text;
+
+    output = output.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+    output = output.replaceAll(" ", "-");
+    output = output.toLowerCase();
+    //console.log(output);
+
+    return output;
+}
+
+function newThemeBox(name, section, isChild) {
+    var checkBox = "";
+    var boxClass = textToCSS(section);
+    var boxID = textToCSS(name);
+
+    checkBox = '<input type="checkbox" class="' + boxClass;
+
+    if(isChild){
+        checkBox += ' child-box';
+    }
+
+    checkBox += ' check-box" onchange="massSelect(\'' + boxID + '\',\'' + boxClass + '\')" value="' + name + '" id="' + boxID + '"/>';
+    checkBox += '<label class="check-box-label" for="' + boxID + '">' + name + '</label><br/>'
+
+    return checkBox;
+}
+
+function selectAll(boxID){
+    var isSelected = $("#" + boxID).prop("checked");
+
+    $(".topic-select input[type='checkbox']").prop('checked', isSelected);
+
+    userSession.numTopics = 0;
+
+    if(isSelected){
+        userSession.topics.sections.forEach(section => {
+            userSession.numTopics += userSession.topics[section.s].length;
+        });
+    }
+
+    updateNumChecked();
+}
+
+function massSelect(boxID, boxClass) {
+    var isSelected = $("#" + boxID).prop("checked");
+    var isChanged = false;
+
+    userSession.topics.sections.forEach(section => {
+        var tempSection = textToCSS(section.s);
+
+        if(tempSection === boxID) {
+            if(isSelected) {
+                $("." + boxID).each(function(index, element) {
+                    if(!$(element).prop('checked')){
+                        userSession.numTopics++;
+                    }
+                });
+            } else {
+                userSession.numTopics -= userSession.topics[section.s].length;
+            }
+
+            isChanged = true;
+        }
+    });
+
+    if(!isChanged)
+    {
+        if(isSelected) {
+            userSession.numTopics++;
+        } else {
+            userSession.numTopics--;
+        }
+    }
+
+    $("." + boxID).prop('checked', isSelected);
+
+    updateMassSelectors(isSelected, boxClass);
+    updateNumChecked();
+}
+
+function updateNumChecked() {
+    if(userSession.numTopics === 0) {
+        $("#num-topics-selected").text("Please select one or more topic");
+        $(".btn-questions").attr("disabled", "disabled");
+    } else {
+        $("#num-topics-selected").text(userSession.numTopics + " selected");
+        $(".btn-questions").removeAttr("disabled");
+    }
+}
+
+function updateMassSelectors(isSelected, boxClass){
+    var isAllSelected = true;
+
+    if(isSelected) {
+        $("." + boxClass).each(function(index, element) {
+            if(!$(element).prop('checked')){
+                isAllSelected = false;
+            }
+        });
+
+        $("#" + boxClass).prop('checked', isAllSelected);
+
+        if(boxClass != "sections")
+        {
+            updateMassSelectors(true, "sections");
+        }
+    } else {
+        $("#" + boxClass).prop('checked', false);
+        $("#sections").prop('checked', false);
+    }
+}
+
+window.onload = setTimeout(() => loadQualification(), 0);
