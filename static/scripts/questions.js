@@ -1,6 +1,6 @@
 //Global variables
 ///Stores the root of the api for retrieveing questions and answers
-const apiRoot = "https://r8d4v61idi.execute-api.eu-west-2.amazonaws.com/live";
+const apiRoot = "https://api.myrevision.net";
 
 ///Stores user data throughout the running of the website
 var userSession = {};
@@ -12,9 +12,11 @@ async function startQuestions(){
     $(".btn-questions").attr("disabled", "disabled");
 
     //Variables
-    ///The number of questions to be generated - taken from user input
     var postBody = {};
-    postBody.numOfQuestions = $("#numberOfQuestions").val();
+
+    ///The number of questions to be generated - taken from user input
+    userSession.numOfQuestions = $("#numberOfQuestions").val()
+    postBody.numOfQuestions = userSession.numOfQuestions
 
     ///The location of the questions inside the object store. Uses standard URI encoding. To be customisable in stage 2
     userSession.filePath = "iGCSE/Cambridge/Computer Science/";
@@ -37,10 +39,11 @@ async function startQuestions(){
 
     ///Populating the user session object with the data from the api call
     userSession.questions = results.questions.questions;
-    userSession.indexes = results.questions.indexes;
 
-    ///Declaring an array of length numOfQuestions - populated with empty strings. Prevents index errors and allows for re-doing questions 
-    userSession.userAnswers = new Array(postBody.numOfQuestions).fill([]);
+    for(var i = 0; i < userSession.numOfQuestions; i++)
+    {
+        userSession.questions[i].index = results.questions.indexes[i];
+    }
 
     //Updating the user display
     displayQuestionScreen();
@@ -110,15 +113,25 @@ function displayQuestionScreen() {
     ///Show the question form
     $("#frm-questions").show();
 
-    userSession.bookmark = [];
     userSession.currentQuestion = -1;
 
     ///Generates the appropriate number of question blocks for the question bar and implements them
-    for(var i = 0; i < userSession.questions.length; i++) {
-        $("#question-bar").append("<div class='question-block' id='question-block" + i + "' onclick='displayQuestion(" + i + ")'>" + (i + 1) + "</div>");
+    for(var i = 0; i < userSession.numOfQuestions; i++) {
+        $("#question-bar").append("<div class='question-block' id='question-block" + i + "' onclick='displayQuestion(" + i + ")'>" + (i + 1) + "<div id='question-block-bookmark" + i + "' class='question-bookmark-space'><i class='ion-android-star bookmark' id='bookmark" + i + "'></i></div></div>");
+        $("#bookmark" + i).hide();
 
-        userSession.userAnswers[i] = new Array(parseInt(userSession.questions[i].numAnswers)).fill("");
-        userSession.bookmark.push(false);
+        userSession.questions[i].userAnswers = new Array(parseInt(userSession.questions[i].numAnswers)).fill("");
+
+        if(userSession.questions[i].type === "boxMatch")
+        {
+            for(var j = 0; j < userSession.questions[i].numAnswers; j++)
+            {
+                userSession.questions[i].userAnswers[j] = userSession.questions[i].text[(j + 1) * 2].q;
+            }
+        }
+
+
+        userSession.questions[i].bookmark = false;
     }
 
     ///Displays the first question
@@ -153,7 +166,7 @@ function displayQuestion(index) {
     if(index == 0) {
         ///If on question 1 disable the previous button
         $(".btn-prev").attr("disabled", "disabled");
-    } else if (index === userSession.questions.length - 1) { 
+    } else if (index === userSession.numOfQuestions - 1) { 
         ///Else if on last question disable the next button and show the submit button
         $(".btn-next").attr("disabled", "disabled");
         $(".ans-button").show();
@@ -167,19 +180,7 @@ function displayQuestion(index) {
 
 function displayAnswerConsole(index) {
     if(userSession.currentQuestion != -1){
-        switch(userSession.questions[userSession.currentQuestion].type)
-        {
-            case "multipleChoice":
-                storeMultipleChoice();
-                break;
-
-            case "boxMatch":
-                break;
-
-            default:
-                storeBasicQuestion();
-                break;
-        }
+        storeAnswer();
     }
 
     $("#user-input").empty();
@@ -191,6 +192,7 @@ function displayAnswerConsole(index) {
             break;
 
         case "boxMatch":
+            loadBoxMatch(index);
             break;
 
         default:
@@ -199,20 +201,33 @@ function displayAnswerConsole(index) {
     }
 }
 
+function storeAnswer() {
+    switch(userSession.questions[userSession.currentQuestion].type)
+    {
+        case "multipleChoice":
+            storeMultipleChoice();
+            break;
+
+        default:
+            storeBasicQuestion();
+            break;
+    }
+}
+
 function storeMultipleChoice() {
-    userSession.userAnswers[userSession.currentQuestion] = [];
+    userSession.questions[userSession.currentQuestion].userAnswers = [];
 
     $(".multiple-choice-box").each((index, element) => {
         if($(element).prop('checked')){
-            userSession.userAnswers[userSession.currentQuestion].push($(element).val());
+            userSession.questions[userSession.currentQuestion].userAnswers.push($(element).val());
         }
     });
 }
 
 function storeBasicQuestion() {
     ///Store the  text in the answer box as a user answer
-    for(var i = 0; i < userSession.userAnswers[userSession.currentQuestion].length; i++) { 
-        userSession.userAnswers[userSession.currentQuestion][i] = $("#answer-box" + i).val().trim();
+    for(var i = 0; i < userSession.questions[userSession.currentQuestion].userAnswers.length; i++) { 
+        userSession.questions[userSession.currentQuestion].userAnswers[i] = $("#answer-box" + i).val().trim();
     }
 }
 
@@ -224,28 +239,63 @@ function loadMultipleChoice(index) {
         $("#user-input").append('<input type="checkbox" class="multiple-choice-box check-box" value="' + tempText + '" id="answer-box' + (i - 1) + '"/>');
         $("#user-input").append('<label class="answer-box-label" for="answer-box' + (i - 1) + '">' + tempText + '</label><br/>');
 
-        if(userSession.userAnswers[index].includes(tempText)){
+        if(userSession.questions[index].userAnswers.includes(tempText)){
             $("#answer-box" + (i - 1)).prop('checked', true);
         }
     }
+}
+
+function loadBoxMatch(index) {
+    var boxMatch = [];
+    var loopLength = (userSession.questions[index].text.length - 1)/2
+
+    boxMatch.push(
+        '<div class="row">',
+        '<div class="col-sm-6 test-style">'
+    );
+
+    for(var i = 1; i < loopLength; i++)
+    {
+        boxMatch.push('<label class="drag-label">' + userSession.questions[index].text[(2 * i - 1)] + '</label><br/>');
+    }
+
+    boxMatch.push(
+         '</div>',
+        '<div class="col-sm-6 test-style">',
+        '<div class="drag-list">'
+    );
+
+    for(var i = 1; i < loopLength; i++)
+    {
+        boxMatch.push('<div class="drag-item" draggable="true"><label id="answer-box' + i + '">' + userSession.questions[index].userAnswers[i] + '</label><i class="ion-drag drag-symbol"></i></div>');
+    }
+
+    boxMatch.push(
+        '</div>',
+        '</div>',
+        '</div>',
+        '</div>'
+    );
+  
+    initDrag();
 }
 
 function loadBasicQuestion(index) {
     for(var i = 0; i < parseInt(userSession.questions[index].numAnswers); i++){
         $("#user-input").append("<input class='form-control' id='answer-box" + i + "' type='text'></input>");
         ///Update the answer box with the current user answer for the new question
-        $("#answer-box" + i).val(userSession.userAnswers[index][i]);
+        $("#answer-box" + i).val(userSession.questions[index].userAnswers[i]);
     }
 }
 
 //Bookmark a question for the user
 function bookmarkQuestion(){
-    if(userSession.bookmark[userSession.currentQuestion]) {
-        userSession.bookmark[userSession.currentQuestion] = false;
-        $("#bookmark" + userSession.currentQuestion).remove();
+    if(userSession.questions[userSession.currentQuestion].bookmark) {
+        userSession.questions[userSession.currentQuestion].bookmark = false;
+        $("#bookmark" + userSession.currentQuestion).hide();
     } else {
-        userSession.bookmark[userSession.currentQuestion] = true;
-        $("#question-block" + userSession.currentQuestion).append('<i class="ion-android-star bookmark" id="bookmark' + userSession.currentQuestion + '"></i>');
+        userSession.questions[userSession.currentQuestion].bookmark = true;
+        $("#bookmark" + userSession.currentQuestion).show();
     }
 
     $("#answer-box0").focus();
@@ -254,7 +304,7 @@ function bookmarkQuestion(){
 }
 
 function updateBookmarkButton() {
-    if(userSession.bookmark[userSession.currentQuestion]) {
+    if(userSession.questions[userSession.currentQuestion].bookmark) {
         $("#btn-bookmark").empty();
         $("#btn-bookmark").append('Bookmark');
         $("#btn-bookmark").append('<i class="ion-android-star bookmark"></i>');
@@ -283,7 +333,7 @@ function selectNextQuestion() {
     ///Find out the current question
     var index = userSession.currentQuestion;
 
-    if(index < userSession.questions.length - 1) {
+    if(index < userSession.numOfQuestions - 1) {
         ///If you can go to a nexy question then do so. Backup checking in case button doesn't disable correctly
         displayQuestion(index + 1);
     }
@@ -296,19 +346,24 @@ async function submitAnswers() {
 
     //Variables
     ///Makes sure the current user change is recorded
-    userSession.userAnswers[userSession.currentQuestion] = $("#answer-box").val();
+    storeAnswer();
 
-    ///Test data instead of using the api
-    //userSession.correctAnswers = [ "a", "concatenation", "b", "c", "d"]
+    ///Test data instead of using the api: TODO update
     //userSession.correct = [false, true, true, false, false];
 
     ///The full api to be called for the correct answers
     var api = compileAnswerAPI();
     ///A temporary object to store the results from the api call
     var response = await getAPIGetResult(api);
+    userSession.questions.correctAnswers = [];
 
     ///Updating the user session object with the correct answers from the object store
-    userSession.correctAnswers = response.answers;
+    for(var i = 0; i < userSession.numOfQuestions; i++)
+    {
+        userSession.questions[i].correctAnswers = response.answers[i];
+        ///Populates the user session object with an initialised array containing whether each question is correct
+        userSession.questions[i].correct = false;
+    }
 
     //Answer handling
     ///Marking the answers
@@ -328,8 +383,8 @@ function compileAnswerAPI() {
     uri = apiRoot + "/answers?filePath=" + userSession.filePath;
 
     ///Loads the uri with the question indexes. Uses multiQueryStringParameters instead of the standard queryStringParameters, hence the repetition of index assignments instead of square brackets
-    for (var i = 0; i < userSession.questions.length; i++) {
-        uri += "&indexes=" + userSession.indexes[i];
+    for (var i = 0; i < userSession.numOfQuestions; i++) {
+        uri += "&indexes=" + userSession.questions[i].index;
     }
 
     ///For testing
@@ -341,20 +396,27 @@ function compileAnswerAPI() {
 //Compares the user answers to the correct answers
 function markAnswers() {
     //Comparing
-    ///Populates the user session object with an initialised array containing whether each question is correct
-    userSession.correct = new Array(5).fill(false);
     ///Populates user session with a number containing the number of correct answers
     userSession.numCorrect = 0;
 
     ///Loops through each question
-    for (var i = 0; i < userSession.questions.length; i++) {
-        ///If the box has been looked at
-        if(userSession.userAnswers[i] != undefined)
+    for (var i = 0; i < userSession.numOfQuestions; i++) {
+        ///If the box has been looked at TODO update for multiple
+        if(userSession.questions[i].userAnswers != undefined)
         {
-            ///If the user answer is the same as the correct answer
-            if(userSession.userAnswers[i].toLowerCase() === userSession.correctAnswers[i]) {
+            var allCorrect = true;
+
+            for(var j = 0; j = userSession.questions[i].numAnswers; j++)
+            {
+                ///If the user answer is the same as the correct answer
+                if(!userSession.questions[i].correctAnswers.includes(userSession.questions[i].userAnswer[j].toLowerCase())) {
+                    allCorrect = false;
+                }
+            }
+
+            if(allCorrect) {
                 ///Update the user session to show that this question is correct
-                userSession.correct[i] = true;
+                userSession.questions[i].correct = true;
                 userSession.numCorrect++;
             }
         }
@@ -378,15 +440,15 @@ function displayAnswerScreen() {
     ///Displays the number of correct questions
     $("#user-score-value").text(userSession.numCorrect);
     ///Displays the total number of questions
-    $("#total-score-value").text(userSession.questions.length);
+    $("#total-score-value").text(userSession.numOfQuestions);
 
     //Colour co-ordination
-    if(userSession.numCorrect/userSession.questions.length <= lowScore) {
+    if(userSession.numCorrect/userSession.numOfQuestions <= lowScore) {
         ///If below red boundary then show red text and corresponding message
         $("#user-score-value").addClass("red-text");
         $("#user-message").addClass("red-text");
         $("#user-message").text("Good Effort!");
-    } else if(userSession.numCorrect/userSession.questions.length <= mediumScore) {
+    } else if(userSession.numCorrect/userSession.numOfQuestions <= mediumScore) {
         ///Else if below amber boundary display amber text and corresponding message
         $("#user-score-value").addClass("amber-text");
         $("#user-message").addClass("amber-text");
@@ -395,7 +457,7 @@ function displayAnswerScreen() {
         ///Else use green text
         $("#user-score-value").addClass("green-text");
         $("#user-message").addClass("green-text");
-        if(userSession.numCorrect/userSession.questions.length === 1)
+        if(userSession.numCorrect/userSession.numOfQuestions === 1)
         {
             ///If 100% display special message
             $("#user-message").text("Brilliant!");
@@ -407,7 +469,7 @@ function displayAnswerScreen() {
 
     //Form generation
     ///For each question add an answer block to the page
-    for (var i = 0; i < userSession.questions.length; i++) {
+    for (var i = 0; i < userSession.numOfQuestions; i++) {
         $("#answer-container").append(buildAnswerDiv(i));
     }
 }
@@ -421,7 +483,7 @@ function buildAnswerDiv(index) {
     ///The line that shows the red cross or green tick. Standard is red cross, changed to green tick by subsequent if statement if the user got the question correct
     var imageLine = '<div class="col-sm-3"><i class="ion-close-round red-text symbol"></i></div>';
 
-    if(userSession.correct[index]){
+    if(userSession.questions[index].correct){
         imageLine = '<div class="col-sm-3"><i class="ion-checkmark-round green-text symbol"></i></div>'
     }
 
@@ -435,7 +497,7 @@ function buildAnswerDiv(index) {
                 ///Question number
                 '<div class="col-sm-3 question-number">' + (index + 1) + '</div>',
                 ///Question id
-                '<div class="col-sm-3 id="question-id">' + userSession.indexes[index] + '</div>',
+                '<div class="col-sm-3 id="question-id">' + userSession.questions[index].index + '</div>',
                 imageLine,
                 ///Both the up and down arrows - correct arrow for the current state is shown by CSS styling
                 '<div class="col-sm-3"><i class="ion-android-arrow-dropdown-circle symbol"></i><i class="ion-android-arrow-dropup-circle symbol"></i></div>',
@@ -444,8 +506,8 @@ function buildAnswerDiv(index) {
             '<div class="answer-bar collapse" id="answer-bar' + index + '">',
                 '<div class="row">',
                     '<div class="col-xs-12">',
-                        ///The question text
-                        '<div class="question-text" id="question-text' + index + '">' + userSession.questions[index] + '</div>',
+                        ///The question text TODO multi question etc                  
+                        '<div class="question-text" id="question-text' + index + '">' + userSession.questions[index].text + '</div>',
                     '</div>',
                 '</div>',
                 '<div class="marked-answers">',
@@ -453,7 +515,7 @@ function buildAnswerDiv(index) {
                         '<div class="col-xs-12">',
                             ///User answer(s)
                             '<p>You answered:</p>',
-                            '<input class="form-control" id="user-answer' + index + '" type="text" readonly value="' + userSession.userAnswers[index] + '"></input>',
+                            '<input class="form-control" id="user-answer' + index + '" type="text" readonly value="' + userSession.questions[index].userAnswers + '"></input>',
                         '</div>',
                     '</div>',
                     '<div class="row">',
@@ -534,7 +596,7 @@ async function newSubject() {
 
     userSession.topics = topics.filters;
 
-    console.log(userSession.topics);
+    //console.log(userSession.topics);
 
     loadTopics();
 }
@@ -689,3 +751,99 @@ function updateMassSelectors(isSelected, boxClass){
 }
 
 window.onload = setTimeout(() => loadQualification(), 0);
+
+//Drag and drop stuff
+function DragNSort (config) {
+    this.$activeItem = null;
+    this.$container = config.container;
+    this.$items = this.$container.querySelectorAll('.' + config.itemClass);
+    this.dragStartClass = config.dragStartClass;
+    this.dragEnterClass = config.dragEnterClass;
+}
+
+DragNSort.prototype.removeClasses = function () {
+    [].forEach.call(this.$items, function ($item) {
+        $item.classList.remove(this.dragStartClass, this.dragEnterClass);
+    }.bind(this));
+};
+
+DragNSort.prototype.on = function (elements, eventType, handler) {
+    [].forEach.call(elements, function (element) {
+        element.addEventListener(eventType, handler.bind(element, this), false);
+    }.bind(this));
+};
+
+DragNSort.prototype.onDragStart = function (_this, event) {
+    _this.$activeItem = this;
+
+    this.classList.add(_this.dragStartClass);
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/html', this.innerHTML);
+};
+
+DragNSort.prototype.onDragEnd = function (_this) {
+    this.classList.remove(_this.dragStartClass);
+};
+
+DragNSort.prototype.onDragEnter = function (_this) {
+    this.classList.add(_this.dragEnterClass);
+};
+
+DragNSort.prototype.onDragLeave = function (_this) {
+    this.classList.remove(_this.dragEnterClass);
+};
+
+DragNSort.prototype.onDragOver = function (_this, event) {
+    if (event.preventDefault) {
+        event.preventDefault();
+    }
+
+    event.dataTransfer.dropEffect = 'move';
+
+    return false;
+};
+
+DragNSort.prototype.onDrop = function (_this, event) {
+    if (event.stopPropagation) {
+        event.stopPropagation();
+    }
+
+    if (_this.$activeItem !== this) {
+        _this.$activeItem.innerHTML = this.innerHTML;
+        this.innerHTML = event.dataTransfer.getData('text/html');
+    }
+
+    _this.removeClasses();
+
+    return false;
+};
+
+DragNSort.prototype.bind = function () {
+    this.on(this.$items, 'dragstart', this.onDragStart);
+    this.on(this.$items, 'dragend', this.onDragEnd);
+    this.on(this.$items, 'dragover', this.onDragOver);
+    this.on(this.$items, 'dragenter', this.onDragEnter);
+    this.on(this.$items, 'dragleave', this.onDragLeave);
+    this.on(this.$items, 'drop', this.onDrop);
+};
+
+DragNSort.prototype.init = function () {
+    this.bind();
+};
+
+function initDrag() {
+    var draggable = new DragNSort({
+        container: document.querySelector('.drag-list'),
+        itemClass: 'drag-item',
+        dragStartClass: 'drag-start',
+        dragEnterClass: 'drag-enter'
+    });
+
+    draggable.init();
+}
+
+window.onload = setTimeout(() => initialise(), 1);
+
+function initialise(){
+    loadQualification();
+}
