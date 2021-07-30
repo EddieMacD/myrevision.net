@@ -110,14 +110,16 @@ function displayQuestionScreen() {
     ///Show the question form
     $("#frm-questions").show();
 
+    userSession.bookmark = [];
+    userSession.currentQuestion = -1;
+
     ///Generates the appropriate number of question blocks for the question bar and implements them
     for(var i = 0; i < userSession.questions.length; i++) {
         $("#question-bar").append("<div class='question-block' id='question-block" + i + "' onclick='displayQuestion(" + i + ")'>" + (i + 1) + "</div>");
 
         userSession.userAnswers[i] = new Array(parseInt(userSession.questions[i].numAnswers)).fill("");
+        userSession.bookmark.push(false);
     }
-
-    userSession.currentQuestion = -1;
 
     ///Displays the first question
     displayQuestion(0);
@@ -156,6 +158,8 @@ function displayQuestion(index) {
         $(".btn-next").attr("disabled", "disabled");
         $(".ans-button").show();
     }
+
+    updateBookmarkButton();
 
     //Select the answer box
     $("#answer-box0").focus();
@@ -236,7 +240,29 @@ function loadBasicQuestion(index) {
 
 //Bookmark a question for the user
 function bookmarkQuestion(){
-    //To be done in future
+    if(userSession.bookmark[userSession.currentQuestion]) {
+        userSession.bookmark[userSession.currentQuestion] = false;
+        $("#bookmark" + userSession.currentQuestion).remove();
+    } else {
+        userSession.bookmark[userSession.currentQuestion] = true;
+        $("#question-block" + userSession.currentQuestion).append('<i class="ion-android-star bookmark" id="bookmark' + userSession.currentQuestion + '"></i>');
+    }
+
+    $("#answer-box0").focus();
+
+    updateBookmarkButton();
+}
+
+function updateBookmarkButton() {
+    if(userSession.bookmark[userSession.currentQuestion]) {
+        $("#btn-bookmark").empty();
+        $("#btn-bookmark").append('Bookmark');
+        $("#btn-bookmark").append('<i class="ion-android-star bookmark"></i>');
+    } else {
+        $("#btn-bookmark").empty();
+        $("#btn-bookmark").append('Bookmark');
+        $("#btn-bookmark").append('<i class="ion-android-star-outline bookmark"></i>');
+    }
 }
 
 //Select the previous question

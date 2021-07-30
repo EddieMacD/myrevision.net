@@ -9,6 +9,48 @@
 <!-- Main content -->
 <section class="main-content section">
 
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 test-style">          
+        <label class="qText">Text</label>
+      </div>
+      <div class="col-sm-6 test-style">
+        <div  id="reciever0" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <div id="answer-box0" class="drag-item" draggable="true" ondragstart="drag(event)">
+            <label class="qText">Drag1</label>
+            <i class="ion-drag"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 test-style">          
+        <label class="qText">Text</label>
+      </div>
+      <div class="col-sm-6 test-style">
+        <div  id="reciever1" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <div id="answer-box1" class="drag-item" draggable="true" ondragstart="drag(event)">
+            <label class="qText">Drag2</label>
+            <i class="ion-drag"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 test-style">          
+        <label class="qText">Text</label>
+      </div>
+      <div class="col-sm-6 test-style">
+        <div  id="reciever2" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <div id="answer-box2" class="drag-item" draggable="true" ondragstart="drag(event)">
+            <label class="qText">Drag3</label>
+            <i class="ion-drag"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+
   <!-- Question filtering -->
   <div class="container">
     <div class="form-group" id="frm-filter">
@@ -112,7 +154,7 @@
           <div class="col-xs-6 question-title" id="question-title">Question x</div>
           <div class="col-xs-6 question-title" id="bookmark-div">
             <!-- To be made functional in stage 2 -->
-            <button type="button" class="btn btn-bookmark">Bookmark</button>
+            <button type="button" class="btn btn-bookmark" id="btn-bookmark" onclick="bookmarkQuestion()">Bookmark</button>
           </div>
         </div>              
         
