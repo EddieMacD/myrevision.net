@@ -21,20 +21,20 @@ async function startQuestions(){
     ///The location of the questions inside the object store. Uses standard URI encoding. To be customisable in stage 2
     userSession.filePath = "iGCSE/Cambridge/Computer Science/";
     postBody.filePath = userSession.filePath;
-    //postBody.topics = compileThemes();
+    //postBody.topics = compileTopics();
 
     ///The full api to be called for questions
     var api = compileQuestionAPI();
 
 
     ///A temporary object to store all of the input from the api, once the data has been returned
-    console.log(JSON.stringify(postBody))
+    //console.log(JSON.stringify(postBody));
     //var results = await getPostAPIResult(api, postBody);
-    //console.log(results);
 
     ///A way of filling the results object with data for testing without calling the api
-    var results = {"questions": {"questions": [{"type": "calculation","numAnswers": "1","text": [{"q": "01001010 in denary?"}]},{"type": "gapFill","numAnswers": "1","text": [{"q": "Binary numbers are stored using base __."}]},{"type": "multipleChoice","numAnswers": "2","text": [{"q": "Which of these are equivalent to 8KB?"},{"q": "16384 nibbles"},{"q": "1/128 MB"},{"q": "0.128 MB"},{"q": "80008 bits"}]},{"type": "gapFill","numAnswers": "2","text": [{"q": "Megabytes are each worth ____ kilobytes, which are each worth ____ bytes."}]},{"type": "stringMatch","numAnswers": "2","text": [{"q": "What are the digits in a binary number?"}]}],"indexes": ["0010","0020","0014","0019","0002"]}};
-    //console.log(JSON.stringify(results.questions));
+    var results = {"questions": {"questions": [{"type": "boxMatch","numAnswers": "3","text": [{"q": "Match the denary with their binary values:"},{"q": "23"},{"q": "00010111"},{"q": "96"},{"q": "01101111"},{"q": "111"},{"q": "01100000"}]},{"type": "boxMatch","numAnswers": "4","text": [{"q": "Match the values to their equivalent:"},{"q": "10KB"},{"q": "16 bits"},{"q": "5MB"},{"q": "8 nibbles"},{"q": "4 bytes"},{"q": "81920 bits"},{"q": "2 bytes"},{"q": "5242880 bytes"}]},{"type": "gapFill","numAnswers": "1","text": [{"q": "The byte is a unit used to measure ______ size."}]},{"type": "calculation","numAnswers": "1","text": [{"q": "11011011 in denary?"}]},{"type": "multipleChoice","numAnswers": "3","text": [{"q": "Which of the following are valid storage units?"},{"q": "Bit"},{"q": "Gigantabyte"},{"q": "Nibble"},{"q": "Nanobyte"},{"q": "Megabyte"}]}],"indexes": ["0022","0023","0016","0008","0013"]}};
+    
+    console.log(JSON.stringify(results.questions));
 
 
     ///Populating the user session object with the data from the api call
@@ -49,7 +49,7 @@ async function startQuestions(){
     displayQuestionScreen();
 }
 
-function compileThemes() {
+function compileTopics() {
     var themes = [];
 
     $(".child-box").each(function(index, element) {
@@ -208,6 +208,10 @@ function storeAnswer() {
             storeMultipleChoice();
             break;
 
+        case "boxMatch":
+            storeBoxMatch();
+            break;
+
         default:
             storeBasicQuestion();
             break;
@@ -224,11 +228,18 @@ function storeMultipleChoice() {
     });
 }
 
-function storeBasicQuestion() {
+function storeBoxMatch() {
     ///Store the  text in the answer box as a user answer
     for(var i = 0; i < userSession.questions[userSession.currentQuestion].userAnswers.length; i++) { 
-        userSession.questions[userSession.currentQuestion].userAnswers[i] = $("#answer-box" + i).val().trim();
-    }
+        userSession.questions[userSession.currentQuestion].userAnswers[i] = $("#answer-box" + i).text().trim();
+        console.log(userSession.questions[userSession.currentQuestion].userAnswers[i]);
+    }}
+
+function storeBasicQuestion() {
+    ///Store the  text in the answer box as a user answer
+    $(".drag-list").each((index, element) => {
+        userSession.questions[userSession.currentQuestion].userAnswers[index] = element.val().trim();
+    });
 }
 
 function loadMultipleChoice(index) {
@@ -247,25 +258,25 @@ function loadMultipleChoice(index) {
 
 function loadBoxMatch(index) {
     var boxMatch = [];
-    var loopLength = (userSession.questions[index].text.length - 1)/2
+    var loopLength = (userSession.questions[index].text.length - 1)/2;
 
     boxMatch.push(
         '<div class="row">',
-        '<div class="col-sm-6 test-style">'
+        '<div class="col-sm-6">'
     );
 
-    for(var i = 1; i < loopLength; i++)
+    for(var i = 1; i < loopLength + 1; i++)
     {
-        boxMatch.push('<label class="drag-label">' + userSession.questions[index].text[(2 * i - 1)] + '</label><br/>');
+        boxMatch.push('<label class="drag-label">' + userSession.questions[index].text[(2 * i - 1)].q + '</label><br/>');
     }
 
     boxMatch.push(
-         '</div>',
-        '<div class="col-sm-6 test-style">',
+        '</div>',
+        '<div class="col-sm-6">',
         '<div class="drag-list">'
     );
 
-    for(var i = 1; i < loopLength; i++)
+    for(var i = 0; i < loopLength; i++)
     {
         boxMatch.push('<div class="drag-item" draggable="true"><label id="answer-box' + i + '">' + userSession.questions[index].userAnswers[i] + '</label><i class="ion-drag drag-symbol"></i></div>');
     }
@@ -276,9 +287,10 @@ function loadBoxMatch(index) {
         '</div>',
         '</div>'
     );
+
+    $("#user-input").append(boxMatch.join(""));
   
-    initDrag();
-}
+    setTimeout(() => initDrag(), 1);}
 
 function loadBasicQuestion(index) {
     for(var i = 0; i < parseInt(userSession.questions[index].numAnswers); i++){
@@ -755,8 +767,7 @@ window.onload = setTimeout(() => loadQualification(), 0);
 //Drag and drop stuff
 function DragNSort (config) {
     this.$activeItem = null;
-    this.$container = config.container;
-    this.$items = this.$container.querySelectorAll('.' + config.itemClass);
+    this.$items = document.querySelectorAll('.' + config.itemClass);
     this.dragStartClass = config.dragStartClass;
     this.dragEnterClass = config.dragEnterClass;
 }
@@ -809,8 +820,10 @@ DragNSort.prototype.onDrop = function (_this, event) {
     }
 
     if (_this.$activeItem !== this) {
-        _this.$activeItem.innerHTML = this.innerHTML;
-        this.innerHTML = event.dataTransfer.getData('text/html');
+        var temp = $("." + _this.dragStartClass).find("label").text();
+        console.log(temp);
+        $("." + _this.dragStartClass).find("label").text($("." + _this.dragEnterClass).find("label").text());
+        $("." + _this.dragEnterClass).find("label").text(temp);
     }
 
     _this.removeClasses();
@@ -833,7 +846,6 @@ DragNSort.prototype.init = function () {
 
 function initDrag() {
     var draggable = new DragNSort({
-        container: document.querySelector('.drag-list'),
         itemClass: 'drag-item',
         dragStartClass: 'drag-start',
         dragEnterClass: 'drag-enter'

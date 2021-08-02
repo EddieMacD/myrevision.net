@@ -262,6 +262,7 @@
 .drag-label{
     padding: 10px;
     width: 100%;
+    height: 45px;
 
     color: #555;
     background: $light;
@@ -273,6 +274,8 @@
 
 .drag-item{
     padding: 10px;
+
+    height: 45px;
 
     color: #555;
     background: $light;
