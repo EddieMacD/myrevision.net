@@ -14,18 +14,21 @@ async function startQuestions(){
     //Variables
     var postBody = {};
 
+    userSession.isTimerShown = $("#timer-check").prop("checked");
+
     ///The number of questions to be generated - taken from user input
     userSession.numOfQuestions = $("#numberOfQuestions").val()
     postBody.numOfQuestions = userSession.numOfQuestions
 
-    ///The location of the questions inside the object store. Uses standard URI encoding. To be customisable in stage 2
+    ///The location of the questions inside the object store. Customised by user choices, set by  
     userSession.filePath = "iGCSE/Cambridge/Computer Science/";
     postBody.filePath = userSession.filePath;
+
+    ///
     //postBody.topics = compileTopics();
 
     ///The full api to be called for questions
     var api = compileQuestionAPI();
-
 
     ///A temporary object to store all of the input from the api, once the data has been returned
     //console.log(JSON.stringify(postBody));
@@ -34,7 +37,7 @@ async function startQuestions(){
     ///A way of filling the results object with data for testing without calling the api
     var results = {"questions": {"questions": [{"type": "boxMatch","numAnswers": "3","text": [{"q": "Match the denary with their binary values:"},{"q": "23"},{"q": "00010111"},{"q": "96"},{"q": "01101111"},{"q": "111"},{"q": "01100000"}]},{"type": "boxMatch","numAnswers": "4","text": [{"q": "Match the values to their equivalent:"},{"q": "10KB"},{"q": "16 bits"},{"q": "5MB"},{"q": "8 nibbles"},{"q": "4 bytes"},{"q": "81920 bits"},{"q": "2 bytes"},{"q": "5242880 bytes"}]},{"type": "gapFill","numAnswers": "1","text": [{"q": "The byte is a unit used to measure ______ size."}]},{"type": "calculation","numAnswers": "1","text": [{"q": "11011011 in denary?"}]},{"type": "multipleChoice","numAnswers": "3","text": [{"q": "Which of the following are valid storage units?"},{"q": "Bit"},{"q": "Gigantabyte"},{"q": "Nibble"},{"q": "Nanobyte"},{"q": "Megabyte"}]}],"indexes": ["0022","0023","0016","0008","0013"]}};
     
-    console.log(JSON.stringify(results.questions));
+    //console.log(JSON.stringify(results.questions));
 
 
     ///Populating the user session object with the data from the api call
@@ -130,12 +133,15 @@ function displayQuestionScreen() {
             }
         }
 
+        userSession.questions[i].timer = 0;
 
         userSession.questions[i].bookmark = false;
     }
 
     ///Displays the first question
     displayQuestion(0);
+
+    startTimer();
 }
 
 //Updates the question form to display a given question
@@ -232,8 +238,8 @@ function storeBoxMatch() {
     ///Store the  text in the answer box as a user answer
     for(var i = 0; i < userSession.questions[userSession.currentQuestion].userAnswers.length; i++) { 
         userSession.questions[userSession.currentQuestion].userAnswers[i] = $("#answer-box" + i).text().trim();
-        console.log(userSession.questions[userSession.currentQuestion].userAnswers[i]);
-    }}
+    }
+}
 
 function storeBasicQuestion() {
     ///Store the  text in the answer box as a user answer
@@ -355,6 +361,8 @@ function selectNextQuestion() {
 async function submitAnswers() {
     //Disable button
     $(".btn-submit").attr("disabled", "disabled");
+
+    endTimer();
 
     //Variables
     ///Makes sure the current user change is recorded
@@ -819,11 +827,17 @@ DragNSort.prototype.onDrop = function (_this, event) {
         event.stopPropagation();
     }
 
-    if (_this.$activeItem !== this) {
-        var temp = $("." + _this.dragStartClass).find("label").text();
-        console.log(temp);
-        $("." + _this.dragStartClass).find("label").text($("." + _this.dragEnterClass).find("label").text());
-        $("." + _this.dragEnterClass).find("label").text(temp);
+    var startLabel = $("." + _this.dragStartClass).find("label");
+    var enterLabel = $("." + _this.dragEnterClass).find("label");
+
+
+    if((startLabel.length === 1) && (enterLabel.length === 1))
+    {
+        if (_this.$activeItem !== this) {
+            var temp = startLabel.text();
+            startLabel.text(enterLabel.text());
+            enterLabel.text(temp);
+        }
     }
 
     _this.removeClasses();
@@ -852,6 +866,58 @@ function initDrag() {
     });
 
     draggable.init();
+}
+
+function startTimer() {
+    userSession.timerStart = Date.now();
+
+    userSession.timer = setInterval(() => {                
+        setInterval(function() {
+            userSession.questions[userSession.currentQuestion].timer += Date.now() - userSession.timerStart;
+            userSession.timerStart = Date.now();
+        }, 10);
+
+        if(userSession.isTimerShown){
+            $("#question-timer").text(timerToText(userSession.questions[userSession.currentQuestion].timer));
+        }
+    }, 500);
+}
+
+function endTimer() {
+    clearInterval(userSession.timer);
+
+    userSession.totalTime = 0;
+
+    userSession.questions.forEach((element) => {
+        userSession.totalTime += element.timer;
+    });
+
+    console.log(timerToText(userSession.totalTime));
+}
+
+function timerToText(input) {
+    var timer = parseInt(input);
+    var output = "";
+
+    //Calculations
+    ///base in milliseconds .'. 1
+    ///seconds = 1 * 1000 .'. MOD 1000
+    ///minutes = 1000 * 60 .'. MOD 60,000
+    ///hours = 60,000 * 60 .'. MOD 3,600,000
+
+    if(timer % 3600000 != timer){
+        output += Math.floor(timer / 3600000) + "h ";
+        timer = timer % 3600000;
+    }
+
+    if(timer % 60000 != timer){
+        output += Math.floor(timer / 60000) + "m ";
+        timer = timer % 60000;
+    }
+
+    output += Math.floor(timer / 1000) + "s ";
+
+    return output;
 }
 
 window.onload = setTimeout(() => initialise(), 1);

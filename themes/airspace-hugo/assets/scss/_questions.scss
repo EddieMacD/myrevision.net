@@ -209,7 +209,6 @@
 
 .topic-header-right{
     text-align: right;
-
 }
 
 .topic-header-right[aria-expanded=false] .ion-chevron-up{
@@ -296,4 +295,8 @@
 .drag-enter{
     opacity: 0.5;
     transform: scale(0.9);
+}
+
+.spacer{
+    margin-top: 25px;
 }

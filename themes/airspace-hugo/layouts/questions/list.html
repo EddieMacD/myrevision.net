@@ -44,7 +44,7 @@
       <!-- Topic input -->
       <div class="row topic-header" id="topic-header">
         <div class="col-sm-3">
-          <label class="form-group-label" for="subject">Topics: </label>
+          <label class="form-group-label" data-toggle="collapse" data-target="#topic-select" aria-expanded="false" aria-controls="topic-select">Topics: </label>
         </div>
         <div class="col-sm-9">
           <div class="topic-header-collapse">
@@ -70,10 +70,8 @@
         </div>
       </div>
 
-      <br>
-
       <!-- Number of questions input -->
-      <div class="row filter-row">
+      <div class="row filter-row spacer">
         <div class="col-sm-3">
           <label for="numberOfQuestions" class="form-group-label">Number of Questions: </label>
         </div>
@@ -86,6 +84,16 @@
           </select>
         </div>
       </div>
+
+      <!-- Show timer checkbox -->
+      <div class="row spacer">
+        <div class="col-xs-3">
+          <label for="timer-check" class="form-group-label">Show Timer: </label>
+        </div>
+        <div class="col-xs-9">
+          <input type="checkbox" id="timer-check" class="timer-check" checked="true"></input>
+        </div>
+      </div>   
 
       <!-- Submit button -->
       <div class="row">
@@ -108,8 +116,13 @@
       <div class="question-box" id="question-box">
         <div class="row">
           <!-- Question number and bookmark button -->
-          <div class="col-xs-6 question-title" id="question-title">Question x</div>
-          <div class="col-xs-6 question-title" id="bookmark-div">
+          <div class="col-xs-6 question-title">
+            <label id="question-title">Question x</label>
+          </div>
+          <div class="col-xs-3 timer">
+            <label id="question-timer"></label>
+          </div>
+          <div class="col-xs-3 question-title" id="bookmark-div">
             <!-- To be made functional in stage 2 -->
             <button type="button" class="btn btn-bookmark" id="btn-bookmark" onclick="bookmarkQuestion()">Bookmark</button>
           </div>
