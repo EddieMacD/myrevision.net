@@ -185,14 +185,13 @@ function displayQuestion(index) {
 }
 
 function displayAnswerConsole(index) {
-    if(userSession.currentQuestion != -1){
+    if(userSession.currentQuestion != -1) {
         storeAnswer();
     }
 
     $("#user-input").empty();
 
-    switch(userSession.questions[index].type)
-    {
+    switch(userSession.questions[index].type) {
         case "multipleChoice":
             loadMultipleChoice(index);
             break;
@@ -208,8 +207,7 @@ function displayAnswerConsole(index) {
 }
 
 function storeAnswer() {
-    switch(userSession.questions[userSession.currentQuestion].type)
-    {
+    switch(userSession.questions[userSession.currentQuestion].type) {
         case "multipleChoice":
             storeMultipleChoice();
             break;
@@ -243,9 +241,9 @@ function storeBoxMatch() {
 
 function storeBasicQuestion() {
     ///Store the  text in the answer box as a user answer
-    $(".drag-list").each((index, element) => {
-        userSession.questions[userSession.currentQuestion].userAnswers[index] = element.val().trim();
-    });
+    for(var i = 0; i < userSession.questions[userSession.currentQuestion].userAnswers.length; i++) { 
+        userSession.questions[userSession.currentQuestion].userAnswers[i] = $("#answer-box" + i).val().trim();
+    }
 }
 
 function loadMultipleChoice(index) {
@@ -373,14 +371,22 @@ async function submitAnswers() {
 
     ///The full api to be called for the correct answers
     var api = compileAnswerAPI();
+
     ///A temporary object to store the results from the api call
-    var response = await getAPIGetResult(api);
-    userSession.questions.correctAnswers = [];
+    var response = {"answers":[[{"a":"00010111"},{"a":"01100000"},{"a":"01101111"}],[{"a":"81920 bits"},{"a":"5242880 bytes"},{"a":"8 nibbles"},{"a":"16 bits"}],[{"a":"memory"},{"a":"storage"}],[{"a":"219"}],[{"a":"Nibble"},{"a":"Bit"},{"a":"Megabyte"}]]};
+    //var response = await getAPIGetResult(api);
+    //console.log(JSON.stringify(response));
 
     ///Updating the user session object with the correct answers from the object store
     for(var i = 0; i < userSession.numOfQuestions; i++)
     {
-        userSession.questions[i].correctAnswers = response.answers[i];
+        userSession.questions[i].correctAnswers = [];
+
+        for(var j = 0; j < response.answers[i].length; j++)
+        {
+            userSession.questions[i].correctAnswers.push(response.answers[i][j].a);
+        }
+
         ///Populates the user session object with an initialised array containing whether each question is correct
         userSession.questions[i].correct = false;
     }
@@ -422,18 +428,25 @@ function markAnswers() {
     ///Loops through each question
     for (var i = 0; i < userSession.numOfQuestions; i++) {
         ///If the box has been looked at TODO update for multiple
-        if(userSession.questions[i].userAnswers != undefined)
+        if(!userSession.questions[i].userAnswers.includes("") && userSession.questions[i].userAnswers.length != 0)
         {
             var allCorrect = true;
 
-            for(var j = 0; j = userSession.questions[i].numAnswers; j++)
+            if(userSession.questions[i].type === "boxMatch")
             {
-                ///If the user answer is the same as the correct answer
-                if(!userSession.questions[i].correctAnswers.includes(userSession.questions[i].userAnswer[j].toLowerCase())) {
+                if(userSession.questions[i].userAnswers != userSession.questions[i].correctAnswers)
+                {
                     allCorrect = false;
                 }
+            } else {
+                for(var j = 0; j < userSession.questions[i].userAnswers.length; j++)
+                {
+                    ///If the user answer is the same as the correct answer
+                    if(!userSession.questions[i].correctAnswers.includes(userSession.questions[i].userAnswers[j].toLowerCase())) {
+                        allCorrect = false;
+                    }
+                }
             }
-
             if(allCorrect) {
                 ///Update the user session to show that this question is correct
                 userSession.questions[i].correct = true;
@@ -527,7 +540,7 @@ function buildAnswerDiv(index) {
                 '<div class="row">',
                     '<div class="col-xs-12">',
                         ///The question text TODO multi question etc                  
-                        '<div class="question-text" id="question-text' + index + '">' + userSession.questions[index].text + '</div>',
+                        '<div class="question-text" id="question-text' + index + '">' + userSession.questions[index].text[0].q + '</div>',
                     '</div>',
                 '</div>',
                 '<div class="marked-answers">',
@@ -535,14 +548,14 @@ function buildAnswerDiv(index) {
                         '<div class="col-xs-12">',
                             ///User answer(s)
                             '<p>You answered:</p>',
-                            '<input class="form-control" id="user-answer' + index + '" type="text" readonly value="' + userSession.questions[index].userAnswers + '"></input>',
+                            displayAnswerText(index, userSession.questions[index].userAnswers, "user-answer"),
                         '</div>',
                     '</div>',
                     '<div class="row">',
                         '<div class="col-xs-12">',
                             ///Correct answer(s)
                             '<p>Correct answer(s):</p>',
-                            '<input class="form-control" id="marked-answer' + index + '" type="text" readonly value="' + userSession.correctAnswers[index] + '"></input>',
+                            displayAnswerText(index, userSession.questions[index].correctAnswers, "marked-answer"),
                         '</div>',
                     '</div>',
                 '</div>', 
@@ -552,6 +565,91 @@ function buildAnswerDiv(index) {
 
     ///Combines every element of the array into one string and returns it
     return answerDiv.join("");
+}
+
+function displayAnswerText(index, answerSet, idStem) {
+    var output = "";
+
+    switch (userSession.questions[index].type){
+        case "multipleChoice":
+            output = displayMultipleChoice(index, answerSet, idStem);
+            break;
+
+        case "boxMatch":
+            output = displayBoxMatch(index, answerSet, idStem);
+            break;
+
+        default:
+            output = displayBasicQuestion(index, answerSet, idStem);
+            break;
+    }
+
+    return output;
+}
+
+function displayMultipleChoice(index, answerSet, idStem) {
+    var multChoice = [];
+
+    for(var i = 1; i < userSession.questions[index].text.length; i++)
+    {
+        var tempText = userSession.questions[index].text[i].q;
+
+        if(answerSet.includes(tempText))
+        {
+            multChoice.push('<input type="checkbox" class="multiple-choice-box check-box" checked="true" value="' + tempText + '" id="' + idStem + index + '.' + (i - 1) + '"disabled/>');
+        } else {
+            multChoice.push('<input type="checkbox" class="multiple-choice-box check-box" value="' + tempText + '" id="' + idStem + index + '.' + (i - 1) + '"disabled/>');
+        }
+
+        multChoice.push('<label class="answer-box-label" for="' + idStem + index + '.' + (i - 1) + '">' + tempText + '</label><br/>');
+    }
+
+    return multChoice.join("");
+}
+
+function displayBoxMatch(index, answerSet, idStem) {
+    var boxMatch = [];
+    var loopLength = (userSession.questions[index].text.length - 1)/2;
+
+    boxMatch.push(
+        '<div class="row">',
+        '<div class="col-sm-6">'
+    );
+
+    for(var i = 1; i < loopLength + 1; i++)
+    {
+        boxMatch.push('<label class="drag-label">' + userSession.questions[index].text[(2 * i - 1)].q + '</label><br/>');
+    }
+
+    boxMatch.push(
+        '</div>',
+        '<div class="col-sm-6">',
+        '<div class="drag-list">'
+    );
+
+    for(var i = 0; i < loopLength; i++)
+    {
+        boxMatch.push('<div class="drag-item"><label id="' + idStem + index + "." + i + '">' + answerSet[i] + '</label></div>');
+    }
+
+    boxMatch.push(
+        '</div>',
+        '</div>',
+        '</div>'
+    );
+
+    return boxMatch.join("");
+}
+
+function displayBasicQuestion(index, answerSet, idStem) {
+    var answerBox = [];
+
+    for(var i = 0; i < answerSet.length; i++){
+        answerBox.push('<input class="form-control" id="' + idStem + index + "." + i + '" type="text" readonly value="' + answerSet[i] + '"></input>');
+        ///Update the answer box with the current user answer for the new question
+    }
+
+    return answerBox.join("");
 }
 
 async function loadQualification() {
