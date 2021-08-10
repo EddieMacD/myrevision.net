@@ -264,7 +264,7 @@
     height: 45px;
 
     color: #555;
-    background: $light;
+    background: $drag-disabled;
     border: 1px solid $border-color;
     transition: 0.25s;
 
@@ -277,10 +277,9 @@
     height: 45px;
 
     color: #555;
-    background: $light;
+    background: $drag-background;
     border: 1px solid $border-color;
     transition: 0.25s;
-
     margin-bottom: 2px;
 }
 
@@ -299,4 +298,25 @@
 
 .spacer{
     margin-top: 25px;
+}
+
+.question-time{
+    text-align: center;
+}
+
+.error-row{
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 30px;
+    border: 1px solid darken($incorrect, 25%);
+}
+
+.error-col{
+    text-align: center;
+    background-color: lighten($incorrect, 35%);
+}
+
+.error-label{
+    font-size: 20px;
+    color: $incorrect;
 }

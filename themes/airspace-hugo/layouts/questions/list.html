@@ -5,58 +5,62 @@
 {{ $data := index site.Data site.Language.Lang }}
 
 <script language="javascript" src="../scripts/questions.js"></script>
+<script language="javascript" src="../scripts/dragNSort.js"></script>
 
 <!-- Main content -->
 <section class="main-content section">
+  <!-- Error Bar -->
+  <container class="errors" id="error-container"></container>
+
   <!-- Question filtering -->
   <div class="container">
     <div class="form-group" id="frm-filter">
       <!-- Qualification input -->
       <div class="row filter-row">
-        <div class="col-sm-3">
+        <div class="col-xs-3">
           <label class="form-group-label" for="qualification">Qualification: </label>
         </div>
-        <div class="col-sm-9">
+        <div class="col-xs-9">
           <select name="qualification" id="qualification" class="form-control" onchange="newQualification()"></select>
         </div>
       </div>
 
       <!-- Exam board input -->
       <div class="row filter-row">
-        <div class="col-sm-3">
+        <div class="col-xs-3">
           <label class="form-group-label" for="examBoard">Exam Board: </label>
         </div>
-        <div class="col-sm-9">
+        <div class="col-xs-9">
           <select name="examBoard" id="examBoard" class="form-control" onchange="newExamBoard()"></select>
         </div>
       </div>
 
       <!-- Subject input -->
       <div class="row filter-row">
-        <div class="col-sm-3">
+        <div class="col-xs-3">
           <label class="form-group-label" for="subject">Subject: </label>
         </div>
-        <div class="col-sm-9">
+        <div class="col-xs-9">
           <select name="subject" id="subject" class="form-control" onchange="newSubject()"></select>
         </div>
       </div>
 
       <!-- Topic input -->
       <div class="row topic-header" id="topic-header">
-        <div class="col-sm-3">
+        <div class="col-xs-3">
           <label class="form-group-label" data-toggle="collapse" data-target="#topic-select" aria-expanded="false" aria-controls="topic-select">Topics: </label>
         </div>
-        <div class="col-sm-9">
+        <div class="col-xs-9">
           <div class="topic-header-collapse">
             <div class="row">
-              <div class="col-sm-6 topic-header-left" data-toggle="collapse" data-target="#topic-select" aria-expanded="false" aria-controls="topic-select">
+              <div class="col-xs-6 topic-header-left" data-toggle="collapse" data-target="#topic-select" aria-expanded="false" aria-controls="topic-select">
                 <label id="num-topics-selected">Selected: n</label>
               </div>
-              <div class="col-sm-4 topic-header-middle">
-                <input type="checkbox" class="check-box select-all" onchange="selectAll('sections','selectAll')" value="" id="sections"/>
+              <div class="col-xs-4 topic-header-middle">
+                <input type="checkbox" class="check-box select-all" onchange="selectAll('sections')" value="" id="sections"/>
                 <label for="sections" class="check-box-label">Select All</label>
               </div>
-              <div class="col-sm-2 topic-header-right" data-toggle="collapse" data-target="#topic-select" aria-expanded="false" aria-controls="topic-select">
+              <div class="col-xs-2 topic-header-right" data-toggle="collapse" data-target="#topic-select" aria-expanded="false" aria-controls="topic-select">
                 <i class="ion-chevron-down topic-symbol"></i><i class="ion-chevron-up topic-symbol"></i>
               </div>
             </div>
@@ -64,8 +68,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-9">
+        <div class="col-xs-3"></div>
+        <div class="col-xs-9">
           <div class="topic-select collapse" id="topic-select"></div>
         </div>
       </div>
