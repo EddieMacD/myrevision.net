@@ -5,29 +5,10 @@ const apiRoot = "https://api.myrevision.net";
 ///Stores user data throughout the running of the website
 var userSession = {};
 
-//Generates a bar at the top of the screen to 
-function generateErrorBar(text) {
-    var errorBar = [];
-
-    errorBar.push(
-        "<div class='row error-row'>",
-            "<div class='col-xs-12 error-col'>",
-                "<label class='error-label'>" + text + "</label>",
-            "</div>",
-        "</div>",
-    );
-
-    $("#error-container").append(errorBar.join(""));
-}
-
-userSession.clearErrorBar = () => {
-    $("#error-container").empty();
-}
-
 //Loads the qualifications from S3. Runs on page load
 async function loadQualification() {
     try {
-        userSession.clearErrorBar();
+        clearErrorBar();
 
         //Variables
         ///Array containing the data pulled from the file system
@@ -88,7 +69,7 @@ function newSelectItem(text) {
 //Loads new exam boards from S3 based on the selected qualification. Runs on qualification change
 async function newQualification() {
     try {
-        userSession.clearErrorBar();
+        clearErrorBar();
 
         //Variables
         ///Array containing the data pulled from the file system
@@ -123,7 +104,7 @@ async function newQualification() {
 //Loads new subjects from S3 based on the selected exam board. Runs on exam board change
 async function newExamBoard() {
     try { 
-        userSession.clearErrorBar();
+        clearErrorBar();
 
         //Variables
         ///Array containing the data pulled from the file system
@@ -158,7 +139,7 @@ async function newExamBoard() {
 //Loads new topics from S3 based on the selected subject
 async function newSubject() {
     try {
-        userSession.clearErrorBar();
+        clearErrorBar();
 
         //Variables
         ///Array containing the topics pulled from the file system
@@ -281,7 +262,7 @@ function textToCSS(text){
 ///boxID: the id of the select all box
 function selectAll(boxID){
     try {
-        userSession.clearErrorBar();
+        clearErrorBar();
 
         //Variables
         ///Stores whether the boxes are to be checked or unchecked
@@ -318,7 +299,7 @@ function selectAll(boxID){
 //The onClick for a topic check box - handles counting and mass selectors
 function massSelect(boxID, boxClass) {
     try {
-        userSession.clearErrorBar();
+        clearErrorBar();
 
         //Variables
         ///The checked property of the box that was selected to run the function - boolean
@@ -439,7 +420,7 @@ function updateMassSelectors(isSelected, boxClass){
 //The onclick for the start questions button - handles loading the questions from the API and modifying the web page to show the user the question form
 async function startQuestions() {
     try {
-        userSession.clearErrorBar();
+        clearErrorBar();
 
         //Disable the button
         ///Prevents double-clicks which cause generation bugs
@@ -548,7 +529,8 @@ async function getAPIPostResult(api, postBody) {
         $.post(api, JSON.stringify(postBody), data => {
             resolve(data);
         }).fail((error) => {
-            reject("There was an error retrieveing questions from our servers. Please check your internet connection and try again later. Error: " + error.responseText);
+            ///The fail function rejects the promise, throwing an exception with the inputted text. The error is used to create a neat error meddage to post to the try catch 
+            reject("There was an error retrieveing questions from our servers. Please check your internet connection and try again later. <br> Error code " + error.status + " --- " + error.responseText);
         }, "json");
     });
 }
@@ -563,7 +545,8 @@ async function getAPIGetResult(api, apiResults) {
         $.get(api, html => {
             resolve(html);
         }).fail((error) => {
-            reject("There was an error retrieving " + apiResults + " from our servers. Please check your internet connection and try again later. <br> Error: " + error.responseText);
+            ///The fail function rejects the promise, throwing an exception with the inputted text. The error is used to create a neat error meddage to post to the try catch 
+            reject("There was an error retrieving " + apiResults + " from our servers. Please check your internet connection and try again later. <br> Error code " + error.status + " --- " + error.responseText);
         });
     });
 }

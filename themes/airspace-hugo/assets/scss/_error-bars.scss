@@ -1,0 +1,16 @@
+.error-row{
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 30px;
+    border: 1px solid darken($incorrect, 25%);
+}
+
+.error-col{
+    text-align: center;
+    background-color: lighten($incorrect, 35%);
+}
+
+.error-label{
+    font-size: 20px;
+    color: $incorrect;
+}

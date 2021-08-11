@@ -5,6 +5,7 @@
 <body>
 	{{- partialCached "preloader.html" . -}}
 	{{- partial "header.html" . -}}
+	{{- partial "error-bars.html" . -}}
 	{{- block "main" . }}{{- end }}
 	{{- partialCached "footer.html" . -}}
 </body>
