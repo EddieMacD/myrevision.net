@@ -989,7 +989,7 @@ function selectNextQuestion() {
 //The onclick for the submit answers button - handles loading the answers from the API, marking the questions and modifying the web page to show the user the answer form
 async function submitAnswers() {
     try {
-        userSession.generateErrorBar();
+        generateErrorBar();
 
         //Immediate actions
         ///Disables the submit button to prevent duplication
