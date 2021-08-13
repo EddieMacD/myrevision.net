@@ -957,6 +957,8 @@ function updateBookmarkButton() {
 //Select the previous question
 function selectPrevQuestion() {
     try {
+        clearErrorBar();
+
         //Change question
         ///Find out the current question
         var index = userSession.currentQuestion;
@@ -973,6 +975,8 @@ function selectPrevQuestion() {
 //Select the next question
 function selectNextQuestion() {
     try {
+        clearErrorBar();
+
         //Change question
         ///Find out the current question
         var index = userSession.currentQuestion;
@@ -989,7 +993,7 @@ function selectNextQuestion() {
 //The onclick for the submit answers button - handles loading the answers from the API, marking the questions and modifying the web page to show the user the answer form
 async function submitAnswers() {
     try {
-        generateErrorBar();
+        clearErrorBar();
 
         //Immediate actions
         ///Disables the submit button to prevent duplication
@@ -1109,16 +1113,21 @@ function markAnswers() {
                     break;
             
                 case "multipleChoice":
-                    ///For each user answer
-                    for(var j = 0; j < userSession.questions[i].userAnswers.length; j++)
+                    if(userSession.questions[i].userAnswers.length === userSession.questions[i].correctAnswers.length)
                     {
-                        ///If the correct answers doesnt contain the user answer
-                        ///Multiple choice is segregated due to the lack of case sensitivity errors. Answers are stored the same as the question prompts are displayed
-                        if(!userSession.questions[i].correctAnswers.includes(userSession.questions[i].userAnswers[j])) {
-                            ///The user got the question wrong
-                            allCorrect = false;
-                        }
-                    }       
+                        ///For each user answer
+                        for(var j = 0; j < userSession.questions[i].userAnswers.length; j++)
+                        {
+                            ///If the correct answers doesnt contain the user answer
+                            ///Multiple choice is segregated due to the lack of case sensitivity errors. Answers are stored the same as the question prompts are displayed
+                            if(!userSession.questions[i].correctAnswers.includes(userSession.questions[i].userAnswers[j])) {
+                                ///The user got the question wrong
+                                allCorrect = false;
+                            }
+                        }      
+                    } else {
+                        allCorrect = false;
+                    }
                     break;     
                 default:
                     ///For each answer
