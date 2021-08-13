@@ -32,9 +32,6 @@ function signIn() {
 
 function signOut() {
     auth.signOut();
-
-    userSession.accessToken = "";
-    userSession.isUser = false;
 }
 
 function initialiseAuth() {
@@ -51,9 +48,19 @@ function initialiseAuth() {
             console.log('Access token:' + userSession.accessToken);
 
             userSession.isUser = true;
+
+
+            $("#itm-log-in").hide();
+            $("#itm-profile").show();
         } else {
             console.log('AUTH: User is NOT logged in');
+
+            userSession.username = "";
             userSession.accessToken = "";
+            userSession.isUser = false;
+
+            $("#itm-log-in").hide();
+            $("#itm-profile").show();
         }
     } catch(error) {
         generateErrorBar(error.ToString());
