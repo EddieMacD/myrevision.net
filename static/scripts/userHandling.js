@@ -69,7 +69,7 @@ function initialiseAuth() {
 
 //Runs when the code loads - the timeout buffers until the full page loads
 ///Runs the initialise function in case more than one function call is needed
-window.onload = setTimeout(() => initialise(), 1);
+window.onload = setTimeout(() => initialise(), 500);
 
 function initialise() {
     initialiseAuth();
