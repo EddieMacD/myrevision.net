@@ -1,3 +1,6 @@
+<script language="javascript" src="../scripts/amazon-cognito-auth.js"></script>
+<script language="javascript" src="../scripts/userHandling.js"></script>
+
 <!-- Header Start -->
 <header class="navigation">
   <div class="container-fluid">
@@ -34,6 +37,9 @@
               <li><a href="{{ .URL | relLangURL }}">{{ .Name }}</a></li>
               {{ end }}
               {{ end }}
+
+              <li id=""><button onClick="">sign in</button></li>
+              <li id="" style="display: none;">profile</li>
 
               <!-- Language List -->
               {{- if site.IsMultiLingual }}

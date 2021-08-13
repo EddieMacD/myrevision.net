@@ -2,9 +2,6 @@
 ///Stores the root of the api for retrieveing questions and answers
 const apiRoot = "https://api.myrevision.net";
 
-///Stores user data throughout the running of the website
-var userSession = {};
-
 //Loads the qualifications from S3. Runs on page load
 async function loadQualification() {
     //Error checking
