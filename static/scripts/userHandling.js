@@ -63,7 +63,7 @@ function initialiseAuth() {
             $("#itm-profile").show();
         }
     } catch(error) {
-        generateErrorBar(error.ToString());
+        generateErrorBar(error);
     }
 }
 
