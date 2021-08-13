@@ -59,18 +59,10 @@ function initialiseAuth() {
             userSession.accessToken = "";
             userSession.isUser = false;
 
-            $("#itm-log-in").hide();
-            $("#itm-profile").show();
+            $("#itm-log-in").show();
+            $("#itm-profile").hide();
         }
     } catch(error) {
         generateErrorBar(error);
     }
-}
-
-//Runs when the code loads - the timeout buffers until the full page loads
-///Runs the initialise function in case more than one function call is needed
-window.onload = setTimeout(() => initialise(), 500);
-
-function initialise() {
-    initialiseAuth();
 }
