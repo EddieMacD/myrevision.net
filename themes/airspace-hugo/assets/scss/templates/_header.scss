@@ -2,6 +2,51 @@
 	Header Start 
 --*/
 
+#itm-log-in {
+	a {
+		background-color: $submit-button;
+		color: $light-primary !important;
+		border-radius: 10px;	
+	}
+
+	a:hover {
+		background-color: lighten($submit-button, 70%);
+		color: $primary-color !important;
+
+		transition: all .3s ease;
+	}
+}
+
+#itm-log-out {
+	a {
+		background-color: $submit-button;
+		color: $light-primary !important;
+	}
+
+	a:hover {
+		background-color: lighten($submit-button, 50%);
+		color: $primary-color !important;
+	}
+}
+
+.profile-symbol {
+	font-size: 30px;
+	float: right;
+	vertical-align: top;
+}
+
+.profile-icon {
+	border-color: $primary-color;
+	border-radius: 10px;
+	border-width: 1px;
+	border-style: solid;
+
+	height: 38px;
+
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
 header{
 	background: $block-background;
 	padding: 20px 0;
@@ -17,16 +62,16 @@ header{
 		border: 0px;
 		.navbar-nav{
 			  padding-top: 10px;
+			  vertical-align: 50%;
 			li{
-			  a{
-			  	color: #333333;
-			  	padding: 10px 26px;
-			  	font-size: 15px;
-			  	font
-			  	&:hover{
-			  		color: #000;
-			  	}
-			  }
+				a{
+					color: #333333;
+					padding: 10px 26px;
+					font-size: 15px;
+				}
+				a:hover{
+					color: #000;
+				}
 			}
 		}
 	}

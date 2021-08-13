@@ -38,8 +38,18 @@
               {{ end }}
               {{ end }}
 
-              <li id="itm-log-in"><button onClick="signIn()">sign in</button></li>
-              <li id="itm-profile" style="display: none;"><button onClick="signOut()">log out</button></li>
+              <!-- Log in and log out links -->
+              <li id="itm-log-in"><a class="link-log-in" onClick="signIn()">Sign In</a></li>
+
+              <li id="itm-profile" class="dropdown">
+                <a href="#" class="dropdown-toggle profile-icon" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <i class="ion-android-person profile-symbol"></i>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="profile">Profile</a></li>
+                  <li id="itm-log-out"><a class="link-log-out" onClick="signOut()">Sign out</a></li>
+                </ul>
+              </li>
 
               <!-- Language List -->
               {{- if site.IsMultiLingual }}

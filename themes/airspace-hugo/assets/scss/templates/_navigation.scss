@@ -19,6 +19,7 @@
       padding-top: 10px;
 
       >li {
+
         >a {
           color: #5C5C5C;
           padding: 10px 15px;
@@ -33,7 +34,10 @@
           &:hover,
           &:focus {
             color: #000;
-            background: transparent;
+            background: lighten($block-background, 10%);
+            border-radius: 10px;
+
+            transition: all .3s ease;
           }
         }
 

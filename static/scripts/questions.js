@@ -1450,4 +1450,6 @@ function initialise(){
     //Function calls
     ///Loads the qualification values into the input box
     loadQualification();
+
+    initialiseAuth();
 }

@@ -38,30 +38,32 @@ function initialiseAuth() {
     console.log('initialiseAuth...');
     console.log('parsing: ' + window.location.href);
     try {
-        auth.parseCognitoWebResponse(window.location.href);
+        setTimeout(() => {
+            auth.parseCognitoWebResponse(window.location.href);
 
-        if (auth.isUserSignedIn()) {
-            userSession.username = auth.getUsername();
-            console.log('AUTH: User is logged in: ' + userSession.username);
+            if (auth.isUserSignedIn()) {
+                userSession.username = auth.getUsername();
+                console.log('AUTH: User is logged in: ' + userSession.username);
 
-            userSession.accessToken = auth.getSignInUserSession().idToken.jwtToken;
-            console.log('Access token:' + userSession.accessToken);
+                userSession.accessToken = auth.getSignInUserSession().idToken.jwtToken;
+                console.log('Access token:' + userSession.accessToken);
 
-            userSession.isUser = true;
+                userSession.isUser = true;
 
 
-            $("#itm-log-in").hide();
-            $("#itm-profile").show();
-        } else {
-            console.log('AUTH: User is NOT logged in');
+                $("#itm-log-in").hide();
+                $("#itm-profile").show();
+            } else {
+                console.log('AUTH: User is NOT logged in');
 
-            userSession.username = "";
-            userSession.accessToken = "";
-            userSession.isUser = false;
+                userSession.username = "";
+                userSession.accessToken = "";
+                userSession.isUser = false;
 
-            $("#itm-log-in").show();
-            $("#itm-profile").hide();
-        }
+                $("#itm-log-in").show();
+                //$("#itm-profile").hide();
+            }
+        }, 1);
     } catch(error) {
         generateErrorBar(error);
     }
