@@ -41,12 +41,16 @@ function initialiseAuth() {
         setTimeout(() => {
             auth.parseCognitoWebResponse(window.location.href);
 
+            console.log(JSON.stringify(auth));
+            
             if (auth.isUserSignedIn()) {
                 userSession.username = auth.getUsername();
                 console.log('AUTH: User is logged in: ' + userSession.username);
 
                 userSession.accessToken = auth.getSignInUserSession().idToken.jwtToken;
-                console.log('Access token:' + userSession.accessToken);
+                //console.log('Access token:' + userSession.accessToken);
+
+                userSession.accessLevel = getAccessLevel();
 
                 userSession.isUser = true;
 
@@ -58,13 +62,45 @@ function initialiseAuth() {
 
                 userSession.username = "";
                 userSession.accessToken = "";
+                userSession.accessLevel = "guest";
                 userSession.isUser = false;
 
                 $("#itm-log-in").show();
-                //$("#itm-profile").hide();
+                $("#itm-profile").hide();
             }
+
+            adaptHeaderBar();
         }, 1);
     } catch(error) {
         generateErrorBar(error);
+    }
+}
+
+function getAccessLevel() {
+    return "teacher";
+}
+
+function adaptHeaderBar() {
+    var menuLocation = userSession.accessLevel;
+
+    switch (menuLocation){
+        case "teacher":
+            $("#teacher-header").show();
+            $("#student-header").hide();
+            $("#guest-header").hide();
+            break;
+
+        case "teacher":
+            $("#teacher-header").hide();
+            $("#student-header").show();
+            $("#guest-header").hide();
+            break;
+
+        default:
+            $("#teacher-header").hide();
+            $("#student-header").hide();
+            $("#guest-header").show();
+            break;
+            
     }
 }

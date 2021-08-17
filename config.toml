@@ -142,15 +142,24 @@ weight = 1
 copyright = "TODO: copyright"
 
 
-######################### english navigation #############################
-
-[[Languages.en.menu.main]]
-name = "Do Questions"
-URL = "/questions"
-weight = 1
+################### english guest/base navigation ########################
 
 # footer menu
 [[Languages.en.menu.footer]]
 name = "Privacy Policy"
 URL = "privacy-policy"
 weight = 6
+
+###################### english student navigation ########################
+
+[[Languages.en.menu.student]]
+name = "Do Questions"
+URL = "/questions"
+weight = 1
+
+##################### english  teacher navigation #########################
+
+[[Languages.en.menu.teacher]]
+name = "Do Questions"
+URL = "/questions"
+weight = 1

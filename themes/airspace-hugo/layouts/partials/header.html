@@ -21,8 +21,66 @@
           </div>
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="navigation">
-            <ul class="nav navbar-nav navbar-right">
-              {{ range site.Menus.main }}
+            <ul class="nav navbar-nav navbar-right" id="guest-header">
+                {{ range site.Menus.main }}
+                {{ if .HasChildren }}
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                    aria-expanded="false">{{ .Name }} <span class="ion-ios-arrow-down"></span></a>
+                  <ul class="dropdown-menu">
+                    {{ range .Children }}
+                    <li><a href="{{ .URL | relLangURL }}">{{ .Name }}</a></li>
+                    {{ end }}
+                  </ul>
+                </li>
+                {{ else }}
+                <li><a href="{{ .URL | relLangURL }}">{{ .Name }}</a></li>
+                {{ end }}
+                {{ end }}
+
+              <!-- Log in and log out links -->
+              <li id="itm-log-in"><a class="link-log-in" onClick="signIn()">Sign In</a></li>
+
+              <li id="itm-profile" class="dropdown">
+                <a href="#" class="dropdown-toggle profile-icon" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <i class="ion-android-person profile-symbol"></i>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="profile">Profile</a></li>
+                  <li id="itm-log-out"><a class="link-log-out" onClick="signOut()">Sign out</a></li>
+                </ul>
+              </li>
+
+              <!-- Language List -->
+              {{- if site.IsMultiLingual }}
+              <li>
+                <select id="select-language" onchange="location = this.value;">
+                  {{ $siteLanguages := site.Languages}}
+                  {{ $pageLang := .Page.Lang}}
+                  {{ range .Page.AllTranslations }}
+                  {{ $translation := .}}
+                  {{ range $siteLanguages }}
+                  {{ if eq $translation.Lang .Lang }}
+                  {{ $selected := false }}
+                  {{ if eq $pageLang .Lang}}
+                  <option id="{{ $translation.Language }}" value="{{ $translation.Permalink }}" selected>
+                    {{ .LanguageName }}
+                  </option>
+                  {{ else }}
+                  <option id="{{ $translation.Language }}" value="{{ $translation.Permalink }}">{{ .LanguageName }}
+                  </option>
+                  {{ end }}
+                  {{ end }}
+                  {{ end }}
+                  {{ end }}
+                </select>
+              </li>
+              {{ end }}
+            </ul>
+
+            <!-- student header bar -->
+            <ul class="nav navbar-nav navbar-right" id="student-header">
+              {{ range site.Menus.student }}
               {{ if .HasChildren }}
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -37,6 +95,64 @@
               <li><a href="{{ .URL | relLangURL }}">{{ .Name }}</a></li>
               {{ end }}
               {{ end }}
+
+              <!-- Log in and log out links -->
+              <li id="itm-log-in"><a class="link-log-in" onClick="signIn()">Sign In</a></li>
+
+              <li id="itm-profile" class="dropdown">
+                <a href="#" class="dropdown-toggle profile-icon" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <i class="ion-android-person profile-symbol"></i>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="profile">Profile</a></li>
+                  <li id="itm-log-out"><a class="link-log-out" onClick="signOut()">Sign out</a></li>
+                </ul>
+              </li>
+
+              <!-- Language List -->
+              {{- if site.IsMultiLingual }}
+              <li>
+                <select id="select-language" onchange="location = this.value;">
+                  {{ $siteLanguages := site.Languages}}
+                  {{ $pageLang := .Page.Lang}}
+                  {{ range .Page.AllTranslations }}
+                  {{ $translation := .}}
+                  {{ range $siteLanguages }}
+                  {{ if eq $translation.Lang .Lang }}
+                  {{ $selected := false }}
+                  {{ if eq $pageLang .Lang}}
+                  <option id="{{ $translation.Language }}" value="{{ $translation.Permalink }}" selected>
+                    {{ .LanguageName }}
+                  </option>
+                  {{ else }}
+                  <option id="{{ $translation.Language }}" value="{{ $translation.Permalink }}">{{ .LanguageName }}
+                  </option>
+                  {{ end }}
+                  {{ end }}
+                  {{ end }}
+                  {{ end }}
+                </select>
+              </li>
+              {{ end }}
+            </ul>
+
+              <!-- teacher header bar -->
+              <ul class="nav navbar-nav navbar-right" id="teacher-header">
+                {{ range site.Menus.student }}
+                {{ if .HasChildren }}
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                    aria-expanded="false">{{ .Name }} <span class="ion-ios-arrow-down"></span></a>
+                  <ul class="dropdown-menu">
+                    {{ range .Children }}
+                    <li><a href="{{ .URL | relLangURL }}">{{ .Name }}</a></li>
+                    {{ end }}
+                  </ul>
+                </li>
+                {{ else }}
+                <li><a href="{{ .URL | relLangURL }}">{{ .Name }}</a></li>
+                {{ end }}
+                {{ end }}
 
               <!-- Log in and log out links -->
               <li id="itm-log-in"><a class="link-log-in" onClick="signIn()">Sign In</a></li>
