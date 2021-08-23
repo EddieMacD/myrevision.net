@@ -1,5 +1,6 @@
-<script language="javascript" src="../scripts/amazon-cognito-auth.js"></script>
+<script language="javascript" src="../scripts/libraries/amazon-cognito-auth.js"></script>
 <script language="javascript" src="../scripts/userHandling.js"></script>
+<script language="javascript" src="../scripts/apiCalls.js"></script>
 
 <!-- Header Start -->
 <header class="navigation">
@@ -39,9 +40,9 @@
                 {{ end }}
 
               <!-- Log in and log out links -->
-              <li id="itm-log-in"><a class="link-log-in" onClick="signIn()">Sign In</a></li>
+              <li id="itm-log-in" class="btn-log-in"><a class="link-log-in" onClick="signIn()">Sign In</a></li>
 
-              <li id="itm-profile" class="dropdown">
+              <li id="itm-profile" class="dropdown btn-profile">
                 <a href="#" class="dropdown-toggle profile-icon" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <i class="ion-android-person profile-symbol"></i>
                 </a>
@@ -97,9 +98,9 @@
               {{ end }}
 
               <!-- Log in and log out links -->
-              <li id="itm-log-in"><a class="link-log-in" onClick="signIn()">Sign In</a></li>
+              <li id="itm-log-in" class="btn-log-in"><a class="link-log-in" onClick="signIn()">Sign In</a></li>
 
-              <li id="itm-profile" class="dropdown">
+              <li id="itm-profile" class="dropdown btn-profile">
                 <a href="#" class="dropdown-toggle profile-icon" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <i class="ion-android-person profile-symbol"></i>
                 </a>
@@ -155,9 +156,9 @@
                 {{ end }}
 
               <!-- Log in and log out links -->
-              <li id="itm-log-in"><a class="link-log-in" onClick="signIn()">Sign In</a></li>
+              <li id="itm-log-in" class="btn-log-in"><a class="link-log-in" onClick="signIn()">Sign In</a></li>
 
-              <li id="itm-profile" class="dropdown">
+              <li id="itm-profile" class="dropdown btn-profile">
                 <a href="#" class="dropdown-toggle profile-icon" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <i class="ion-android-person profile-symbol"></i>
                 </a>
@@ -199,3 +200,7 @@
     </div>
   </div>
 </header><!-- header close -->
+
+<div id="loader-box">
+  <div class="loader">Loading...</div>
+</div>

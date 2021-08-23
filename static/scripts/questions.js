@@ -22,7 +22,7 @@ async function loadQualification() {
 
         //Updating the page
         ///Awaits the qualifications from the API call
-        qualifications = await getAPIGetResult(api, "qualifications");
+        qualifications = await callGetAPI(api, "qualifications");
 
         ///Clears the qualification input box of any values - removes pre-set data 
         $("#qualification").empty();
@@ -58,23 +58,6 @@ function filterAPI(filePath, isTopics) {
     return uri;
 }
 
-//A function to get the results from a REST api with a GET method
-///api: the api to get results from
-async function getAPIGetResult(api, apiResults) {
-    //Get result
-    ///Uses a promise structure to allow the use of the await keyword when calling the function. Easy way of making asynchronous code synchronous in javascript 
-    return new Promise((resolve, reject) => {
-        ///Uses jquery to easily call the api, takes in the APi and a callback function
-        $.get(api, html => {
-            //resolve returns the data passed into it to the promise, which sends it to the 
-            resolve(html);
-        }).fail((error) => {
-            ///The fail function rejects the promise, throwing an exception with the inputted text. The error is used to create a neat error meddage to post to the try catch 
-            reject("There was an error retrieving " + apiResults + " from our servers. Please check your internet connection and try again later. <br> Error code " + error.status + " --- " + error.responseText);
-        });
-    });
-}
-
 //Compiles a string containing a select item with corresponding text and value
 ///text: The label and the value of the option
 function newSelectItem(text) {
@@ -103,7 +86,7 @@ async function newQualification() {
 
         //Updating the page
         ///Awaits the API call and therefore the exam boards
-        examBoards = await getAPIGetResult(api, "exam boards");
+        examBoards = await callGetAPI(api, "exam boards");
 
         ///Empties the exam board input
         $("#examBoard").empty();
@@ -138,7 +121,7 @@ async function newExamBoard() {
 
         //Updating the page
         ///Awaits the API call and therefore the subjects
-        subjects = await getAPIGetResult(api, "subjects");
+        subjects = await callGetAPI(api, "subjects");
 
         ///Empties the subject input
         $("#subject").empty();
@@ -173,7 +156,7 @@ async function newSubject() {
 
         //Get topics
         ///Awaits the topic file from S3
-        topics = await getAPIGetResult(api, "topics");
+        topics = await callGetAPI(api, "topics");
 
         ///Puts the topics into the user session variable
         userSession.topics = topics.filters;
@@ -472,7 +455,7 @@ async function startQuestions() {
         //Data handling
         ///A temporary object to store all of the input from the api, once the data has been returned. Test data prevents unnecessary APi calls whilst having all question types
         //var results = {"questions": {"questions": [{"type": "boxMatch","numAnswers": "3","text": [{"q": "Match the denary with their binary values:"},{"q": "23"},{"q": "00010111"},{"q": "96"},{"q": "01101111"},{"q": "111"},{"q": "01100000"}]},{"type": "boxMatch","numAnswers": "4","text": [{"q": "Match the values to their equivalent:"},{"q": "10KB"},{"q": "16 bits"},{"q": "5MB"},{"q": "8 nibbles"},{"q": "4 bytes"},{"q": "81920 bits"},{"q": "2 bytes"},{"q": "5242880 bytes"}]},{"type": "gapFill","numAnswers": "1","text": [{"q": "The byte is a unit used to measure ______ size."}]},{"type": "calculation","numAnswers": "1","text": [{"q": "11011011 in denary?"}]},{"type": "multipleChoice","numAnswers": "3","text": [{"q": "Which of the following are valid storage units?"},{"q": "Bit"},{"q": "Gigantabyte"},{"q": "Nibble"},{"q": "Nanobyte"},{"q": "Megabyte"}]}],"indexes": ["0022","0023","0016","0008","0013"]}};
-        var results = await getAPIPostResult(api, postBody);
+        var results = await callPostAPI(api, postBody, "questions");
         
         ///Logging for testing
         //console.log(JSON.stringify(results.questions));
@@ -535,23 +518,6 @@ function compileQuestionAPI() {
     //console.log(uri);
 
     return uri;
-}
-
-//A function to get the results from a REST api with a POST method
-///api: the api to get results from
-///postBody: the data to be posted
-async function getAPIPostResult(api, postBody) {
-    //Get result
-    ///Uses a promise structure to allow the use of the await keyword when calling the function. Easy way of making asynchronous code synchronous in javascript 
-    return new Promise((resolve, reject) => {
-        ///Uses jquery to easily call the api, passes in the API, the post body, a callback function and the format of the post body
-        $.post(api, JSON.stringify(postBody), data => {
-            resolve(data);
-        }).fail((error) => {
-            ///The fail function rejects the promise, throwing an exception with the inputted text. The error is used to create a neat error meddage to post to the try catch 
-            reject("There was an error retrieveing questions from our servers. Please check your internet connection and try again later. <br> Error code " + error.status + " --- " + error.responseText);
-        }, "json");
-    });
 }
 
 //Updates the user's screen to show questions
@@ -1007,7 +973,7 @@ async function submitAnswers() {
         var api = compileAnswerAPI();
 
         ///A temporary object to store the results from the api call
-        var response = await getAPIGetResult(api, "answers");
+        var response = await callGetAPI(api, "answers");
 
         ///Test answer data to be used for testing instead of an API call
         //var response = {"answers":[[{"a":"00010111"},{"a":"01100000"},{"a":"01101111"}],[{"a":"81920 bits"},{"a":"5242880 bytes"},{"a":"8 nibbles"},{"a":"16 bits"}],[{"a":"memory"},{"a":"storage"}],[{"a":"219"}],[{"a":"Nibble"},{"a":"Bit"},{"a":"Megabyte"}]]};
@@ -1451,5 +1417,5 @@ function initialise(){
     ///Loads the qualification values into the input box
     loadQualification();
 
-    initialiseAuth();
+    initialiseBasic();
 }

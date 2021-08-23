@@ -17,6 +17,8 @@ function generateErrorBar(text) {
 
     ///Appends the error bar to the correct container at the top of the page
     $("#error-container").append(errorBar.join(""));
+
+    //$("#loader-box").hide();
 }
 
 //Clears any error bars that may be on screen

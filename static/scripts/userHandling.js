@@ -5,12 +5,12 @@ userSession.username = "";
 userSession.accessToken = "";
 
 var authData = {
-    ClientId: '6d63k0a2hssi7sk12nelv5oviu', // Your client id here
+    ClientId: '2dmv7immbp1e98elr1feph0g8r', // Your client id here
     AppWebDomain: 'auth.myrevision.net',
     TokenScopesArray: ['email', 'openid'], // e.g.['phone', 'email', 'profile','openid', 'aws.cognito.signin.user.admin'],
     RedirectUriSignIn: 'https://myrevision.net',
     RedirectUriSignOut: 'https://myrevision.net',
-    UserPoolId: 'eu-west-2_DsMj5ZLwa', // Your user pool id here
+    UserPoolId: 'eu-west-2_p1xpG57TA', // Your user pool id here
     AdvancedSecurityDataCollectionFlag: 'false' //, // e.g. true
     //Storage: new CookieStorage() // OPTIONAL e.g. new CookieStorage(), to use the specified storage provided
 };
@@ -31,17 +31,39 @@ function signIn() {
 } 
 
 function signOut() {
+    console.log()
     auth.signOut();
+}
+
+function ifLocal() {
+    if(window.location.href.includes('http://localhost:1313/'))
+    {
+        console.log("local");
+        authData.RedirectUriSignIn = 'http://localhost:1313/';
+        authData.RedirectUriSignOut = 'http://localhost:1313/';
+    }
+
+    auth = new AmazonCognitoIdentity.CognitoAuth(authData);
+
+    auth.userhandler = {
+        onSuccess: function (result) {
+            console.log('AUTH: SUCCESS');
+        },
+        onFailure: function (err) {
+            console.log('AUTH: ERROR');
+        }
+    };
 }
 
 function initialiseAuth() {
     console.log('initialiseAuth...');
     console.log('parsing: ' + window.location.href);
+
     try {
         setTimeout(() => {
-            auth.parseCognitoWebResponse(window.location.href);
+            ifLocal();
 
-            console.log(JSON.stringify(auth));
+            auth.parseCognitoWebResponse(window.location.href);
             
             if (auth.isUserSignedIn()) {
                 userSession.username = auth.getUsername();
@@ -54,53 +76,59 @@ function initialiseAuth() {
 
                 userSession.isUser = true;
 
-
-                $("#itm-log-in").hide();
-                $("#itm-profile").show();
             } else {
-                console.log('AUTH: User is NOT logged in');
+                //if(window.location.href != "https://myrevision.net/")
+                //{
+                    //window.location.replace("https://myrevision.net/");
+                //} else {
+                    console.log('AUTH: User is NOT logged in');
 
-                userSession.username = "";
-                userSession.accessToken = "";
-                userSession.accessLevel = "guest";
-                userSession.isUser = false;
-
-                $("#itm-log-in").show();
-                $("#itm-profile").hide();
+                    userSession.username = "";
+                    userSession.accessToken = "";
+                    userSession.accessLevel = "guest";
+                    userSession.isUser = false;
+                //}
             }
 
-            adaptHeaderBar();
+            adaptHeaderBar(userSession.accessLevel);
         }, 1);
     } catch(error) {
-        generateErrorBar(error);
+        adaptHeaderBar("guest");
+        generateErrorBar(error.ToString() + "Please reload the page");
     }
 }
 
+//TODO: automate
 function getAccessLevel() {
     return "teacher";
 }
 
-function adaptHeaderBar() {
-    var menuLocation = userSession.accessLevel;
-
-    switch (menuLocation){
+function adaptHeaderBar(status) {
+    switch (status){
         case "teacher":
             $("#teacher-header").show();
             $("#student-header").hide();
             $("#guest-header").hide();
+
+            $(".btn-log-in").hide();
+            $(".btn-profile").show();
             break;
 
-        case "teacher":
+        case "student":
             $("#teacher-header").hide();
             $("#student-header").show();
             $("#guest-header").hide();
+            $(".btn-log-in").hide();
+            $(".btn-profile").show();
             break;
 
         default:
             $("#teacher-header").hide();
             $("#student-header").hide();
             $("#guest-header").show();
-            break;
-            
+
+            $(".btn-log-in").show();
+            $(".btn-profile").hide();
+            break;  
     }
 }
