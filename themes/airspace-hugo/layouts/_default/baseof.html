@@ -2,7 +2,7 @@
 <html lang="{{ with site.LanguageCode }}{{ . }}{{ else }}en-US{{ end }}">
 {{- partial "head.html" . -}}
 
-<body onload="initialiseAuth()">
+<body onload="initialiseBasic()">
 	{{- partialCached "preloader.html" . -}}
 	{{- partial "header.html" . -}}
 	{{- partial "error-bars.html" . -}}

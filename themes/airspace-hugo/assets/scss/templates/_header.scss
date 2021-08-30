@@ -77,6 +77,14 @@ header{
 	}
 }
 
+#loader-container {
+	background-color: $throbber-background;
+	height: 100%;
+	width: 100%;
+	z-index: 2399;
+	position: absolute;
+}
+
 #loader-box {
 	margin-top: 200px;
 	margin-left: 50%;

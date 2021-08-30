@@ -1,7 +1,3 @@
-//Global variables
-///Stores the root of the api for retrieveing questions and answers
-const apiRoot = "https://api.myrevision.net";
-
 //Loads the qualifications from S3. Runs on page load
 async function loadQualification() {
     //Error checking
@@ -106,7 +102,7 @@ async function newQualification() {
 //Loads new subjects from S3 based on the selected exam board. Runs on exam board change
 async function newExamBoard() {
     try { 
-        clearErrorBar();
+        //clearErrorBar();
 
         //Variables
         ///Array containing the data pulled from the file system
@@ -1409,13 +1405,15 @@ function displayBasicQuestion(index, answerSet, idStem) {
 
 //Runs when the code loads - the timeout buffers until the full page loads
 ///Runs the initialise function in case more than one function call is needed
-window.onload = setTimeout(() => initialise(), 1);
+window.onload = function(){
+   setTimeout(initialise(), 1000);
+};
 
 //Runs when the page loads
 function initialise(){
     //Function calls
+    initialiseAuth(); 
+
     ///Loads the qualification values into the input box
     loadQualification();
-
-    initialiseBasic();
 }

@@ -22,7 +22,8 @@
           </div>
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="navigation">
-            <ul class="nav navbar-nav navbar-right" id="guest-header">
+            <!-- guest header bar -->
+            <ul class="nav navbar-nav navbar-right" id="guest-header" style="display: none;">
                 {{ range site.Menus.main }}
                 {{ if .HasChildren }}
                 <li class="dropdown">
@@ -80,7 +81,7 @@
             </ul>
 
             <!-- student header bar -->
-            <ul class="nav navbar-nav navbar-right" id="student-header">
+            <ul class="nav navbar-nav navbar-right" id="student-header" style="display: none;">
               {{ range site.Menus.student }}
               {{ if .HasChildren }}
               <li class="dropdown">
@@ -138,7 +139,7 @@
             </ul>
 
               <!-- teacher header bar -->
-              <ul class="nav navbar-nav navbar-right" id="teacher-header">
+              <ul class="nav navbar-nav navbar-right" id="teacher-header" style="display: none;">
                 {{ range site.Menus.student }}
                 {{ if .HasChildren }}
                 <li class="dropdown">
@@ -201,6 +202,8 @@
   </div>
 </header><!-- header close -->
 
-<div id="loader-box">
-  <div class="loader">Loading...</div>
+<div id="loader-container">
+  <div id="loader-box">
+    <div class="loader">Loading...</div>
+  </div>
 </div>
