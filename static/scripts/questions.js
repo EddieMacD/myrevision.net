@@ -6,7 +6,7 @@ async function loadQualification() {
     ///In the case of page changes they are reversed in the catch statement
     try {
         ///Clears the error bar, at the beginning of all try statements - empties out any error messages since a user has made a change. Standard error checking procedure 
-        clearErrorBar();
+        clearStatusBar();
 
         //Variables
         ///Array containing the data pulled from the file system
@@ -67,7 +67,7 @@ function newSelectItem(text) {
 //Loads new exam boards from S3 based on the selected qualification. Runs on qualification change
 async function newQualification() {
     try {
-        clearErrorBar();
+        clearStatusBar();
 
         //Variables
         ///Array containing the data pulled from the file system
@@ -102,7 +102,7 @@ async function newQualification() {
 //Loads new subjects from S3 based on the selected exam board. Runs on exam board change
 async function newExamBoard() {
     try { 
-        //clearErrorBar();
+        clearStatusBar();
 
         //Variables
         ///Array containing the data pulled from the file system
@@ -137,7 +137,7 @@ async function newExamBoard() {
 //Loads new topics from S3 based on the selected subject
 async function newSubject() {
     try {
-        clearErrorBar();
+        clearStatusBar();
 
         //Variables
         ///Array containing the topics pulled from the file system
@@ -260,7 +260,7 @@ function textToCSS(text){
 ///boxID: the id of the select all box
 function selectAll(boxID){
     try {
-        clearErrorBar();
+        clearStatusBar();
 
         //Variables
         ///Stores whether the boxes are to be checked or unchecked
@@ -297,7 +297,7 @@ function selectAll(boxID){
 //The onClick for a topic check box - handles counting and mass selectors
 function massSelect(boxID, boxClass) {
     try {
-        clearErrorBar();
+        clearStatusBar();
 
         //Variables
         ///The checked property of the box that was selected to run the function - boolean
@@ -418,7 +418,7 @@ function updateMassSelectors(isSelected, boxClass){
 //The onclick for the start questions button - handles loading the questions from the API and modifying the web page to show the user the question form
 async function startQuestions() {
     try {
-        clearErrorBar();
+        clearStatusBar();
 
         //Disable the button
         ///Prevents double-clicks which cause generation bugs
@@ -571,7 +571,7 @@ function displayQuestionScreen() {
 ///index: the array index of the question that is to be changed to
 function displayQuestion(index) {
     try {
-        clearErrorBar();
+        clearStatusBar();
 
         //Update features
         ///Change the question title to display the correct number
@@ -916,7 +916,7 @@ function updateBookmarkButton() {
 //Select the previous question
 function selectPrevQuestion() {
     try {
-        clearErrorBar();
+        clearStatusBar();
 
         //Change question
         ///Find out the current question
@@ -934,7 +934,7 @@ function selectPrevQuestion() {
 //Select the next question
 function selectNextQuestion() {
     try {
-        clearErrorBar();
+        clearStatusBar();
 
         //Change question
         ///Find out the current question
@@ -952,7 +952,7 @@ function selectNextQuestion() {
 //The onclick for the submit answers button - handles loading the answers from the API, marking the questions and modifying the web page to show the user the answer form
 async function submitAnswers() {
     try {
-        clearErrorBar();
+        clearStatusBar();
 
         //Immediate actions
         ///Disables the submit button to prevent duplication
@@ -1411,6 +1411,8 @@ window.onload = function(){
 
 //Runs when the page loads
 function initialise(){
+    userSession.loaderVal = 1;
+
     //Function calls
     initialiseAuth(); 
 

@@ -1,0 +1,64 @@
+{{ define "main" }}
+
+{{ $data := index site.Data site.Language.Lang }}
+
+<!-- Main content -->
+<section class="main-content section">
+    <div class="container">
+      <!-- First Name input -->
+      <div class="row filter-row">
+        <div class="col-xs-3">
+          <label class="form-group-label" for="first-name-input">First Name: </label>
+        </div>
+        <div class="col-xs-9">
+            <input class="form-control" id="first-name-input" type="text"></input>
+        </div>
+      </div>
+
+      <!-- Last Name input -->
+      <div class="row filter-row">
+        <div class="col-xs-3">
+          <label class="form-group-label" for="last-name-input">Last Name: </label>
+        </div>
+        <div class="col-xs-9">
+            <input class="form-control" id="last-name-input" type="text"></input>
+        </div>
+      </div>
+      
+      <!-- Email input -->
+      <div class="row filter-row">
+        <div class="col-xs-3">
+          <label class="form-group-label" for="email-input">Email: </label>
+        </div>
+        <div class="col-xs-9">
+            <input class="form-control" id="email-input" type="text"></input>
+        </div>
+      </div>
+
+      <!-- Access Level input -->
+      <div class="row filter-row">
+        <div class="col-xs-3">
+          <label class="form-group-label" for="access-level-input">User Type: </label>
+        </div>
+        <div class="col-xs-9">
+          <select name="access-level-input" id="access-level-input" class="form-control">
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+        </select>
+        </div>
+      </div>
+
+      
+      <!-- DOB input -->
+      <div class="row filter-row">
+        <div class="col-xs-3">
+          <label class="form-group-label" for="dob-input">Date of Birth: </label>
+        </div>
+        <div class="col-xs-9">
+            <input type="date" id="start" name="dob-input" value="" min="1900-01-01" max="2022-01-01"></input>
+        </div>
+      </div>
+    </div>
+</section>
+
+{{ end }}

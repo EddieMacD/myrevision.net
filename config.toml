@@ -1,7 +1,7 @@
 baseURL = "https://myrevision.net"
 languageCode = "en-us"
 title = "MyRevision.net"
-theme = "airspace-hugo"
+theme = "mrn-theme"
 
 # post pagination
 paginate = "4"

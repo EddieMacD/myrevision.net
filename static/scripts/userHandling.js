@@ -4,15 +4,15 @@ var userSession = {};
 userSession.auth = {};
 
 var baseURL = 'https://myrevision.net/';
-var loginLocation = '';
+var loginLocation = 'student-home/';
 
 var authData = {
-    ClientId: '2dmv7immbp1e98elr1feph0g8r', // Your client id here
+    ClientId: '19ulus5lk6h6aor1lknbm14dj8', // Your client id here
     AppWebDomain: 'auth.myrevision.net',
     TokenScopesArray: ['email', 'openid'], // e.g.['phone', 'email', 'profile','openid', 'aws.cognito.signin.user.admin'],
     RedirectUriSignIn: baseURL + loginLocation,
     RedirectUriSignOut: baseURL,
-    UserPoolId: 'eu-west-2_p1xpG57TA', // Your user pool id here
+    UserPoolId: 'eu-west-2_7lDI3aJAl', // Your user pool id here
     AdvancedSecurityDataCollectionFlag: 'false' //, // e.g. true
     //Storage: new CookieStorage() // OPTIONAL e.g. new CookieStorage(), to use the specified storage provided
 };
@@ -62,11 +62,11 @@ async function initialiseAuth() {
     console.log('initialiseAuth...');
     console.log('parsing: ' + window.location.href);
 
+    ifLocal();
+
     try {
         if(!sessionStorage.getItem("auth"))
         {
-            ifLocal();
-
             auth.parseCognitoWebResponse(window.location.href);
             
             if (auth.isUserSignedIn()) {
@@ -76,7 +76,9 @@ async function initialiseAuth() {
                 await callColdStartAPI();
                 startIdler(0);
 
-                userSession.auth.accessLevel = await getAccessLevel(userSession.auth.username);
+                var userData = await getUserData(userSession.auth.username);
+                userSession.auth.username = userData.email;
+                userSession.auth.accessLevel = userData.accessLevel;
                 userSession.auth.isUser = true;
 
                 sessionStorage.setItem("auth", JSON.stringify(userSession.auth));
@@ -96,13 +98,18 @@ async function initialiseAuth() {
 
             adaptHeaderBar(userSession.auth.accessLevel);
         } else {
-            console.log("session storage")
+            var tempTimer = 0;
+
             userSession.auth = JSON.parse(sessionStorage.getItem("auth"));
             sessionStorage.setItem("auth", JSON.stringify(userSession.auth));
-            //startIdler(sessionStorage.getItem("idlerValue"));
+
+            tempTimer = parseInt(sessionStorage.getItem("idlerValue"));
+            tempTimer += 60000;            
         }
+
+        hideLoader();
     } catch(error) {
-        adaptHeaderBar("guest");
+        adaptHeaderBar();
         generateErrorBar(error + " Please reload the page");
     }
 
@@ -110,18 +117,15 @@ async function initialiseAuth() {
 }
 
 //TODO: automate
-async function getAccessLevel(username) {
-    var api = apiRoot + "/database/access-level?email=" + username;
+async function getUserData(username) {
+    var api = apiRoot + "/database/user-data?username=" + username;
 
-    var accessLevel = await callGetAPI(api, "user information");
-    accessLevel = accessLevel.accessLevel;
+    var userData = await callGetAPI(api, "user information");
 
-    return accessLevel;
+    return userData;
 }
 
 function adaptHeaderBar(status) {
-    console.log("adapt header: " + status);
-
     switch (status){
         case "admin":
             $("#teacher-header").show();
@@ -132,6 +136,7 @@ function adaptHeaderBar(status) {
             $(".btn-profile").show();
             break;
 
+
         case "teacher":
             $("#teacher-header").show();
             $("#student-header").hide();
@@ -140,6 +145,7 @@ function adaptHeaderBar(status) {
             $(".btn-log-in").hide();
             $(".btn-profile").show();
             break;
+
 
         case "student":
             $("#teacher-header").hide();
@@ -150,6 +156,7 @@ function adaptHeaderBar(status) {
             $(".btn-profile").show();
             break;
 
+
         case "guest":
             $("#teacher-header").hide();
             $("#student-header").hide();
@@ -158,6 +165,7 @@ function adaptHeaderBar(status) {
             $(".btn-log-in").show();
             $(".btn-profile").hide();
             break;  
+
 
         default :
             $("#teacher-header").hide();

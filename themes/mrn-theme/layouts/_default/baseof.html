@@ -5,7 +5,7 @@
 <body onload="initialiseBasic()">
 	{{- partialCached "preloader.html" . -}}
 	{{- partial "header.html" . -}}
-	{{- partial "error-bars.html" . -}}
+	{{- partial "status-bars.html" . -}}
 	{{- block "main" . }}{{- end }}
 	{{- partialCached "footer.html" . -}}
 </body>

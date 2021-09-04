@@ -2,9 +2,8 @@ const apiRoot = "https://api.myrevision.net";
 
 function initialiseBasic() {
     setTimeout(() => {
+        userSession.loaderVal = 1;
         initialiseAuth(); 
-
-        hideLoader();
     }, 1);
 }
 
@@ -54,12 +53,19 @@ async function getAPIGetResult(api, apiResults) {
     });
 }
 
-async function callPostAPI(api, postBody, apiResults) {
+async function callPostAPI(api, postBody, apiResults, isRetrieve = true) {
     var data = {};
+    var errorMessage = "";
+
+    if(isRetrieve) {
+        errorMessage = "There was an error retrieving " + apiResults + " from our servers. Please check your internet connection and try again later.";
+    } else {
+        errorMessage = "There was an error creating " + apiResults + ". Please check your internet connection and try again later.";
+    }
 
     showLoader();
 
-    data = await getAPIPostResult(api, postBody, apiResults);
+    data = await getAPIPostResult(api, postBody, errorMessage);
 
     hideLoader();
 
@@ -75,22 +81,13 @@ async function getAPIPostResult(api, postBody, apiResults) {
     return new Promise((resolve, reject) => {
         ///Uses jquery to easily call the api, passes in the API, the post body, a callback function and the format of the post body
 
-        /*
-        $.post(api, JSON.stringify(postBody), data => {
-            resolve(data);
-        }).fail((error) => {
-            ///The fail function rejects the promise, throwing an exception with the inputted text. The error is used to create a neat error meddage to post to the try catch 
-            reject("There was an error retrieving " + apiResults + " from our servers. Please check your internet connection and try again later. <br> Error code " + aXMLHttpRequest.status + " --- " + aXMLHttpRequest.responseText);
-        }, "json");
-        */
-
         $.ajax({
             url: api,
             success: function (json) {
                 resolve(json);
             },
             error: function (aXMLHttpRequest, textStatus, errorThrown) {
-                reject("There was an error retrieving " + apiResults + " from our servers. Please check your internet connection and try again later. <br> Error code " + aXMLHttpRequest.status + " --- " + aXMLHttpRequest.responseText);
+                reject(apiResults + " <br> Error code " + aXMLHttpRequest.status + " --- " + aXMLHttpRequest.responseText);
             },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Authorization", userSession.auth.accessToken);
@@ -112,6 +109,7 @@ function startIdler(idlerValue) {
     userSession.idler = setInterval(() => {
         userSession.idlerValue += parseInt(Date.now() - userSession.idlerStart);
         sessionStorage.setItem("idlerValue", userSession.idlerValue);
+        console.log(userSession.idlerValue);
 
         userSession.idlerStart = Date.now();
 
@@ -139,7 +137,6 @@ async function callColdStartAPI () {
             await sleep(1000);
 
             if(isDBOnline){
-                console.log("cold start");
                 hideLoader();
             }
 
@@ -154,12 +151,22 @@ async function sleep(milliseconds) {
 }
 
 function showLoader() {
-    $("#loader-container").show();
-    adaptHeaderBar("");
+    userSession.loaderVal++;
+
+    if(userSession.loaderVal == 1)
+    {
+        $("#loader-container").show();
+        adaptHeaderBar("");
+    }
 }
 
 function hideLoader() {
-    $("#loader-container").hide();
-    adaptHeaderBar(userSession.auth.accessLevel);
+    userSession.loaderVal--;
+
+    if(userSession.loaderVal == 0)
+    {
+        $("#loader-container").hide();
+        adaptHeaderBar(userSession.auth.accessLevel);
+    }
 }
 
