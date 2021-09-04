@@ -433,8 +433,8 @@ async function startQuestions() {
         userSession.isTimerShown = $("#timer-check").prop("checked");
 
         ///The number of questions to be generated - taken from user input. Stored in the user session and the post body
-        userSession.numOfQuestions = $("#numberOfQuestions").val()
-        postBody.numOfQuestions = userSession.numOfQuestions
+        userSession.numOfQuestions = $("#numberOfQuestions").val();
+        postBody.numOfQuestions = userSession.numOfQuestions;
 
         ///The location of the questions inside the object store. Customised by user choices, set by user choices. Test data prevents unnecessary API calls
         //userSession.filePath = "iGCSE/Cambridge/Computer Science/";
@@ -1406,7 +1406,7 @@ function displayBasicQuestion(index, answerSet, idStem) {
 //Runs when the code loads - the timeout buffers until the full page loads
 ///Runs the initialise function in case more than one function call is needed
 window.onload = function(){
-   setTimeout(initialise(), 1000);
+   setTimeout(initialise(), 1);
 };
 
 //Runs when the page loads

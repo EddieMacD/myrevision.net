@@ -77,7 +77,7 @@ async function initialiseAuth() {
                 startIdler(0);
 
                 var userData = await getUserData(userSession.auth.username);
-                userSession.auth.username = userData.email;
+                userSession.auth.email = userData.email;
                 userSession.auth.accessLevel = userData.accessLevel;
                 userSession.auth.isUser = true;
 
@@ -118,7 +118,7 @@ async function initialiseAuth() {
 
 //TODO: automate
 async function getUserData(username) {
-    var api = apiRoot + "/database/user-data?username=" + username;
+    var api = apiRoot + "/user-data?username=" + username;
 
     var userData = await callGetAPI(api, "user information");
 

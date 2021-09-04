@@ -2,6 +2,8 @@
 
 {{ $data := index site.Data site.Language.Lang }}
 
+<script language="javascript" src="../scripts/manageUsers.js"></script>
+
 <!-- Main content -->
 <section class="main-content section">
     <div class="container">
@@ -50,12 +52,20 @@
 
       
       <!-- DOB input -->
-      <div class="row filter-row">
+      <div class="row filter-row date-row">
         <div class="col-xs-3">
           <label class="form-group-label" for="dob-input">Date of Birth: </label>
         </div>
         <div class="col-xs-9">
-            <input type="date" id="start" name="dob-input" value="" min="1900-01-01" max="2022-01-01"></input>
+            <input type="date" id="dob-input" name="dob-input" value="2000-01-01" min="1900-01-01" max="2022-01-01"></input>
+        </div>
+      </div>
+
+      <!-- Submit button -->
+      <div class="row">
+        <div class="col-xs-2 mx-auto">
+          <button type="submit" class="btn btn-submit" onclick="submitUser()">Start Questions</button>
+          <!-- <button type="submit" class="btn btn-submit btn-questions" onclick="startQuestions()">Start Questions</button> -->
         </div>
       </div>
     </div>

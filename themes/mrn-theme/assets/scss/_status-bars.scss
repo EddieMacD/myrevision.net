@@ -24,10 +24,10 @@
 
 .success-col{
     text-align: center;
-    background-color: lighten($correct, 35%);
+    background-color: lighten($correct, 45%);
 }
 
 .success-label{
     font-size: 20px;
-    color: $correct;
+    color: darken($correct, 15%);
 }
