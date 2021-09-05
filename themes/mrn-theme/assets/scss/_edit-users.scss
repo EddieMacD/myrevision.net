@@ -1,0 +1,64 @@
+.date-row {
+    margin-top: 15px;
+    margin-bottom: 40px;
+}
+
+.edit-user-header[aria-expanded=false] {
+    border-radius: 10px;
+
+    .ion-android-arrow-dropup-circle {
+        display: none;
+    }
+}
+
+.edit-user-header[aria-expanded=true] {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+
+    .ion-android-arrow-dropdown-circle {
+        display: none;
+    }
+}
+
+.edit-user-header {
+    border-width: 1px;
+    border-color: $border-color;
+    border-style: solid;
+
+    background-color: $block-background;
+
+    margin: 20px 0px 0px 0px;
+}
+
+.edit-user-header-label {
+    font-size: 20px;
+
+    color: $secondary-color;
+
+    text-transform: capitalize;
+}
+
+.frm-edit-user {
+    border-width: 1px;
+    border-color: $border-color;
+    border-style: solid;
+
+    padding: 20px;
+
+    background-image: radial-gradient(circle at center, $block-background, darken($block-background, 5%));
+
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.user-row {
+    margin-bottom: 5px;
+
+    border-bottom-color: $border-color;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.btn-row {
+    margin-top: 20px;
+}

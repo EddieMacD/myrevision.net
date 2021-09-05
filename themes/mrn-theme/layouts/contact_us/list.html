@@ -1,0 +1,73 @@
+{{ define "main" }}
+
+{{ partial "page-title.html" . }}
+
+{{ $data := index site.Data site.Language.Lang }}
+
+<script src='https://www.google.com/recaptcha/api.js' async defer></script>
+<section class="contact-form">
+  <div class="container">
+    <div class="row">
+      <form action="" id="contact-us-form">
+        <div class="col-md-6 col-sm-12">
+          <div class="block">
+            <div class="form-group">
+              <input name="name" type="text" class="form-control" placeholder="Your Name">
+            </div>
+            <div class="form-group">
+              <input name="email" type="email" class="form-control" placeholder="Email Address">
+            </div>
+            <div class="form-group">
+              <input name="subject" type="text" class="form-control" placeholder="Subject">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <div class="block">
+            <div class="form-group-2">
+              <textarea name="message" class="form-control" rows="4" placeholder="Your Message"></textarea>
+            </div>
+            <button class="btn btn-default g-recaptcha" type="submit"data-sitekey="6Lf_nXEUAAAAANpVeKzfXgV_PBy8dbzZ2qoIAkzJ" data-callback="onContctUsSubmit" data-badge="bottom-right">Send</button>            
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="row">
+      <p class="results_thanks" style="display:none">Thanks! We'll get back to you soon.</p>
+      <p class="results_sending"  style="display:none">Sending...</p>
+      <p class="results_errors"  style="display:none">Please complete your Name and Email address</p>      
+    </div>
+    <div class="contact-box row">
+      <div class="col-md-6 col-sm-12">
+        <div class="block">
+          <h2>{{ i18n "address_title" }}</h2>
+          <ul class="address-block">
+            <li><i class="ion-ios-location-outline"></i>{{i18n "location"}}{{ site.Params.location | markdownify }}</li>
+            <!--
+            <li><i class="ion-ios-email-outline"></i>{{i18n "email"}}: {{ site.Params.email }}</li>
+            <li><i class="ion-ios-telephone-outline"></i>{{i18n "phone"}}: {{ site.Params.mobile }}</li>
+            -->
+          </ul>
+          <ul class="social-icons">
+            {{ range site.Params.social }}
+            {{ if .enable }}
+            <li><a href="{{ .link | safeURL }}"><i class="{{ .icon }}"></i></a></li>
+            {{ end }}
+            {{ end }}
+          </ul>
+        </div>
+      </div>
+      {{ if site.Params.gmap.enable }}
+      <div class="col-md-6 col-sm-12">
+        <div class="block">
+          <div class="google-map">
+            <div class="map" id="map" data-latitude="{{ site.Params.gmap.map_latitude }}" data-longitude="{{ site.Params.gmap.map_longitude }}" data-marker="{{ site.Params.gmap.map_marker | relURL }}" data-marker-name="{{ site.Title }}"></div>
+          </div>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<script language="javascript" src="../scripts/libraries/contactUs.js"></script>

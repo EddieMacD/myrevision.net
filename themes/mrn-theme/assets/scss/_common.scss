@@ -623,3 +623,43 @@ input[type="tel"] {
     position: static;
   }
 }
+
+.portfolio-list{
+  padding-left: 20px;
+}
+
+.portfolio-list-item{
+  list-style-type: disc;
+  list-style-position: outside;  
+}
+
+.feature{
+  text-align: left;
+  background-color: $feature-background;
+
+  .feature-title{
+    margin-bottom: 10px;
+  }
+
+  .feature-item {    
+    text-align: center;
+    padding-bottom: 20px;    
+
+    i {
+      font-size: 50px;
+      color: $primary-color;
+    }
+
+    h4 {
+      padding-top: 15px;
+      margin: 0;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    p {
+      padding-top: 10px;
+      margin: 0;
+    }
+  }
+}

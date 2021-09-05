@@ -39,7 +39,9 @@
             <h2>{{ .title | markdownify }}</h2>
             <p>{{ .description | markdownify }}</p>
           </div>
-          <p>{{ .content | markdownify }}</p>
+          {{ range .contentItems }}
+          <p>{{ .contentLine | markdownify }}</p>
+          {{ end }}          
           <a class="btn btn-main" href="{{ .buttonLink | relLangURL }}">{{ .buttonLabel }}</a>
         </div>
       </div>
@@ -47,11 +49,7 @@
         <div class="block">
           <img src="{{ .image | relURL }}" class="img-responsive" alt="ds">
         </div>
-        <div class="block">
-          <a href="{{ .SDILink | relLangURL }}" target="_blank">
-            <img src="{{ .SDIImage | relURL }}" class="img-responsive secondary-image" alt="Img">
-          </a>
-        </div> 
+        
       </div>
     </div>
   </div>
@@ -74,9 +72,9 @@
           </div>
           <p>{{ .description | markdownify }}</p>
             
-            <ul>
+            <ul class="portfolio-list">
               {{ range $index, $element := $data.homepage.portfolio.portfolioItem }}
-                <li>{{ with .title | markdownify}}{{ . }}{{ end }}</li>
+                <li class="portfolio-list-item">{{ with .title | markdownify}}{{ . }}{{ end }}</li>
               {{ end }}
             </ul>
 
@@ -93,9 +91,29 @@
     </div>
   </div>
 </section>
+
+
+<!-- Feature Icons -->
+<section class="feature">
+  <div class="container">
+    <div class="row">
+      {{ range .featureDetails }}
+      <div class="col-sm-6 col-md-3">
+        <div class="feature-item">
+          <i class="icon {{ .icon }}"></i>
+          <h4>{{ .name | markdownify }}</h4>
+          <p>{{ .content | markdownify }}</p>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
 <!-- /portfolio -->
 {{ end }}
 {{ end }}
+
+
 
 
 {{ if $data.homepage.servicesOverview.enable }}

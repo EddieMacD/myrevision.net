@@ -1,23 +1,25 @@
 ############################### Banner ##############################
 banner:
   enable : true
-  bg_image : ""
+  bg_image : "images/background_handsup.jpg"
   bg_overlay : true
   title : "MyRevision.net"
-  content : ""
-  content_subline: ""
+  content : "Revise &bull; Learn &bull; Test &bull; Homework"
+  content_subline: "Built by students for students"
   button:
-    enable : false
-    label : "Discover Our Project"
-    link : "project"
+    enable : true
+    label : "Login for Questions"
+    link : "questions"
 
 ############################# About #################################
 about:
   enable : true
   title : "About Us"
-  description : ""
-  content : ""
-  image : ""
+  description : "**MyRevision.net** lets teachers and students create online homework and revision assignments. You can select the topics, amount of questions and quickly answer randomised questions and review the results immediately."
+  contentItems:
+    - contentLine : "Originally built as a self-revision tool and an A-Level Computer Science project by our founder [Eddie MacDonagh](https://github.com/EddieMacD/), **MyRevision.net** will soon be available to schools and students everywhere."
+    - contentLine : "**MyRevision.net** is currently in _closed beta_. Come back soon for information on registering interest."
+  image : "images/gui_overview.png"
   buttonLink: ""
   buttonLabel: "Learn More >"
 
@@ -25,25 +27,58 @@ about:
 ######################### Portfolio ###############################
 portfolio:
   enable : true
-  bg_image : ""
-  title : ""
-  description: ""
+  bg_image : "images/background_classroom.jpg"
+  title : "Features"
+  description: "MyRevision.net is built for students by students. Easy to use, but powerful:"
     
   portfolioItem:
-  - title : ""  
-  - title : ""  
-  - title : ""  
+  - title : "Use as a teacher to set revision assignments"
+  - title : "Use as a student to test yourself and consolidate in-class learning"
+  - title : "Select the topics and number of questions to answer"  
+  - title : "Our system creates a unique question set per student from our extensive question library"  
+  - title : "Different question types including multi-select, text answer, order drag-and drop etc." 
+  - title : "Bookmark questions to come back to later before submitting your answers"
+  - title : "Move between questions whenever you want"
+  - title : "Review results immediately" 
+  - title : "Questions sources from exam boards"
+  - title : "Perform advanced analytics on questions, answers, your results over time etc."
     
   portfolioFooter: ""
+
+  featureDetails:
+
+    - name: Randomised Questions      
+      icon : ion-shuffle 
+      
+    - name: Schools & Teachers
+      icon : ion-university 
+    
+    - name: Mobile Friendly
+      icon : ion-iphone 
+
+    - name: Desktop Friendly
+      icon : ion-monitor
+      
+    - name: Discussion & Feedback
+      icon : ion-ios-chatboxes
+      
+    - name: Secure and Encrypted
+      icon : ion-locked 
+        
+    - name: Timed or untimed
+      icon : ion-clock
+      
+    - name: Advanced Analytics
+      icon : ion-pie-graph
       
   
 ############################ call to action ###########################
 cta: 
-  enable : false
-  bg_image : ""
-  title : "Start a set of questions"
-  content : "TODO: Call to action text"
+  enable : true
+  bg_image : "images/background_blackboard.jpg"
+  title : "Contact us"
+  content : "Express interest in MyRevision.net now and we'll contact you when we launch"
   button:
     enable : true
-    label : "Start questions"
-    link : "questions"
+    label : "Contact Us"
+    link : "contact"

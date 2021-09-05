@@ -96,11 +96,12 @@ function startIdler(idlerValue) {
 
     userSession.idlerStart = Date.now();
     userSession.idlerValue = idlerValue;
+    sessionStorage.setItem("idlerValue", userSession.idlerValue);
 
     userSession.idler = setInterval(() => {
         userSession.idlerValue += parseInt(Date.now() - userSession.idlerStart);
         sessionStorage.setItem("idlerValue", userSession.idlerValue);
-        console.log(userSession.idlerValue);
+        //console.log(userSession.idlerValue);
 
         userSession.idlerStart = Date.now();
 

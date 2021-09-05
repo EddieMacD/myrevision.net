@@ -22,6 +22,8 @@
           </div>
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="navigation">
+
+            <!-- GUEST -->
             <!-- guest header bar -->
             <ul class="nav navbar-nav navbar-right" id="guest-header" style="display: none;">
                 {{ range site.Menus.main }}
@@ -80,6 +82,7 @@
               {{ end }}
             </ul>
 
+            <!-- STUDENT -->
             <!-- student header bar -->
             <ul class="nav navbar-nav navbar-right" id="student-header" style="display: none;">
               {{ range site.Menus.student }}
@@ -138,9 +141,11 @@
               {{ end }}
             </ul>
 
+            
+              <!-- TEACHER -->
               <!-- teacher header bar -->
               <ul class="nav navbar-nav navbar-right" id="teacher-header" style="display: none;">
-                {{ range site.Menus.student }}
+                {{ range site.Menus.teacher }}
                 {{ if .HasChildren }}
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -165,7 +170,6 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li><a href="/profile">Profile</a></li>
-                  <li><a href="/manage-users">Manage Users</a></li>
                   <li id="itm-log-out"><a class="link-log-out" onClick="signOut()">Sign out</a></li>
                 </ul>
               </li>

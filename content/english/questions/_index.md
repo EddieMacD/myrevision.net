@@ -1,6 +1,6 @@
 ---
-title: "Do Questions"
-description: "do questions"
+title: "Questions"
+description: "do some questions"
 draft: false
 bg_image: ""
 ---

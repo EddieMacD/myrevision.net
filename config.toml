@@ -69,7 +69,8 @@ attributes = ""
 #################### default parameters ################################
 [params]
 logo = "/images/logo.png"
-logo_width = "252px"
+logo_width = "205px"
+
 # Meta data
 description = "TODO: meta description"
 author = "MyRevision.net"
@@ -139,7 +140,7 @@ languageCode = "en-us"
 contentDir = "content/english"
 weight = 1
 # copyright
-copyright = "TODO: copyright"
+copyright = "Copyright © Eddie MacDonagh, Soft Practice Ltd. All Rights Reserved."
 
 
 ################### english guest/base navigation ########################
@@ -154,12 +155,23 @@ weight = 6
 
 [[Languages.en.menu.student]]
 name = "Do Questions"
-URL = "/questions"
+URL = "questions"
 weight = 1
 
 ##################### english  teacher navigation #########################
 
 [[Languages.en.menu.teacher]]
 name = "Do Questions"
-URL = "/questions"
-weight = 1
+URL = "questions"
+weight = 6
+
+[[Languages.en.menu.teacher]]
+weight = 2
+name = "Manage Users"
+hasChildren = true
+
+  
+  [[Languages.en.menu.teacher]]
+  parent = "Manage Users"
+  name = "Edit Users"
+  URL = "edit-users"

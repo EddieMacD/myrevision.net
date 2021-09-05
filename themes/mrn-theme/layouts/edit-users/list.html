@@ -2,11 +2,30 @@
 
 {{ $data := index site.Data site.Language.Lang }}
 
-<script language="javascript" src="../scripts/manageUsers.js"></script>
+<script language="javascript" src="../scripts/editUsers.js"></script>
 
 <!-- Main content -->
 <section class="main-content section">
-    <div class="container">
+  <div class="container" id="school-input-container" style="display: none;">
+    <div class="row">
+      <div class="col-xs-12">
+        <select name="school-select" id="school-select" class="form-control school-select" onchange="getUserPage(0)"></select>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" id="add-user-container">
+    <div class="row edit-user-header" data-toggle="collapse" data-target="#frm-add-user" aria-expanded="false" aria-controls="frm-add-user">
+      <div class="col-xs-8">
+        <label class="edit-user-header-label">Add a New User</label>
+      </div>
+      <div class="col-xs-4">
+        <i class="ion-android-arrow-dropdown-circle symbol"></i>
+        <i class="ion-android-arrow-dropup-circle symbol"></i>
+      </div>
+    </div>
+
+    <div class="frm-edit-user collapse" id="frm-add-user">
       <!-- First Name input -->
       <div class="row filter-row">
         <div class="col-xs-3">
@@ -46,7 +65,7 @@
           <select name="access-level-input" id="access-level-input" class="form-control">
             <option value="student">Student</option>
             <option value="teacher">Teacher</option>
-        </select>
+          </select>
         </div>
       </div>
 
@@ -64,11 +83,35 @@
       <!-- Submit button -->
       <div class="row">
         <div class="col-xs-2 mx-auto">
-          <button type="submit" class="btn btn-submit" onclick="submitUser()">Start Questions</button>
-          <!-- <button type="submit" class="btn btn-submit btn-questions" onclick="startQuestions()">Start Questions</button> -->
+          <button type="submit" class="btn btn-submit" onclick="submitUser()">Add New User</button>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="container" id="add-user-container">
+    <div class="row edit-user-header" data-toggle="collapse" data-target="#frm-delete-user" aria-expanded="false" aria-controls="frm-delete-user">
+      <div class="col-xs-8">
+        <label class="edit-user-header-label">Delete a User</label>
+      </div>
+      <div class="col-xs-4">
+        <i class="ion-android-arrow-dropdown-circle symbol"></i>
+        <i class="ion-android-arrow-dropup-circle symbol"></i>
+      </div>
+    </div>
+    <div class="frm-edit-user collapse" id="frm-delete-user">
+      <div id="frm-delete-user-page"></div>
+      <!-- Next and Previous buttons -->
+      <div class="row btn-row">
+        <div class="col-xs-6">
+          <button type="button" class="btn btn-prev" onclick=""><i class="ion-arrow-left-b arrow"></i>  Previous</button>
+        </div>            
+        <div class="col-xs-6">
+          <button type="button" class="btn btn-next" onclick="">Next <i class="ion-arrow-right-b arrow"></i></button>
+        </div>            
+      </div>    
+    </div> 
+  </div>
 </section>
 
 {{ end }}
