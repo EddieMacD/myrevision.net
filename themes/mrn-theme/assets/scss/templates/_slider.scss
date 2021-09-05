@@ -9,7 +9,7 @@
     background-attachment: scroll;
     padding: 150px 0;
     h1{
-      font-size: 35px;
+      font-size: 30px;
     }
   }
 
@@ -19,9 +19,9 @@
 
     h1 {
       font-weight: 500;
-      font-size: 45px;
+      font-size: 30px;
       line-height: 60px;
-      letter-spacing: 10px;
+      letter-spacing: 5px;
       padding-bottom: 15px;
       text-transform: uppercase;
     }
@@ -29,14 +29,14 @@
     p {
       margin-bottom: 30px;
       color: $primary-color;
-      font-size: 24px;
+      font-size: 20px;
       line-height: 27px;
       font-weight: 300;
     }
 
     .banner-firstline{
       color: $secondary-color;
-      font-size: 24px;
+      font-size: 20px;
       line-height: 24px;
       font-weight: 500;
       font-style: italic;
@@ -44,7 +44,7 @@
     }
     .banner-subline{
       color: $primary-color;
-      font-size: 20px;
+      font-size: 16px;
       line-height: 22px;
       font-weight: 500;
       font-style: italic;
