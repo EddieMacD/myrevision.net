@@ -115,6 +115,7 @@ async function initialiseAuth() {
 
             adaptHeaderBar(userSession.auth.accessLevel);
         } else {
+            var validAccess = ["student", "teacher", "admin"];
             var tempTimer = 0;
 
             userSession.auth = JSON.parse(sessionStorage.getItem("auth"));

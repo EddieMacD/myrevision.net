@@ -27,7 +27,7 @@
             <div class="form-group-2">
               <textarea name="message" class="form-control" rows="4" placeholder="Your Message"></textarea>
             </div>
-            <button class="btn btn-default g-recaptcha" type="submit" data-sitekey="6Le-nEgcAAAAAIP_cD7oBytCUQs-Q6O7fpSis1_l" data-callback="onContctUsSubmit" data-badge="bottom-right">Send</button>            
+            <button class="btn btn-main g-recaptcha" type="submit" data-sitekey="6Le-nEgcAAAAAIP_cD7oBytCUQs-Q6O7fpSis1_l" data-callback="onContctUsSubmit" data-badge="bottom-right">Send</button>            
           </div>
         </div>
       </form>
@@ -42,8 +42,8 @@
         <div class="block">
           <h2>{{ i18n "address_title" }}</h2>
           <ul class="address-block">
-            <li><i class="ion-ios-location-outline"></i>{{i18n "location"}}{{ site.Params.location | markdownify }}</li>
             <!--
+            <li><i class="ion-ios-location-outline"></i>{{i18n "location"}}{{ site.Params.location | markdownify }}</li>
             <li><i class="ion-ios-email-outline"></i>{{i18n "email"}}: {{ site.Params.email }}</li>
             <li><i class="ion-ios-telephone-outline"></i>{{i18n "phone"}}: {{ site.Params.mobile }}</li>
             -->
