@@ -121,6 +121,11 @@ async function initialiseAuth() {
             userSession.auth = JSON.parse(sessionStorage.getItem("auth"));
             sessionStorage.setItem("auth", JSON.stringify(userSession.auth));
 
+            if(!validAccess.includes(userSession.auth.accessLevel) && window.location.href != baseURL)
+            {
+                window.location.replace(baseURL);
+            }
+
             tempTimer = parseInt(sessionStorage.getItem("idlerValue"));
             tempTimer += 60000;
             

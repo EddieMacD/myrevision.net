@@ -28,9 +28,22 @@ var onContctUsSubmit = function() {
     });
 };     
    
-$(document).ready(function() {
-    $("#contact-us-form button").click(function(event) {
-        $(".results_sending").show();
-        $("#contact-us-form button").hide();                
+window.onload = function(){
+    setTimeout(initialise(), 1);
+};
+ 
+//Runs when the page loads
+function initialise(){
+    userSession.loaderVal = 1;
+
+    $(document).ready(function() {
+        $("#contact-us-form button").click(function(event) {
+            $(".results_sending").show();
+            $("#contact-us-form button").hide();                
+        });
     });
-});
+
+    hideLoader();
+
+    adaptHeaderBar("guest");
+}
