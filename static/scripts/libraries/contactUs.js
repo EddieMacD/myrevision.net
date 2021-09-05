@@ -9,7 +9,7 @@ var onContctUsSubmit = function() {
             $("#contact-us-form button").show();
         } else {
             $(".results_errors").hide();
-            $.post('https://api.soft-practice.com/contact', JSON.stringify({
+            $.post(apiRoot + "/contact-us", JSON.stringify({
                 name: $("#contact-us-form input[name='name']").val(),
                 email: $("#contact-us-form input[name='email']").val(),
                 subject: $("#contact-us-form input[name='subject']").val(),
