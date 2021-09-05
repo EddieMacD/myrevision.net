@@ -11,6 +11,7 @@ banner:
     label : "Login for Questions"
     link : "questions"
 
+
 ############################# About #################################
 about:
   enable : true
@@ -18,10 +19,10 @@ about:
   description : "**MyRevision.net** lets teachers and students create online homework and revision assignments. You can select the topics, amount of questions and quickly answer randomised questions and review the results immediately."
   contentItems:
     - contentLine : "Originally built as a self-revision tool and an A-Level Computer Science project by our founder [Eddie MacDonagh](https://github.com/EddieMacD/), **MyRevision.net** will soon be available to schools and students everywhere."
-    - contentLine : "**MyRevision.net** is currently in _closed beta_. Come back soon for information on registering interest."
+    - contentLine : "**MyRevision.net** is currently in _closed beta_. [Contact Us](contact-us) for information on registering interest."
   image : "images/gui_overview.png"
-  buttonLink: ""
-  buttonLabel: "Learn More >"
+  buttonLink: "contact-us"
+  buttonLabel: "Register Interest"
 
 
 ######################### Portfolio ###############################
@@ -81,4 +82,4 @@ cta:
   button:
     enable : true
     label : "Contact Us"
-    link : "contact"
+    link : "contact-us"

@@ -42,7 +42,6 @@
           {{ range .contentItems }}
           <p>{{ .contentLine | markdownify }}</p>
           {{ end }}          
-          <a class="btn btn-main" href="{{ .buttonLink | relLangURL }}">{{ .buttonLabel }}</a>
         </div>
       </div>
       <div class="col-md-5 col-sm-12">
@@ -50,6 +49,11 @@
           <img src="{{ .image | relURL }}" class="img-responsive" alt="ds">
         </div>
         
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">    
+        <a class="btn btn-main" href="{{ .buttonLink | relLangURL }}">{{ .buttonLabel }}</a>
       </div>
     </div>
   </div>
