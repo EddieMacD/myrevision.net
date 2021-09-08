@@ -76,7 +76,7 @@
           <label class="form-group-label" for="dob-input">Date of Birth: </label>
         </div>
         <div class="col-xs-9">
-            <input type="date" id="dob-input" name="dob-input" value="2000-01-01" min="1900-01-01" max="2022-01-01"></input>
+          <input type="date" id="dob-input" name="dob-input" value="2000-01-01" min="1900-01-01" max="2022-01-01"></input>
         </div>
       </div>
 
@@ -100,14 +100,34 @@
       </div>
     </div>
     <div class="frm-edit-user collapse" id="frm-delete-user">
+      <div class="row filter-row">
+        <div class="col-xs-3">
+          <label class="form-group-label" for="frm-delete-user-page-num">Number of Users Shown: </label>
+        </div>
+        <div class="col-xs-9">
+          <select name="frm-delete-user-page-num" id="frm-delete-user-page-num" class="form-control" onchange="setUserPage(0)">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+      </div>
       <div id="frm-delete-user-page"></div>
+      <div class="row page-marker-row">
+        <div class="col-xs-2">
+          <label class="form-group-label" for="page-markers">Change Page: </label>
+        </div>
+        <div class="col-xs-10" id="page-markers"></div>            
+      </div>
       <!-- Next and Previous buttons -->
       <div class="row btn-row">
         <div class="col-xs-6">
-          <button type="button" class="btn btn-prev" onclick=""><i class="ion-arrow-left-b arrow"></i>  Previous</button>
+          <button type="button" class="btn btn-prev" onclick="newUserPage(-1)"><i class="ion-arrow-left-b arrow"></i>  Previous</button>
         </div>            
         <div class="col-xs-6">
-          <button type="button" class="btn btn-next" onclick="">Next <i class="ion-arrow-right-b arrow"></i></button>
+          <button type="button" class="btn btn-next" onclick="newUserPage(1)">Next <i class="ion-arrow-right-b arrow"></i></button>
         </div>            
       </div>    
     </div> 

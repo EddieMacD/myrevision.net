@@ -76,19 +76,26 @@ function ifLocal() {
 }
 
 async function initialiseAuth() {
+    var accessToken = "";
+
     console.log('initialiseAuth...');
     console.log('parsing: ' + window.location.href);
 
     ifLocal();
 
     try {
+        auth.parseCognitoWebResponse(window.location.href);
+
+        if (auth.isUserSignedIn()) {
+            accessToken = auth.getSignInUserSession().idToken.jwtToken;
+        }
+
         if(!sessionStorage.getItem("auth"))
         {
-            auth.parseCognitoWebResponse(window.location.href);
             
             if (auth.isUserSignedIn()) {
                 userSession.auth.username = auth.getUsername();
-                userSession.auth.accessToken = auth.getSignInUserSession().idToken.jwtToken;
+                userSession.auth.accessToken = accessToken;
 
                 await callColdStartAPI();
                 startIdler(0);
@@ -119,6 +126,8 @@ async function initialiseAuth() {
             var tempTimer = 0;
 
             userSession.auth = JSON.parse(sessionStorage.getItem("auth"));
+            userSession.auth.accessToken = accessToken;
+            
             sessionStorage.setItem("auth", JSON.stringify(userSession.auth));
 
             if(!validAccess.includes(userSession.auth.accessLevel) && window.location.href != baseURL)

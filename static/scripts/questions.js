@@ -1053,7 +1053,7 @@ function markAnswers() {
     ///For each question
     for (var i = 0; i < userSession.numOfQuestions; i++) {
         ///If the question isn't empty and the user answers array contains something
-        if(!userSession.questions[i].userAnswers.includes("") && userSession.questions[i].userAnswers.length != 0)
+        if(userSession.questions[i].userAnswers.length != 0)
         {
             ///Set a boolean flag variable to true - represents whether the user has gotten the whole question correct. Defaults to correct
             var allCorrect = true;

@@ -62,3 +62,28 @@
 .btn-row {
     margin-top: 20px;
 }
+
+.page-marker {
+    margin: 5px;
+    padding:10px;
+    background-color: $tertiary-color;
+    color: $light-primary;
+    font-size: 20px;
+
+    border-radius: 10px;
+    border-color: $border-color;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.page-marker:hover, .page-marker:focus {
+    color: $tertiary-color;
+    background-color: $light-primary;
+}
+
+
+.page-marker-row {
+    height: 60px !important;
+    overflow-x: auto;
+
+}

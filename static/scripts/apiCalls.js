@@ -152,8 +152,12 @@ function showLoader() {
     }
 }
 
-function hideLoader() {
-    userSession.loaderVal--;
+function hideLoader(isError = false) {
+    if (isError) {
+        userSession.loaderVal = 0;
+    } else {
+        userSession.loaderVal--;
+    }
 
     if(userSession.loaderVal == 0)
     {

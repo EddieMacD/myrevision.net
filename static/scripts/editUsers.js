@@ -113,21 +113,31 @@ function getAccessLevel() {
 }
 
 async function getUserPage(offset) {
-    var pageSize = 10;
-    var api = apiRoot + "/user-page?school=" + getSchool() + "&offset=" + offset + "&amount=" + pageSize;
+    try {
+        $("#frm-delete-user-page").empty();
 
-    var data = await callGetAPI(api, "user data");
+        var pageSize = $("#frm-delete-user-page-num").val();
+        userSession.pageOffset = offset;
 
-    data.forEach((element, index) => {
-        var user = {};
-        user.firstName = element[0].stringValue;
-        user.lastName = element[1].stringValue;
-        user.email = element[2].stringValue;
-        user.dob = element[3].stringValue;
-        user.accessLevel = element[4].stringValue;
+        var api = apiRoot + "/user-page?school=" + getSchool() + "&offset=" + offset + "&amount=" + pageSize;
 
-        $("#frm-delete-user-page").append(generateDeleteRow(user, index));
-    })
+        var data = await callGetAPI(api, "user data");
+
+        data.userPage.forEach((element, index) => {
+            var user = {};
+            user.firstName = element[0].stringValue;
+            user.lastName = element[1].stringValue;
+            user.email = element[2].stringValue;
+            user.dob = element[3].stringValue;
+            user.accessLevel = element[4].stringValue;
+
+            $("#frm-delete-user-page").append(generateDeleteRow(user, index));
+        });
+
+        generatePageMarkers(data.count);
+    } catch (e) {
+        generateErrorBar(e);
+    }
 }
 
 function generateDeleteRow(user, index) {
@@ -135,11 +145,11 @@ function generateDeleteRow(user, index) {
 
     userRow.push(
         '<div class="row user-row" id="user-row-' + index + '">',
-            '<div class="col-xs-2">' + user.firstName + '</div>',
-            '<div class="col-xs-2">' + user.lastName + '</div>',
-            '<div class="col-xs-4">' + user.email + '</div>',
-            '<div class="col-xs-2">' + user.dob + '</div>',
-            '<div class="col-xs-1">' + user.accessLevel + '</div>',
+            '<div class="col-xs-2" id="user-first-name-' + index + '">' + user.firstName + '</div>',
+            '<div class="col-xs-2" id="user-last-name-' + index + '">' + user.lastName + '</div>',
+            '<div class="col-xs-4" id="user-email-' + index + '">' + user.email + '</div>',
+            '<div class="col-xs-2" id="user-dob-' + index + '">' + user.dob + '</div>',
+            '<div class="col-xs-1" id="user-access-level' + index + '">' + user.accessLevel + '</div>',
             '<div class="col-xs-1">',
                 '<button type="button" class="btn btn-delete" onclick="deleteUser(' + index + ')"><i class="ion-close-round"></i></button>',
             '</div>',
@@ -149,7 +159,52 @@ function generateDeleteRow(user, index) {
     return userRow.join("");
 }
 
-function deleteUser(index) {
+function newUserPage(change) {
+    var pageSize = $("#frm-delete-user-page-num").val();
+    var changeBy = pageSize * change;
+    var offset = userSession.pageOffset + changeBy;
+
+    getUserPage(offset);    
+}
+
+function setUserPage(pageNumber) {
+    var pageSize = $("#frm-delete-user-page-num").val();
+    var offset = pageSize * pageNumber;
+
+    getUserPage(offset);    
+}
+
+function generatePageMarkers (numOfItems) {
+    $("#page-markers").empty();
+
+    var pageSize = $("#frm-delete-user-page-num").val();
+    var numOfMarkers = parseInt(numOfItems / pageSize);
+
+    if(numOfItems % pageSize != 0) {
+        numOfMarkers++;
+    }
+
+    for(var i = 0; i < numOfMarkers; i++)
+    {
+        $("#page-markers").append('<a class="page-marker" onclick="setUserPage(' + i + ')">' + i + '</a>')
+    }
+}
+
+async function deleteUser(index) {
+    try {
+        clearStatusBar();
+
+        var api = apiRoot + "/delete-user?deletedEmail=" + $("#user-email-" + index).text() + "&school=" + getSchool() + "&senderUsername=" + userSession.auth.username;
+        
+        await callGetAPI(api, "user data");
+
+        generateSuccessBar("User " + $("#user-first-name-" + index).text() + " " + $("#user-last-name-" + index).text() + " has been deleted")
+
+        setUserPage(userSession.pageOffset);
+    } catch (e) {
+        generateErrorBar(e);
+    }
+
 
 }
 
