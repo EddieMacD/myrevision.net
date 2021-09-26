@@ -1,0 +1,37 @@
+{{ define "main" }}
+
+{{ $data := index site.Data site.Language.Lang }}
+
+<script language="javascript" src="../scripts/profile.js"></script>
+
+<!-- Main content -->
+<section class="main-content section">
+    <div class="container">
+        <div class="row profile-row">
+            <div class="col-xs-3">
+                <label class="form-group-label" for="change-email-input">Change Your Email: </label>
+            </div>
+            <div class="col-xs-8">
+                <input class="form-control" id="change-email-input" type="text" disabled="true"></input>
+            </div>
+            <div class="col-xs-1">
+                <button type="button" class="btn btn-profile-edit" id="btn-email-edit"><i class="ion-edit" onclick="editEmail();"></i></button>
+                <button type="submit" class="btn btn-submit" id="btn-email-submit" style="display: none;" disabled="disabled" onclick="submitEmail();">Submit</button>
+            </div>
+        </div>
+        <div class="row profile-row">
+            <div class="col-xs-3">
+                <label class="form-group-label" for="change-password-input">Change Your Password: </label>
+            </div>
+            <div class="col-xs-8">
+                <input class="form-control" id="change-password-input" type="text" disabled="true" value="**********"></input>
+            </div>
+            <div class="col-xs-1">
+                <button type="button" class="btn btn-profile-edit" id="btn-password-edit"><i class="ion-edit" onclick="editPassword();"></i></button>
+                <button type="submit" class="btn btn-submit" id="btn-password-submit" style="display: none;" disabled="disabled" onclick="submitPassword();">Submit</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{ end }}

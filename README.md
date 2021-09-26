@@ -32,3 +32,12 @@ Page markdown parameters are provided by:
 Markdown content is *not* rendered, content is provided from /data/* files 
 as defined by layouts from /themes/airspace-hugo/layouts/<pagename>/list.html
 
+== Testing logins ==
+
+Student Email:      student.mrn@gmail.com
+Student Password:   myr3v!s!0nt3st
+
+Teacher Email:      teachertest.mrn@gmail.com
+Teacher Password:   myr3v!s!0nt3st
+
+There is also a limited test access with access to a set of 20 sample questions

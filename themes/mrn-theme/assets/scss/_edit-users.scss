@@ -25,7 +25,7 @@
     border-color: $border-color;
     border-style: solid;
 
-    background-color: $block-background;
+    background-color: lighten($block-background, 2.5%);
 
     margin: 20px 0px 0px 0px;
 }
@@ -45,7 +45,7 @@
 
     padding: 20px;
 
-    background-image: radial-gradient(circle at center, $block-background, darken($block-background, 5%));
+    background-image: radial-gradient(circle at center, $block-background, lighten($block-background, 5%));
 
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -66,24 +66,30 @@
 .page-marker {
     margin: 5px;
     padding:10px;
-    background-color: $tertiary-color;
-    color: $light-primary;
+    background-color: $light-primary;
+    color: $tertiary-color;
     font-size: 20px;
 
     border-radius: 10px;
-    border-color: $border-color;
-    border-width: 1px;
-    border-style: solid;
-}
-
-.page-marker:hover, .page-marker:focus {
-    color: $tertiary-color;
-    background-color: $light-primary;
 }
 
 
 .page-marker-row {
     height: 60px !important;
     overflow-x: auto;
+}
 
+.btn-delete:hover, .btn-delete:focus {
+    background-color: $primary-color;
+    color: $light-primary;
+}
+
+.btn-next:hover, .btn-next:focus, .btn-prev:hover, .btn-prev:focus{
+    background-color: $tertiary-color;
+    color: $light-primary;
+}
+
+.page-marker:hover, .page-marker:focus {
+    background-color: lighten($tertiary-color, 10%);
+    color: $light-primary;
 }

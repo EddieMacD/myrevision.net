@@ -1,0 +1,18 @@
+.profile-row {
+    margin-bottom: 20px;
+}
+
+.btn-profile-edit {
+    background-color: $light-primary;
+    color: $primary-color;
+}
+
+.btn-profile-edit:hover, .btn-profile-edit:focus {
+    background-color: $primary-color;
+    color: $light-primary;
+}
+
+.btn-submit:hover, .btn-submit:focus {
+    background-color: #333;
+    color: green;
+}

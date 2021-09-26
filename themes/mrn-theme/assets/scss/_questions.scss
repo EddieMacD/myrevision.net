@@ -40,10 +40,16 @@
     color: $tertiary-color;
 
     margin-left: 10px;
+    margin-bottom: 10px;
 
     user-select: none;
     width: 80px;
     height: 80px;
+}
+
+.question-block:hover, .question-block:focus{
+    background-color: lighten($tertiary-color, 10%);
+    color: $block-background;
 }
 
 .question-bookmark-space{
@@ -88,6 +94,11 @@
     float: right;
     color: $secondary-color;
     font-size: 15px;
+}
+
+.btn-bookmark:hover, .btn-bookmark:focus{
+    background-color: $secondary-color;
+    color: $light-primary;
 }
 
 .question-text{

@@ -42,7 +42,6 @@ async function getAllSchools () {
             schools.push(element[0].stringValue);
         });
 
-        //schools.join();
         schools.sort();
 
         schools.forEach(element => {

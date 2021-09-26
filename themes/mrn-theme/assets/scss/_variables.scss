@@ -7,7 +7,6 @@ $secondary-color: rgb(64, 64, 64);
 $tertiary-color: rgb(0, 0, 100);
 $text-subtle: #555;
 
-
 $bookmark: rgb(240, 199, 15);
 $correct: rgb(0, 185, 0);
 $alright: rgb(216, 108, 0);
@@ -18,12 +17,12 @@ $secondary-font:'Helvetica', serif;
 $icon-font: 'themefisher-font';
 
 $block-background: rgb(217, 244, 255);
-$header-background: rgb(228, 228, 228);
+$header-background: lighten($block-background, 5%);
 $feature-background: rgb(210, 247, 255);
 $drag-background: rgb(255, 255, 255);
 $drag-disabled: rgb(238, 238, 238);
 
-$border-color: rgb(0, 0, 100);
+$border-color: rgb(0, 0, 50);
 $border-color-subtle: #ccc;
 
 $submit-button: rgb(0,128, 0);

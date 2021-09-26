@@ -1062,12 +1062,15 @@ function markAnswers() {
             switch(userSession.questions[i].type)
             {
                 case "boxMatch":
-                    ///If the user answer array is not the same as the correct answer array
-                    ///Due to the type of question there is not case sensitivity errors and the only check is to see whether the answers are in the right order
-                    if(userSession.questions[i].userAnswers != userSession.questions[i].correctAnswers)
+                    ///For each answer
+                    for(var j = 0; j < userSession.questions[i].userAnswers.length; j++)
                     {
-                        ///The user got the question wrong
-                        allCorrect = false;
+                        ///If the correct answers don't contain the user answer 
+                        ///Standard for string match questions
+                        if(userSession.questions[i].correctAnswers[j] != userSession.questions[i].userAnswers[j]) {
+                            ///The user got the question wrong
+                            allCorrect = false;
+                        }
                     }
                     break;
             
@@ -1176,6 +1179,8 @@ function buildAnswerDiv(index) {
     ///The part of the header bar that contains the timer - stored in a valiable since the contents are determined by selection
     var timerLine = '';
 
+    var bookmarked = '';
+
 
     //Variable selection
     ///If the user got the question correct
@@ -1193,6 +1198,10 @@ function buildAnswerDiv(index) {
         timerLine = '<div class="col-xs-5 question-time"></div>';
     }
 
+    if(userSession.questions[index].isBookmarked) {
+        bookmarked = '<i class="ion-android-star bookmark"></i>';
+    }
+
 
     //Div generation
     ///A push command for every line
@@ -1202,7 +1211,7 @@ function buildAnswerDiv(index) {
             ///Header bar - controls collapse section and is always shown
             '<div class="row header-bar" id="header-bar' + index + '" data-toggle="collapse" data-target="#answer-bar' + index + '" aria-expanded="false" aria-controls="answer-bar' + index + '">',
                 ///Question number
-                '<div class="col-xs-1 question-number">' + (index + 1) + '</div>',
+                '<div class="col-xs-1 question-number">' + (index + 1) + bookmarked + '</div>',
                 ///Question id - converts question id into a subject specific format
                 '<div class="col-xs-2 question-id">' + convertQuestionIndex(index) + '</div>',
                 timerLine,
@@ -1401,6 +1410,47 @@ function displayBasicQuestion(index, answerSet, idStem) {
     }
 
     return answerBox.join("");
+}
+
+function sendUserData() {
+
+}
+
+function compileUserData(index) {
+    var userData = {};
+
+    userData.userAnswers = userSession.questions[i].userAnswers;
+    userData.timestamp = getTimestamp();
+    userData.isFlagged = getFlag(index);
+    userData.questionID.index = userSession.questions[i].index;
+    userData.questionID.filePath = userSession.questions[i].filePath;
+    userData.userID.email = userSession.auth.email;
+    userData.assignmentID.assignmentName = getAssignment();
+}
+
+function getTimestamp() {
+    var now = Date.now();
+
+    return now.toISOString().substring(0, 23);
+}
+
+function getFlag(index) {
+    var isFlagged = userSession.questions[index].isFlagged;
+    var output = 0;
+
+    if(isFlagged) {
+        output = 1;
+    }
+
+    return output;
+}
+
+function getAssignment() {
+    var assignmentName = "";
+    
+    if(userSession.assignmentName) {
+        assignmentName = userSession.assignmentName;
+    }
 }
 
 //Runs when the code loads - the timeout buffers until the full page loads
