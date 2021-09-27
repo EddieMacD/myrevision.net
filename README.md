@@ -35,7 +35,7 @@ as defined by layouts from /themes/airspace-hugo/layouts/<pagename>/list.html
 == Testing logins ==
 
 Student Email:      student.mrn@gmail.com
-Student Password:   myr3v!s!0nt3st
+Student Password:   MyR3v!s!0nT3st
 
 Teacher Email:      teachertest.mrn@gmail.com
 Teacher Password:   myr3v!s!0nt3st

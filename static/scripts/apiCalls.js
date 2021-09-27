@@ -7,12 +7,19 @@ function initialiseBasic() {
     }, 1);
 }
 
-async function callGetAPI(api, apiResults) {
+async function callGetAPI(api, apiResults, isRetrieve = true) {
     var data = {};
+    var errorMessage = "";
+
+    if(isRetrieve) {
+        errorMessage = "There was an error retrieving " + apiResults + " from our servers. Please check your internet connection and try again later.";
+    } else {
+        errorMessage = "There was an error changing " + apiResults + ". Please check your internet connection and try again later.";
+    }
 
     showLoader();
 
-    data = await getAPIGetResult(api, apiResults);
+    data = await getAPIGetResult(api, errorMessage);
 
     hideLoader();
 
@@ -21,7 +28,7 @@ async function callGetAPI(api, apiResults) {
 
 //A function to get the results from a REST api with a GET method
 ///api: the api to get results from
-async function getAPIGetResult(api, apiResults) {
+async function getAPIGetResult(api, errorMessage) {
     //Get result
     ///Uses a promise structure to allow the use of the await keyword when calling the function. Easy way of making asynchronous code synchronous in javascript 
     return new Promise((resolve, reject) => {
@@ -33,7 +40,7 @@ async function getAPIGetResult(api, apiResults) {
                 resolve(json);
             },
             error: function (aXMLHttpRequest, textStatus, errorThrown) {
-                reject("There was an error retrieving " + apiResults + " from our servers. Please check your internet connection and try again later. <br> Error code " + aXMLHttpRequest.status + " --- " + aXMLHttpRequest.responseText);
+                reject(errorMessage + "<br> Error code " + aXMLHttpRequest.status + " --- " + aXMLHttpRequest.responseText);
             },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Authorization", userSession.auth.accessToken);
@@ -66,7 +73,7 @@ async function callPostAPI(api, postBody, apiResults, isRetrieve = true) {
 //A function to get the results from a REST api with a POST method
 ///api: the api to get results from
 ///postBody: the data to be posted
-async function getAPIPostResult(api, postBody, apiResults) {
+async function getAPIPostResult(api, postBody, errorMessage) {
     //Get result
     ///Uses a promise structure to allow the use of the await keyword when calling the function. Easy way of making asynchronous code synchronous in javascript 
     return new Promise((resolve, reject) => {
@@ -78,7 +85,7 @@ async function getAPIPostResult(api, postBody, apiResults) {
                 resolve(json);
             },
             error: function (aXMLHttpRequest, textStatus, errorThrown) {
-                reject(apiResults + " <br> Error code " + aXMLHttpRequest.status + " --- " + aXMLHttpRequest.responseText);
+                reject(errorMessage + " <br> Error code " + aXMLHttpRequest.status + " --- " + aXMLHttpRequest.responseText);
             },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Authorization", userSession.auth.accessToken);
@@ -124,7 +131,7 @@ async function callColdStartAPI () {
         showLoader();
 
         do {
-            isDBOnline = await getAPIGetResult(api, "data");
+            isDBOnline = await getAPIGetResult(api, "There was an error retrieving data from our servers. Please check your internet connection and try again later.");
 
             await sleep(1000);
 

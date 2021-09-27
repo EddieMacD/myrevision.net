@@ -211,3 +211,8 @@ function adaptHeaderBar(status) {
             break;  
     }
 }
+
+function doTestQuestions() {
+    sessionStorage.setItem("isGuest", "true");
+    window.location.replace(baseURL + "questions/");
+}

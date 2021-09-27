@@ -481,6 +481,38 @@ async function startQuestions() {
     }
 }
 
+async function startTestQuestions() {
+    try {
+        clearStatusBar();
+
+        //Data handling
+        ///A temporary object to store all of the input from the api, once the data has been returned. Test data prevents unnecessary APi calls whilst having all question types
+        var results = {"questions":{"questions":[{"type":"stringMatch","numAnswers":"1","text":[{"q":"What base is binary?"}]},{"type":"stringMatch","numAnswers":"2","text":[{"q":"What are the digits in a binary number?"}]},{"type":"multipleChoice","numAnswers":"3","text":[{"q":"Which of the following are valid storage units?"},{"q":"Bit"},{"q":"Gigantabyte"},{"q":"Nibble"},{"q":"Nanobyte"},{"q":"Megabyte"}]},{"type":"boxMatch","numAnswers":"4","text":[{"q":"Match the values to their equivalent:"},{"q":"5242880MB"},{"q":"5GB"},{"q":"8 bits"},{"q":"5TB"},{"q":"5242880KB"},{"q":"2 bytes"},{"q":"16 bits"},{"q":"2 nibbles"}]},{"type":"multipleChoice","numAnswers":"2","text":[{"q":"Which of these are equivalent to 8KB?"},{"q":"16384 nibbles"},{"q":"1/128 MB"},{"q":"0.128 MB"},{"q":"80008 bits"}]},{"type":"multipleChoice","numAnswers":"1","text":[{"q":"Which of these is 101 in binary?"},{"q":"01000101"},{"q":"01100111"},{"q":"01100101"},{"q":"01100100"}]},{"type":"multipleChoice","numAnswers":"2","text":[{"q":"Which of these are equivalent to one megabyte?"},{"q":"1048576 bytes"},{"q":"1048566 bytes"},{"q":"200000 nibbles"},{"q":"1024 KB"}]},{"type":"boxMatch","numAnswers":"3","text":[{"q":"Match these numbers to their corresponding bases:"},{"q":"00110100"},{"q":"Base 2"},{"q":"69"},{"q":"Base 2"},{"q":"000110000"},{"q":"Base 10"}]},{"type":"calculation","numAnswers":"1","text":[{"q":"11001100 in denary?"}]},{"type":"stringMatch","numAnswers":"2","text":[{"q":"Name two units of memory smaller than a megabyte:"}]},{"type":"multipleChoice","numAnswers":"1","text":[{"q":"How do computers store numbers?"},{"q":"In denary"},{"q":"Using pen and paper"},{"q":"In binary"}]},{"type":"gapFill","numAnswers":"1","text":[{"q":"The byte is a unit used to measure ______ size."}]},{"type":"boxMatch","numAnswers":"4","text":[{"q":"Match the values to their equivalent:"},{"q":"10KB"},{"q":"16 bits"},{"q":"5MB"},{"q":"8 nibbles"},{"q":"4 bytes"},{"q":"81920 bits"},{"q":"2 bytes"},{"q":"5242880 bytes"}]},{"type":"boxMatch","numAnswers":"3","text":[{"q":"Match the denary with their binary values:"},{"q":"23"},{"q":"00010111"},{"q":"96"},{"q":"01101111"},{"q":"111"},{"q":"01100000"}]},{"type":"calculation","numAnswers":"1","text":[{"q":"89 in binary?"}]},{"type":"gapFill","numAnswers":"2","text":[{"q":"Megabytes are each worth ____ kilobytes, which are each worth ____ bytes."}]},{"type":"stringMatch","numAnswers":"1","text":[{"q":"What is the largest number an 8 bit binary number can represent?"}]},{"type":"gapFill","numAnswers":"2","text":[{"q":"The binary number 1010 can be converted into the ______ value __."}]},{"type":"boxMatch","numAnswers":"3","text":[{"q":"Match the binary numbers to their denary equivalents:"},{"q":"00100100"},{"q":"177"},{"q":"11000010"},{"q":"194"},{"q":"10110001"},{"q":"36"}]},{"type":"calculation","numAnswers":"1","text":[{"q":"246 in binary?"}]}],"indexes":["0004","0002","0013","0025","0014","0011","0012","0024","0009","0003","0015","0016","0023","0022","0007","0019","0001","0017","0021","0006"]}};
+        
+        ///Populating the user session object with the data from the api call
+        userSession.questions = results.questions.questions;
+
+        userSession.numOfQuestions = 20;
+
+        ///For each question 
+        for(var i = 0; i < userSession.numOfQuestions; i++)
+        {
+            ///Apply the index to the question in user session (the object structure is different client side and server side)
+            userSession.questions[i].index = results.questions.indexes[i];
+        }
+        
+        userSession.isTimerShown = false;
+
+        //Updating the user display
+        displayQuestionScreen();
+    } catch (error) {
+        window.location.replace(baseURL);
+
+        //Error messages
+        generateErrorBar(error);
+    }
+}
+
 //Loops through the theme check boxes and return the values that are checked 
 function compileTopics() {
     //Theme compilation
@@ -1461,11 +1493,19 @@ window.onload = function(){
 
 //Runs when the page loads
 function initialise(){
-    userSession.loaderVal = 1;
+    if(sessionStorage.getItem("isGuest")) {
+        userSession.loaderVal = 1;
 
-    //Function calls
-    initialiseAuth(); 
+        startTestQuestions();
 
-    ///Loads the qualification values into the input box
-    loadQualification();
+        hideLoader();
+    } else {
+        userSession.loaderVal = 1;
+
+        //Function calls
+        initialiseAuth(); 
+
+        ///Loads the qualification values into the input box
+        loadQualification();
+    }
 }
