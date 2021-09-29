@@ -28,23 +28,6 @@ auth.userhandler = {
     }
 };
 
-function signInTo(location) {
-    authData = {
-        ClientId: '19ulus5lk6h6aor1lknbm14dj8', // Your client id here
-        AppWebDomain: 'auth.myrevision.net',
-        TokenScopesArray: ['email', 'openid'], // e.g.['phone', 'email', 'profile','openid', 'aws.cognito.signin.user.admin'],
-        RedirectUriSignIn: baseURL + location,
-        RedirectUriSignOut: baseURL,
-        UserPoolId: 'eu-west-2_7lDI3aJAl', // Your user pool id here
-        AdvancedSecurityDataCollectionFlag: 'false' //, // e.g. true
-        //Storage: new CookieStorage() // OPTIONAL e.g. new CookieStorage(), to use the specified storage provided
-    };
-
-    auth = AmazonCognitoIdentity(authData);
-
-    signIn();
-}
-
 function signIn() {
     sessionStorage.removeItem("auth");
     auth.getSession();
@@ -80,6 +63,8 @@ async function initialiseAuth() {
 
     console.log('initialiseAuth...');
     console.log('parsing: ' + window.location.href);
+
+    sessionStorage.removeItem("isGuest");
 
     ifLocal();
 

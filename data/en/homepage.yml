@@ -8,7 +8,7 @@ banner:
   content_subline: "Built by students for students"
   button:
     enable : true
-    label : "Login for Questions"
+    label : "Sample Some Questions"
     link : "questions"
 
 

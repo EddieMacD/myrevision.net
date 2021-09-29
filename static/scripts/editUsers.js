@@ -134,6 +134,8 @@ async function getUserPage(offset) {
         });
 
         generatePageMarkers(data.count);
+
+        userSession.numOfUsers = data.count;
     } catch (e) {
         generateErrorBar(e);
     }
@@ -163,15 +165,46 @@ function newUserPage(change) {
     var changeBy = pageSize * change;
     var offset = userSession.pageOffset + changeBy;
 
-    getUserPage(offset);    
+    if(offset <= 0){
+        $(".btn-prev").attr("disabled", "disabled");
+    } else {
+        $(".btn-prev").removeAttr("disabled");
+    }
+
+    console.log(offset);
+
+    if(offset >= userSession.numOfUsers){
+        $(".btn-next").attr("disabled", "disabled");
+    } else {
+        $(".btn-next").removeAttr("disabled");
+    }
+
+    if(offset >= 0 || offset <= userSession.numOfUsers){
+        getUserPage(offset);    
+    }
 }
 
 function setUserPage(pageNumber) {
     var pageSize = $("#frm-delete-user-page-num").val();
     var offset = pageSize * pageNumber;
 
-    getUserPage(offset);    
-}
+    if(offset <= 0){
+        $(".btn-prev").attr("disabled", "disabled");
+    } else {
+        $(".btn-prev").removeAttr("disabled");
+    }
+
+    console.log(offset);
+
+    if(offset >= userSession.numOfUsers){
+        $(".btn-next").attr("disabled", "disabled");
+    } else {
+        $(".btn-next").removeAttr("disabled");
+    }
+
+    if(offset >= 0 || offset <= userSession.numOfUsers){
+        getUserPage(offset);    
+    }}
 
 function generatePageMarkers (numOfItems) {
     $("#page-markers").empty();
@@ -203,8 +236,6 @@ async function deleteUser(index) {
     } catch (e) {
         generateErrorBar(e);
     }
-
-
 }
 
 //Runs when the code loads - the timeout buffers until the full page loads
