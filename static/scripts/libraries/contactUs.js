@@ -36,6 +36,7 @@ function initialise(){
 
     $(document).ready(function() {
         $("#contact-us-form button").click(function(event) {
+            clearStatusBar();
             showLoader();
             $("#contact-us-form button").hide();                
         });
