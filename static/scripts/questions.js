@@ -1210,9 +1210,10 @@ function buildAnswerDiv(index) {
     ///The icon inside the header bar - standard is red cross
     var icon = 'ion-close-round red-text symbol';
 
-    ///The part of the header bar that contains the timer - stored in a valiable since the contents are determined by selection
+    ///The part of the header bar that contains the timer - stored in a variable since the contents are determined by user input
     var timerLine = '';
 
+    ///The part of the header bar that contains the bookmark information and flagging - stored in a variable since the contents are determined by user input
     var bookmarked = '';
 
 
@@ -1446,45 +1447,49 @@ function displayBasicQuestion(index, answerSet, idStem) {
     return answerBox.join("");
 }
 
-function sendUserData() {
-
+function sendUserData(index) {
+    try{
+        var postBody = compileUserData(index);
+    } catch (e) {
+        ///Hide any errors - a mild gap in logging is understandable. Retry once but no more than once
+    }
 }
 
 function compileUserData(index) {
     var userData = {};
 
-    userData.userAnswers = userSession.questions[i].userAnswers;
+    userData.userAnswers = JSON.stringify(userSession.questions[index].userAnswers);
     userData.timestamp = getTimestamp();
-    userData.isFlagged = getFlag(index);
-    userData.questionID.index = userSession.questions[i].index;
-    userData.questionID.filePath = userSession.questions[i].filePath;
+    userData.isFlagged = userSession.questions[index].isFlagged;
+
+    userData.questionID = {};
+    userData.questionID.fileName = userSession.questions[index].index;
+    userData.questionID.filePath = userSession.questions[index].filePath;
+
+    userData.userID = {};
     userData.userID.email = userSession.auth.email;
-    userData.assignmentID.assignmentName = getAssignment();
+    
+    userData.assignmentID = getAssignment();
+
+    userData.isCorrect = userSession.questions[index].isCorrect;
+
+    return userData;
 }
 
 function getTimestamp() {
-    var now = Date.now();
+    var now = new Date().toISOString();
 
-    return now.toISOString().substring(0, 23);
-}
-
-function getFlag(index) {
-    var isFlagged = userSession.questions[index].isFlagged;
-    var output = 0;
-
-    if(isFlagged) {
-        output = 1;
-    }
-
-    return output;
+    return now.substring(0, 23);
 }
 
 function getAssignment() {
-    var assignmentName = "";
+    var assignmentID = "";
     
-    if(userSession.assignmentName) {
-        assignmentName = userSession.assignmentName;
+    if(userSession.assignmentID) {
+        assignmentID = userSession.assignmentID;
     }
+
+    return assignmentID;
 }
 
 //Runs when the code loads - the timeout buffers until the full page loads

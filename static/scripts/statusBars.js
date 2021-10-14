@@ -23,10 +23,11 @@ function generateErrorBar(text) {
 
 //Clears any error bars that may be on screen
 function clearStatusBar () {
-    //Empties the error bar container
+    //Clearing
+    ///Empties the error bar container
     $("#error-container").empty();
 
-    //Empties the success bar container
+    ///Empties the success bar container
     $("#success-container").empty();
 }
 

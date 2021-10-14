@@ -73,6 +73,15 @@
     border-radius: 10px;
 }
 
+.page-marker-selected {
+    margin: 5px;
+    padding:10px;
+    background-color: $tertiary-color;
+    color: $light-primary;
+    font-size: 20px;
+
+    border-radius: 10px;
+}
 
 .page-marker-row {
     height: 60px !important;

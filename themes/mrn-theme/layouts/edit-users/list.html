@@ -14,7 +14,9 @@
     </div>
   </div>
 
+  <!-- Add a new user input container -->
   <div class="container" id="add-user-container">
+    <!-- Top row for the add user input --> 
     <div class="row edit-user-header" data-toggle="collapse" data-target="#frm-add-user" aria-expanded="false" aria-controls="frm-add-user">
       <div class="col-xs-8">
         <label class="edit-user-header-label">Add a New User</label>
@@ -25,6 +27,7 @@
       </div>
     </div>
 
+    <!-- Collapsible input form -->
     <div class="frm-edit-user collapse" id="frm-add-user">
       <!-- First Name input -->
       <div class="row filter-row">
@@ -69,7 +72,6 @@
         </div>
       </div>
 
-      
       <!-- DOB input -->
       <div class="row filter-row date-row">
         <div class="col-xs-3">
@@ -89,7 +91,9 @@
     </div>
   </div>
 
+  <!-- Delete a user input container -->
   <div class="container" id="add-user-container">
+    <!-- Top row for deleting a user -->
     <div class="row edit-user-header" data-toggle="collapse" data-target="#frm-delete-user" aria-expanded="false" aria-controls="frm-delete-user">
       <div class="col-xs-8">
         <label class="edit-user-header-label">Delete a User</label>
@@ -99,7 +103,10 @@
         <i class="ion-android-arrow-dropup-circle symbol"></i>
       </div>
     </div>
+
+    <!-- Collapsible input form -->
     <div class="frm-edit-user collapse" id="frm-delete-user">
+      <!-- Input number shown on a user page -->
       <div class="row filter-row">
         <div class="col-xs-3">
           <label class="form-group-label" for="frm-delete-user-page-num">Number of Users Shown: </label>
@@ -114,13 +121,18 @@
           </select>
         </div>
       </div>
+
+      <!-- User page container -->
       <div id="frm-delete-user-page"></div>
+
+      <!-- Page makers for changing page -->
       <div class="row page-marker-row">
         <div class="col-xs-2">
           <label class="form-group-label" for="page-markers">Change Page: </label>
         </div>
         <div class="col-xs-10" id="page-markers"></div>            
       </div>
+
       <!-- Next and Previous buttons -->
       <div class="row btn-row">
         <div class="col-xs-6">

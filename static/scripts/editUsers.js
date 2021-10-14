@@ -133,9 +133,20 @@ async function getUserPage(offset) {
             $("#frm-delete-user-page").append(generateDeleteRow(user, index));
         });
 
-        generatePageMarkers(data.count);
+        generatePageMarkers(data.count, offset/pageSize);
 
-        userSession.numOfUsers = data.count;
+        if(offset <= 0){
+            $(".btn-prev").attr("disabled", "disabled");
+        } else {
+            $(".btn-prev").removeAttr("disabled");
+        }
+    
+        if(offset + pageSize >= data.count){
+            $(".btn-next").attr("disabled", "disabled");
+        } else {
+            $(".btn-next").removeAttr("disabled");
+        }
+
     } catch (e) {
         generateErrorBar(e);
     }
@@ -165,20 +176,6 @@ function newUserPage(change) {
     var changeBy = pageSize * change;
     var offset = userSession.pageOffset + changeBy;
 
-    if(offset <= 0){
-        $(".btn-prev").attr("disabled", "disabled");
-    } else {
-        $(".btn-prev").removeAttr("disabled");
-    }
-
-    console.log(offset);
-
-    if(offset >= userSession.numOfUsers){
-        $(".btn-next").attr("disabled", "disabled");
-    } else {
-        $(".btn-next").removeAttr("disabled");
-    }
-
     if(offset >= 0 || offset <= userSession.numOfUsers){
         getUserPage(offset);    
     }
@@ -188,25 +185,12 @@ function setUserPage(pageNumber) {
     var pageSize = $("#frm-delete-user-page-num").val();
     var offset = pageSize * pageNumber;
 
-    if(offset <= 0){
-        $(".btn-prev").attr("disabled", "disabled");
-    } else {
-        $(".btn-prev").removeAttr("disabled");
-    }
-
-    console.log(offset);
-
-    if(offset >= userSession.numOfUsers){
-        $(".btn-next").attr("disabled", "disabled");
-    } else {
-        $(".btn-next").removeAttr("disabled");
-    }
-
     if(offset >= 0 || offset <= userSession.numOfUsers){
         getUserPage(offset);    
-    }}
+    }
+}
 
-function generatePageMarkers (numOfItems) {
+function generatePageMarkers (numOfItems, currentPage) {
     $("#page-markers").empty();
 
     var pageSize = $("#frm-delete-user-page-num").val();
@@ -218,7 +202,11 @@ function generatePageMarkers (numOfItems) {
 
     for(var i = 0; i < numOfMarkers; i++)
     {
-        $("#page-markers").append('<a class="page-marker" onclick="setUserPage(' + i + ')">' + i + '</a>')
+        if(i === currentPage) {
+            $("#page-markers").append('<a class="page-marker-selected">' + i + '</a>');
+        } else {     
+            $("#page-markers").append('<a class="page-marker" onclick="setUserPage(' + i + ')">' + i + '</a>');
+        }
     }
 }
 
