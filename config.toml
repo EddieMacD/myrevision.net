@@ -145,6 +145,11 @@ copyright = "Copyright © Eddie MacDonagh, Soft Practice Ltd. All Rights Reserve
 
 ################### english guest/base navigation ########################
 
+[[Languages.en.menu.main]]
+name = "Contact Us"
+URL = "contact-us"
+weight = 5
+
 # footer menu
 [[Languages.en.menu.footer]]
 name = "Privacy Policy"
