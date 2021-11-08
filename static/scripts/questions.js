@@ -1030,6 +1030,9 @@ async function submitAnswers() {
         ///Marking the answers
         markAnswers();
 
+        ///Sends the question history to the server
+        await sendQuestionHistory();
+
         ///Displaying the answers form
         displayAnswerScreen();
     } catch (error) {
@@ -1447,45 +1450,86 @@ function displayBasicQuestion(index, answerSet, idStem) {
     return answerBox.join("");
 }
 
-function sendUserData(index) {
-    try{
-        var postBody = compileUserData(index);
-    } catch (e) {
-        ///Hide any errors - a mild gap in logging is understandable. Retry once but no more than once
+//Sends user data to the question history storage
+async function sendQuestionHistory() {
+    //For every question
+    for (var i = 0; i < userSession.numOfQuestions; i++) {
+        try{
+            //Variables
+            ///The data to be posted to the system
+            var postBody = compileQuestionHistory(i);
+
+            ///The api to send the data
+            var api = apiRoot + "/question-history";
+
+
+            //Data sending
+            ///Sending the data to the system
+            await callPostAPI(api, postBody, "question history", false);
+        } catch (e) {
+            //Hide any errors - a mild gap in logging is understandable and not-necessary for reporting. Retry once but no more than once
+            try{
+                var postBody = compileQuestionHistory(i);
+                var api = apiRoot + "/question-history";
+    
+                await callPostAPI(api, postBody, "question history", false);
+            } catch (e) {
+
+            }
+        }
     }
 }
 
-function compileUserData(index) {
-    var userData = {};
+//Compile the data form a certain question into a form that can be sent to the system
+///index: the array index of the question that is to have it's data compiled
+function compileQuestionHistory(index) {
+    //Data compilation
+    ///Creating the object that will be used
+    var questionHistory = {};
 
-    userData.userAnswers = JSON.stringify(userSession.questions[index].userAnswers);
-    userData.timestamp = getTimestamp();
-    userData.isFlagged = userSession.questions[index].isFlagged;
+    ///Collating the user's answers into a string
+    questionHistory.userAnswers = JSON.stringify(userSession.questions[index].userAnswers);
 
-    userData.questionID = {};
-    userData.questionID.fileName = userSession.questions[index].index;
-    userData.questionID.filePath = userSession.questions[index].filePath;
+    ///The current time
+    questionHistory.timestamp = getTimestamp();
 
-    userData.userID = {};
-    userData.userID.email = userSession.auth.email;
+    ///The data required to work out the ID for the current question
+    questionHistory.questionID = {};
+    questionHistory.questionID.fileName = userSession.questions[index].index;
+    questionHistory.questionID.filePath = userSession.filePath;
+
+    ///The data required to get a user's ID
+    questionHistory.userID = {};
+    questionHistory.userID.email = userSession.auth.email;
     
-    userData.assignmentID = getAssignment();
+    ///The data required to get the current assignment's ID - or blank if not an assignment
+    questionHistory.assignmentID = getAssignment();
 
-    userData.isCorrect = userSession.questions[index].isCorrect;
+    ///Whether or not the user got the question correct
+    questionHistory.isCorrect = userSession.questions[index].isCorrect;
 
-    return userData;
+    return questionHistory;
 }
 
+//Gets the current timestamp in a format that the backend finds friendly
 function getTimestamp() {
+    //Timestamp
+    ///The current time as an ISO string - e.g. '2021-11-03T15:33:31.424Z'
     var now = new Date().toISOString();
 
+    ///Cutting off the Z
     return now.substring(0, 23);
 }
 
+//Gets the ID of the current assignment
 function getAssignment() {
+    //Get ID
+    ///Create a return variable - null in case of no assignment
     var assignmentID = "";
     
+    ///If there is an existing assignment ID - if this is an assignment
     if(userSession.assignmentID) {
+        ///Set thereturn variable to the assignment ID
         assignmentID = userSession.assignmentID;
     }
 
@@ -1499,17 +1543,24 @@ window.onload = function(){
 };
 
 //Runs when the page loads
-function initialise(){
+async function initialise(){
+    //If the user is a guest
     if(sessionStorage.getItem("isGuest")) {
-        userSession.loaderVal = 1;
-
-        startTestQuestions();
-
-        hideLoader();
-    } else {
+        //Set the loader to 1 (on by default)
         userSession.loaderVal = 1;
 
         //Function calls
+        ///Run the guest access questions - no API calls
+        startTestQuestions();
+
+        ///Hide the loader
+        hideLoader();
+    } else {
+        //Set the loader to 1 (on by default)
+        userSession.loaderVal = 1;
+
+        //Function calls
+        ///Initialise the user
         initialiseAuth(); 
 
         ///Loads the qualification values into the input box

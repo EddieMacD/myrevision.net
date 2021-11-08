@@ -102,3 +102,8 @@
     background-color: lighten($tertiary-color, 10%);
     color: $light-primary;
 }
+
+.page-marker-selected:hover, .page-marker-selected:focus {
+    background-color: darken($light-primary, 10%);
+    color: $tertiary-color;
+}

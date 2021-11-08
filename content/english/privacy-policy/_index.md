@@ -1,13 +1,13 @@
 ---
 title: "Privacy Policy"
-description: "MyRevision.net"
+description: "Privacy Policy"
 draft: false
 bg_image: "images/backgrounds/paper_boats.jpg"
 ---
 
 ## MyRevision.net Privacy Policy
 
-This Privacy Policy governs the manner in which MyRevision.net collects, uses, maintains and discloses information collected from users (each, a "User") of the cloud-architecture.io website ("Site"). This privacy policy applies to the Site and all products and services offered by cyber-shadow Ltd.
+This Privacy Policy governs the manner in which MyRevision.net collects, uses, maintains and discloses information collected from users (each, a "User") of the MyRevision.net website ("Site"). This privacy policy applies to the Site and all products and services offered by MyRevision.net.
 
 ### Personal identification information
 
