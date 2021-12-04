@@ -1,0 +1,216 @@
+{{ define "main" }}
+
+{{ $data := index site.Data site.Language.Lang }}
+
+<script language="javascript" src="../scripts/editClasses.js"></script>
+
+<!-- Main content -->
+<section class="main-content section">
+    <div class="container" id="school-input-container" style="display: none;">
+        <div class="row">
+            <div class="col-xs-12">
+                <select name="school-select" id="school-select" class="form-control school-select" onchange="getClasses()"></select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add a new class input container -->
+    <div class="container" id="add-class-container">
+        <div class="edit-class-box">
+            <!-- Top row for the add class input -->
+            <div class="row edit-class-header" data-toggle="collapse" data-target="#frm-add-class" aria-expanded="false"
+                aria-controls="frm-add-class">
+                <div class="col-xs-8">
+                    <label class="edit-class-header-label">Add a New Class</label>
+                </div>
+                <div class="col-xs-4">
+                    <i class="ion-android-arrow-dropdown-circle symbol"></i>
+                    <i class="ion-android-arrow-dropup-circle symbol"></i>
+                </div>
+            </div>
+
+            <!-- Collapsible input form -->
+            <div class="frm-edit-class collapse" id="frm-add-class">
+                <!-- Class Name input -->
+                <div class="row filter-row">
+                    <div class="col-xs-3">
+                        <label class="form-group-label" for="class-name-input">Class Name: </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <input class="form-control" id="class-name-input" type="text"></input>
+                    </div>
+                </div>
+
+                <!-- Topic input -->
+                <div class="row filter-row">
+                    <div class="col-xs-3">
+                        <label class="form-group-label" for="topic-input">Topic: </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <input class="form-control" id="topic-input" type="text"></input>
+                    </div>
+                </div>
+                <!-- Submit button -->
+                <div class="row">
+                    <div class="col-xs-2 mx-auto">
+                        <button type="submit" class="btn btn-submit" onclick="submitClass()">Add New Class</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit the content's of a class or delete it container -->
+    <div class="container" id="edit-class-container">
+        <div class="edit-class-box">
+            <!-- Top row for editing a class -->
+            <div class="row edit-class-header" data-toggle="collapse" data-target="#frm-edit-class"
+                aria-expanded="false" aria-controls="frm-edit-class">
+                <div class="col-xs-8">
+                    <label class="edit-class-header-label">Edit a Class</label>
+                </div>
+                <div class="col-xs-4">
+                    <i class="ion-android-arrow-dropdown-circle symbol"></i>
+                    <i class="ion-android-arrow-dropup-circle symbol"></i>
+                </div>
+            </div>
+
+            <!-- Collapsible input form -->
+            <div class="frm-edit-class collapse" id="frm-edit-class">
+                <div class="row" id="class-select-row">
+                    <div class="col-xs-3">
+                        <label class="form-group-label" for="class-name-select">Class Name: </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <select name="class-name-select" id="class-name-select" class="form-control"
+                            onchange="setUserPages()"></select>
+                    </div>
+                </div>
+
+                <div class="edit-class-box">
+                    <!-- Top row for adding to a class -->
+                    <div class="row edit-class-header" data-toggle="collapse" data-target="#frm-add-to-class"
+                        aria-expanded="false" aria-controls="frm-add-to-class">
+                        <div class="col-xs-8">
+                            <label class="edit-class-header-label">Add to a Class</label>
+                        </div>
+                        <div class="col-xs-4">
+                            <i class="ion-android-arrow-dropdown-circle symbol"></i>
+                            <i class="ion-android-arrow-dropup-circle symbol"></i>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible input form -->
+                    <div class="frm-edit-class collapse" id="frm-add-to-class">
+                        <!-- Input number shown on a user page -->
+                        <div class="row filter-row">
+                            <div class="col-xs-3">
+                                <label class="form-group-label" for="frm-add-user-page-num">Number of Users Shown:
+                                </label>
+                            </div>
+                            <div class="col-xs-9">
+                                <select name="frm-add-user-page-num" id="frm-add-user-page-num" class="form-control"
+                                    onchange="setAddUserPage(0)">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="40">40</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Class page container -->
+                        <div id="frm-add-user-page"></div>
+
+                        <!-- Page makers for changing page -->
+                        <div class="row page-marker-row">
+                            <div class="col-xs-2">
+                                <label class="form-group-label" for="add-page-markers">Change Page: </label>
+                            </div>
+                            <div class="col-xs-10" id="add-page-markers"></div>
+                        </div>
+
+                        <!-- Next and Previous buttons -->
+                        <div class="row btn-row">
+                            <div class="col-xs-6">
+                                <button type="button" class="btn btn-prev" id="add-btn-prev" onclick="newAddUserPage(-1)"><i class="ion-arrow-left-b arrow"></i> Previous</button>
+                            </div>
+                            <div class="col-xs-6">
+                                <button type="button" class="btn btn-next" id="add-btn-next" onclick="newAddUserPage(1)">Next <i class="ion-arrow-right-b arrow"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="edit-class-box">
+                    <!-- Top row for removing from a class -->
+                    <div class="row edit-class-header" data-toggle="collapse" data-target="#frm-remove-from-class"
+                        aria-expanded="false" aria-controls="frm-remove-from-class">
+                        <div class="col-xs-8">
+                            <label class="edit-class-header-label">Remove from a Class</label>
+                        </div>
+                        <div class="col-xs-4">
+                            <i class="ion-android-arrow-dropdown-circle symbol"></i>
+                            <i class="ion-android-arrow-dropup-circle symbol"></i>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible input form -->
+                    <div class="frm-edit-class collapse" id="frm-remove-from-class">
+                        <!-- Input number shown on a user page -->
+                        <div class="row filter-row">
+                            <div class="col-xs-3">
+                                <label class="form-group-label" for="frm-remove-user-page-num">Number of Users Shown:
+                                </label>
+                            </div>
+                            <div class="col-xs-9">
+                                <select name="frm-remove-user-page-num" id="frm-remove-user-page-num"
+                                    class="form-control" onchange="setRemoveUserPage(0)">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="40">40</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Class page container -->
+                        <div id="frm-remove-user-page"></div>
+
+                        <!-- Page makers for changing page -->
+                        <div class="row remove-page-marker-row">
+                            <div class="col-xs-2">
+                                <label class="form-group-label" for="remove-page-markers">Change Page: </label>
+                            </div>
+                            <div class="col-xs-10" id="remove-page-markers"></div>
+                        </div>
+
+                        <!-- Next and Previous buttons -->
+                        <div class="row btn-row">
+                            <div class="col-xs-6">
+                                <button type="button" class="btn btn-prev" id="remove-btn-prev" onclick="newRemoveUserPage(-1)"><i class="ion-arrow-left-b arrow"></i> Previous</button>
+                            </div>
+                            <div class="col-xs-6">
+                                <button type="button" class="btn btn-next" id="remove-btn-next" onclick="newRemoveUserPage(1)">Next <i class="ion-arrow-right-b arrow"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="class-delete-row">
+                    <div class="col-xs-8">
+                        <label class="form-group-label" for="class-delete-check">Are you sure you want to delete this class:  </label>
+                        <input type="checkbox" class="delete-box" id="class-delete-check" onclick="deleteClassCheck()">
+                    </div>
+                    <div class="col-xs-4">
+                        <button class="btn btn-delete-class" id="delete-class-btn" disabled="disabled" onclick="deleteClass()">Delete Class</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{ end }}

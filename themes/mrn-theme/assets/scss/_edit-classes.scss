@@ -1,21 +1,16 @@
-.date-row {
-    margin-top: 15px;
-    margin-bottom: 40px;
-}
-
-.edit-user-header[aria-expanded=false] {
+.edit-class-header[aria-expanded=false] {
     .ion-android-arrow-dropup-circle {
         display: none;
     }
 }
 
-.edit-user-header[aria-expanded=true] {
+.edit-class-header[aria-expanded=true] {
     .ion-android-arrow-dropdown-circle {
         display: none;
     }
 }
 
-.edit-user-box {
+.edit-class-box {
     margin: 15px;
 
     padding-left: 10px;
@@ -30,7 +25,7 @@
     background-image: radial-gradient(circle at center, $block-background, lighten($block-background, 5%));
 }
 
-.edit-user-header-label {
+.edit-class-header-label {
     font-size: 20px;
 
     color: $secondary-color;
@@ -38,7 +33,7 @@
     text-transform: capitalize;
 }
 
-.frm-edit-user {
+.frm-edit-class {
     border-top-color: $border-color;
     border-top-style: solid;
     border-top-width: 1px;
@@ -46,7 +41,7 @@
     padding: 20px;
 }
 
-.user-row {
+.class-row {
     margin-bottom: 5px;
 
     border-bottom-color: $border-color;
@@ -83,7 +78,12 @@
     overflow-x: auto;
 }
 
-.btn-delete:hover, .btn-delete:focus {
+.btn-remove:hover, .btn-remove:focus {
+    background-color: $primary-color;
+    color: $light-primary;
+}
+
+.btn-add:hover, .btn-add:focus {
     background-color: $primary-color;
     color: $light-primary;
 }
@@ -101,4 +101,20 @@
 .page-marker-selected:hover, .page-marker-selected:focus {
     background-color: darken($light-primary, 10%);
     color: $tertiary-color;
+}
+
+.btn-delete-class{
+    background-color: lighten($incorrect, 50%);
+    color: darken($incorrect, 20%);
+
+    float: right;
+}
+
+.btn-delete-class:hover, .btn-delete-class:focus {
+    background-color: darken($incorrect, 20%);
+    color: lighten($incorrect, 50%);
+}
+
+.delete-box {
+    vertical-align: top;
 }

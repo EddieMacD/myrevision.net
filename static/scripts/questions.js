@@ -1493,6 +1493,8 @@ function compileQuestionHistory(index) {
     ///The current time
     questionHistory.timestamp = getTimestamp();
 
+    questionHistory.timeSpent = userSession.questions[index].timer;
+
     ///The data required to work out the ID for the current question
     questionHistory.questionID = {};
     questionHistory.questionID.fileName = userSession.questions[index].index;

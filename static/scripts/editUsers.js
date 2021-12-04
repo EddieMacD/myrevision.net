@@ -168,6 +168,7 @@ async function getUserPage(offset) {
         ///The API call to get the user page
         var data = await callGetAPI(api, "user data");
 
+        userSession.numOfUsers = data.count;
 
         //Displaying User Page
         ///For each user in the page

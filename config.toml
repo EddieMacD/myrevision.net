@@ -174,9 +174,15 @@ weight = 6
 weight = 2
 name = "Manage Users"
 hasChildren = true
-
   
   [[Languages.en.menu.teacher]]
+  weight = 1
   parent = "Manage Users"
   name = "Edit Users"
   URL = "edit-users"
+
+  [[Languages.en.menu.teacher]]
+  weight = 2
+  parent = "Manage Users"
+  name = "Edit Classes"
+  URL = "edit-classes"

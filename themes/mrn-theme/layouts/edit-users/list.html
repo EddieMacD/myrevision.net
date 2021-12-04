@@ -6,144 +6,153 @@
 
 <!-- Main content -->
 <section class="main-content section">
-  <div class="container" id="school-input-container" style="display: none;">
-    <div class="row">
-      <div class="col-xs-12">
-        <select name="school-select" id="school-select" class="form-control school-select" onchange="getUserPage(0)"></select>
-      </div>
-    </div>
-  </div>
-
-  <!-- Add a new user input container -->
-  <div class="container" id="add-user-container">
-    <!-- Top row for the add user input --> 
-    <div class="row edit-user-header" data-toggle="collapse" data-target="#frm-add-user" aria-expanded="false" aria-controls="frm-add-user">
-      <div class="col-xs-8">
-        <label class="edit-user-header-label">Add a New User</label>
-      </div>
-      <div class="col-xs-4">
-        <i class="ion-android-arrow-dropdown-circle symbol"></i>
-        <i class="ion-android-arrow-dropup-circle symbol"></i>
-      </div>
+    <div class="container" id="school-input-container" style="display: none;">
+        <div class="row">
+            <div class="col-xs-12">
+                <select name="school-select" id="school-select" class="form-control school-select" onchange="getUserPage(0)"></select>
+            </div>
+        </div>
     </div>
 
-    <!-- Collapsible input form -->
-    <div class="frm-edit-user collapse" id="frm-add-user">
-      <!-- First Name input -->
-      <div class="row filter-row">
-        <div class="col-xs-3">
-          <label class="form-group-label" for="first-name-input">First Name: </label>
-        </div>
-        <div class="col-xs-9">
-            <input class="form-control" id="first-name-input" type="text"></input>
-        </div>
-      </div>
+    <!-- Add a new user input container -->
+    <div class="container" id="add-user-container">
+        <div class="edit-user-box">
+            <!-- Top row for the add user input -->
+            <div class="row edit-user-header" data-toggle="collapse" data-target="#frm-add-user" aria-expanded="false"
+                aria-controls="frm-add-user">
+                <div class="col-xs-8">
+                    <label class="edit-user-header-label">Add a New User</label>
+                </div>
+                <div class="col-xs-4">
+                    <i class="ion-android-arrow-dropdown-circle symbol"></i>
+                    <i class="ion-android-arrow-dropup-circle symbol"></i>
+                </div>
+            </div>
 
-      <!-- Last Name input -->
-      <div class="row filter-row">
-        <div class="col-xs-3">
-          <label class="form-group-label" for="last-name-input">Last Name: </label>
-        </div>
-        <div class="col-xs-9">
-            <input class="form-control" id="last-name-input" type="text"></input>
-        </div>
-      </div>
-      
-      <!-- Email input -->
-      <div class="row filter-row">
-        <div class="col-xs-3">
-          <label class="form-group-label" for="email-input">Email: </label>
-        </div>
-        <div class="col-xs-9">
-            <input class="form-control" id="email-input" type="text"></input>
-        </div>
-      </div>
+            <!-- Collapsible input form -->
+            <div class="frm-edit-user collapse" id="frm-add-user">
+                <!-- First Name input -->
+                <div class="row filter-row">
+                    <div class="col-xs-3">
+                        <label class="form-group-label" for="first-name-input">First Name: </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <input class="form-control" id="first-name-input" type="text"></input>
+                    </div>
+                </div>
 
-      <!-- Access Level input -->
-      <div class="row filter-row">
-        <div class="col-xs-3">
-          <label class="form-group-label" for="access-level-input">User Type: </label>
-        </div>
-        <div class="col-xs-9">
-          <select name="access-level-input" id="access-level-input" class="form-control">
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-          </select>
-        </div>
-      </div>
+                <!-- Last Name input -->
+                <div class="row filter-row">
+                    <div class="col-xs-3">
+                        <label class="form-group-label" for="last-name-input">Last Name: </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <input class="form-control" id="last-name-input" type="text"></input>
+                    </div>
+                </div>
 
-      <!-- DOB input -->
-      <div class="row filter-row date-row">
-        <div class="col-xs-3">
-          <label class="form-group-label" for="dob-input">Date of Birth: </label>
-        </div>
-        <div class="col-xs-9">
-          <input type="date" id="dob-input" name="dob-input" value="2000-01-01" min="1900-01-01" max="2022-01-01"></input>
-        </div>
-      </div>
+                <!-- Email input -->
+                <div class="row filter-row">
+                    <div class="col-xs-3">
+                        <label class="form-group-label" for="email-input">Email: </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <input class="form-control" id="email-input" type="text"></input>
+                    </div>
+                </div>
 
-      <!-- Submit button -->
-      <div class="row">
-        <div class="col-xs-2 mx-auto">
-          <button type="submit" class="btn btn-submit" onclick="submitUser()">Add New User</button>
+                <!-- Access Level input -->
+                <div class="row filter-row">
+                    <div class="col-xs-3">
+                        <label class="form-group-label" for="access-level-input">User Type: </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <select name="access-level-input" id="access-level-input" class="form-control">
+                            <option value="student">Student</option>
+                            <option value="teacher">Teacher</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- DOB input -->
+                <div class="row filter-row date-row">
+                    <div class="col-xs-3">
+                        <label class="form-group-label" for="dob-input">Date of Birth: </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <input type="date" id="dob-input" name="dob-input" value="2000-01-01" min="1900-01-01"
+                            max="2022-01-01"></input>
+                    </div>
+                </div>
+
+                <!-- Submit button -->
+                <div class="row">
+                    <div class="col-xs-2 mx-auto">
+                        <button type="submit" class="btn btn-submit" onclick="submitUser()">Add New User</button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- Delete a user input container -->
-  <div class="container" id="add-user-container">
-    <!-- Top row for deleting a user -->
-    <div class="row edit-user-header" data-toggle="collapse" data-target="#frm-delete-user" aria-expanded="false" aria-controls="frm-delete-user">
-      <div class="col-xs-8">
-        <label class="edit-user-header-label">Delete a User</label>
-      </div>
-      <div class="col-xs-4">
-        <i class="ion-android-arrow-dropdown-circle symbol"></i>
-        <i class="ion-android-arrow-dropup-circle symbol"></i>
-      </div>
+    <!-- Delete a user input container -->
+    <div class="container" id="add-user-container">
+        <div class="edit-user-box">
+            <!-- Top row for deleting a user -->
+            <div class="row edit-user-header" data-toggle="collapse" data-target="#frm-delete-user"
+                aria-expanded="false" aria-controls="frm-delete-user">
+                <div class="col-xs-8">
+                    <label class="edit-user-header-label">Delete a User</label>
+                </div>
+                <div class="col-xs-4">
+                    <i class="ion-android-arrow-dropdown-circle symbol"></i>
+                    <i class="ion-android-arrow-dropup-circle symbol"></i>
+                </div>
+            </div>
+
+            <!-- Collapsible input form -->
+            <div class="frm-edit-user collapse" id="frm-delete-user">
+                <!-- Input number shown on a user page -->
+                <div class="row filter-row">
+                    <div class="col-xs-3">
+                        <label class="form-group-label" for="frm-delete-user-page-num">Number of Users Shown: </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <select name="frm-delete-user-page-num" id="frm-delete-user-page-num" class="form-control"
+                            onchange="setUserPage(0)">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- User page container -->
+                <div id="frm-delete-user-page"></div>
+
+                <!-- Page makers for changing page -->
+                <div class="row page-marker-row">
+                    <div class="col-xs-2">
+                        <label class="form-group-label" for="page-markers">Change Page: </label>
+                    </div>
+                    <div class="col-xs-10" id="page-markers"></div>
+                </div>
+
+                <!-- Next and Previous buttons -->
+                <div class="row btn-row">
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-prev" onclick="newUserPage(-1)"><i class="ion-arrow-left-b arrow"></i>
+                            Previous</button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-next" onclick="newUserPage(1)">Next <i class="ion-arrow-right-b arrow"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Collapsible input form -->
-    <div class="frm-edit-user collapse" id="frm-delete-user">
-      <!-- Input number shown on a user page -->
-      <div class="row filter-row">
-        <div class="col-xs-3">
-          <label class="form-group-label" for="frm-delete-user-page-num">Number of Users Shown: </label>
-        </div>
-        <div class="col-xs-9">
-          <select name="frm-delete-user-page-num" id="frm-delete-user-page-num" class="form-control" onchange="setUserPage(0)">
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="40">40</option>
-            <option value="50">50</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- User page container -->
-      <div id="frm-delete-user-page"></div>
-
-      <!-- Page makers for changing page -->
-      <div class="row page-marker-row">
-        <div class="col-xs-2">
-          <label class="form-group-label" for="page-markers">Change Page: </label>
-        </div>
-        <div class="col-xs-10" id="page-markers"></div>            
-      </div>
-
-      <!-- Next and Previous buttons -->
-      <div class="row btn-row">
-        <div class="col-xs-6">
-          <button type="button" class="btn btn-prev" onclick="newUserPage(-1)"><i class="ion-arrow-left-b arrow"></i>  Previous</button>
-        </div>            
-        <div class="col-xs-6">
-          <button type="button" class="btn btn-next" onclick="newUserPage(1)">Next <i class="ion-arrow-right-b arrow"></i></button>
-        </div>            
-      </div>    
-    </div> 
-  </div>
 </section>
 
 {{ end }}
