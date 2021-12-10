@@ -2,7 +2,7 @@
 
 {{ $data := index site.Data site.Language.Lang }}
 
-<script language="javascript" src="../scripts/editClasses.js"></script>
+<script language="javascript" src="../scripts/editAssignments.js"></script>
 
 <!-- Main content -->
 <section class="main-content section">
@@ -82,7 +82,8 @@
                         <label class="form-group-label" for="class-name-select">Class Name: </label>
                     </div>
                     <div class="col-xs-9">
-                        <select name="class-name-select" id="class-name-select" class="form-control" onchange="() => {setUserPages(); getTopic();}"></select>
+                        <select name="class-name-select" id="class-name-select" class="form-control"
+                            onchange="setUserPages()"></select>
                     </div>
                 </div>
 
@@ -195,32 +196,6 @@
                                 <button type="button" class="btn btn-next" id="remove-btn-next" onclick="newRemoveUserPage(1)">Next <i class="ion-arrow-right-b arrow"></i></button>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Change name input -->
-                <div class="row class-change-data-row-top">
-                    <div class="col-xs-3">
-                        <label class="form-group-label" for="change-name-input">Change Class Name: </label>
-                    </div>
-                    <div class="col-xs-8">
-                        <input class="form-control" id="change-name-input" type="text"></input>
-                    </div>
-                    <div class="col-xs-1">
-                        <button type="submit" class="btn btn-submit" id="btn-change-name-submit" onclick="editClassData('name');">Submit</button>
-                    </div>
-                </div>
-        
-                <!-- Change subject input -->
-                <div class="row class-change-data-row-bottom">
-                    <div class="col-xs-3">
-                        <label class="form-group-label" for="change-subject-input">Change Class Subject: </label>
-                    </div>
-                    <div class="col-xs-8">
-                        <input class="form-control" id="change-subject-input" type="text"></input>
-                    </div>
-                    <div class="col-xs-1">
-                        <button type="submit" class="btn btn-submit" id="btn-change-subject-submit" onclick="editClassData('subject')">Submit</button>
                     </div>
                 </div>
 

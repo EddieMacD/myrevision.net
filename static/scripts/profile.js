@@ -35,7 +35,7 @@ async function submitEmail() {
         var newEmail = $("#change-email-input").val();
 
         ///The api used to change the user's email, sending the user's username and their email
-        var api = apiRoot + "/change-email?username=" + userSession.auth.username + "&newEmail=" + newEmail;
+        var api = apiRoot + "/user/change-email?username=" + userSession.auth.username + "&newEmail=" + newEmail;
 
 
         //API Call
@@ -107,7 +107,7 @@ async function submitPassword () {
         var newPassword = $("#change-password-input").val();
 
         ///The api used to change the user's password, sending the user's username and their password
-        var api = apiRoot + "/change-password?username=" + userSession.auth.username + "&newPassword=" + newPassword;
+        var api = apiRoot + "/user/change-password?username=" + userSession.auth.username + "&newPassword=" + newPassword;
 
 
         //API Call

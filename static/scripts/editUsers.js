@@ -28,7 +28,7 @@ async function getTeacherSchool () {
     try {
         //Get School
         ///The api to call to get the user's school, complete with query string parameters
-        var api = apiRoot + "/user-school?email=" + userSession.auth.email;
+        var api = apiRoot + "/user/school?email=" + userSession.auth.email;
 
         ///Getting the school via api call
         var school = await callGetAPI(api, "your school");
@@ -96,7 +96,7 @@ async function submitUser () {
 
         //Variables
         ///The api to be called in order to add a new user
-        var api = apiRoot + "/new-user";
+        var api = apiRoot + "/user/create";
 
         ///The post body for creating a user, with all of the required information
         var postBody = {};
@@ -108,8 +108,13 @@ async function submitUser () {
         postBody.DOB = getDOB();
         postBody.accessLevel = getAccessLevel();
 
+        console.log(postBody);
+
         ///Calling the API to create a user
         await callPostAPI(api, postBody, "a user", false);
+
+        ///Refresh the user page for deleting users
+        getUserPage(0);
 
         ///Show the user that success has been had
         generateSuccessBar("User " + postBody.firstName + " " + postBody.lastName +  " created. An email has been sent to " + postBody.email + " inviting them to myrevision.net");
@@ -163,7 +168,7 @@ async function getUserPage(offset) {
         userSession.pageOffset = offset;
 
         ///The URI for the API to get a user page, complete with query string parameters
-        var api = apiRoot + "/user-page?school=" + getSchool() + "&offset=" + offset + "&amount=" + pageSize;
+        var api = apiRoot + "/user/get-page?school=" + getSchool() + "&offset=" + offset + "&amount=" + pageSize;
 
         ///The API call to get the user page
         var data = await callGetAPI(api, "user data");
@@ -319,7 +324,7 @@ async function deleteUser(index) {
 
         //Delete User
         ///The URI of the api to delete a user, compelete with all of the relevant parameters
-        var api = apiRoot + "/delete-user?deletedEmail=" + $("#user-email-" + index).text() + "&school=" + getSchool() + "&senderUsername=" + userSession.auth.username;
+        var api = apiRoot + "/user/delete?deletedEmail=" + $("#user-email-" + index).text() + "&school=" + getSchool() + "&senderUsername=" + userSession.auth.username;
         
         ///Calling the API to delete a user
         await callGetAPI(api, "user data");

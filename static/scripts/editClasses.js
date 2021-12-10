@@ -27,7 +27,7 @@ async function getTeacherSchool () {
     try {
         //Get School
         ///The api to call to get the user's school, complete with query string parameters
-        var api = apiRoot + "/user-school?email=" + userSession.auth.email;
+        var api = apiRoot + "/user/school?email=" + userSession.auth.email;
 
         ///Getting the school via api call
         var school = await callGetAPI(api, "your school");
@@ -107,7 +107,6 @@ async function submitClass () {
 
         ///Show the user that success has been had
         generateSuccessBar("The class " + className + " for " + classSubject +  " has been created.");
-
     } catch (e) {
         generateErrorBar(e);
     }
@@ -153,6 +152,7 @@ async function getClasses() {
             userSession.removePageOffset = 0;
 
             setUserPages();
+            getTopic();
         } else {
             $("#edit-class-container").hide();
         }
@@ -575,6 +575,40 @@ async function deleteClass() {
     }
 }
 
+async function getTopic() {
+    try {
+        clearStatusBar();
+
+        var api = apiRoot + "/class/get-subject?classID=" + getClassID();
+        
+        var topic = await callGetAPI(api, "class data");
+        topic = topic.topic;
+
+        $("#change-name-input").val($("#class-name-select option:selected").text());
+        $("#change-subject-input").val(topic);
+    } catch (e) {
+        generateErrorBar(e);
+    }
+}
+
+async function editClassData(valueType) {
+    try {
+        clearStatusBar();
+
+        var newValue = $("#change-" + valueType + "-input").val();
+
+        var api = apiRoot + "/class/edit?senderUsername=" + userSession.auth.username + "&classID=" + getClassID() + "&school=" + getSchool() + "&newValue=" + newValue + "&valueType=" + valueType;
+
+        ///Calling the API to delete a user
+        await callGetAPI(api, "class data");
+
+        await getClasses();
+
+        generateSuccessBar("Class " + valueType + " successfully changed to \"" + newValue + "\"")
+    } catch (e) {
+        generateErrorBar(e);
+    }
+}
 //Runs when the code loads - the timeout buffers until the full page loads
 ///Runs the initialise function in case more than one function call is needed
 window.onload = function(){

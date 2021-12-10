@@ -204,7 +204,7 @@ async function initialiseAuth() {
 async function getUserData(username) {
     //Data Retrieval
     ///The URI for the API to get the data, complete with requisite query string parameters
-    var api = apiRoot + "/user-data?username=" + username;
+    var api = apiRoot + "/user/data?username=" + username;
 
     ///Calling the API for the data
     var userData = await callGetAPI(api, "user information");

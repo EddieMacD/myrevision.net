@@ -13,7 +13,7 @@ async function loadQualification() {
         var qualifications = [];
 
         ///The api to be called to get the qualifications
-        var api = apiRoot + "/filters";
+        var api = apiRoot + "/question/filter-recall";
 
 
         //Updating the page
@@ -44,7 +44,7 @@ function filterAPI(filePath, isTopics) {
     var uri = "";
 
     ///Adds the API root, the correct resource and the filepath parameter to the URI
-    uri = apiRoot + "/filters?filePath=" + filePath;
+    uri = apiRoot + "/question/filter-recall?filePath=" + filePath;
 
     ///If the api is to call topics then it adds the boolean variable onto the URI
     if(isTopics) {
@@ -542,7 +542,7 @@ function compileQuestionAPI() {
 
     //Concatenating URI
     ///Takes the api root, the number of questions and the file path and creates a uri for the api
-    uri = apiRoot + "/questions";
+    uri = apiRoot + "/question/recall";
 
     ///For testing 
     //console.log(uri);
@@ -999,39 +999,16 @@ async function submitAnswers() {
         ///Makes sure the current user change is recorded
         storeAnswer();
 
-        if(sessionStorage.getItem("isGuest")) {
-            var response = {"answers":[[{"a":"2"}],[{"a":"0"},{"a":"1"}],[{"a":"Nibble"},{"a":"Bit"},{"a":"Megabyte"}],[{"a":"5TB"},{"a":"2 nibbles"},{"a":"5GB"},{"a":"2 bytes"}],[{"a":"16384 nibbles"},{"a":"1/128 MB"}],[{"a":"01100101"}],[{"a":"1024 KB"},{"a":"1048576 bytes"}],[{"a":"Base 2"},{"a":"Base 10"},{"a":"Base 2"}],[{"a":"204"}],[{"a":"bit"},{"a":"nibble"},{"a":"byte"},{"a":"kilobyte"}],[{"a":"In binary"}],[{"a":"memory"},{"a":"storage"}],[{"a":"81920 bits"},{"a":"5242880 bytes"},{"a":"8 nibbles"},{"a":"16 bits"}],[{"a":"00010111"},{"a":"01100000"},{"a":"01101111"}],[{"a":"01011001"}],[{"a":"1024"},{"a":"1024"}],[{"a":"255"}],[{"a":"denary"},{"a":"10"}],[{"a":"36"},{"a":"194"},{"a":"177"}],[{"a":"11110110"}]]};
-        } else {
-            ///The full api to be called for the correct answers
-            var api = compileAnswerAPI();
-
-            ///A temporary object to store the results from the api call
-            var response = await callGetAPI(api, "answers");
-        }
-
-        ///For each question 
-        for(var i = 0; i < userSession.numOfQuestions; i++)
-        {
-            ///Add an array of correct answers to the selected question
-            userSession.questions[i].correctAnswers = [];
-
-            ///For each correct answer for this question
-            for(var j = 0; j < response.answers[i].length; j++)
-            {
-                ///Push it to the correct answers array 
-                userSession.questions[i].correctAnswers.push(response.answers[i][j].a);
-            }
-
-            ///Populates the user session object with an initialised array containing whether each question is correct
-            userSession.questions[i].isCorrect = false;
-        }
+        await getAnswers();
 
         //Answer handling
         ///Marking the answers
         markAnswers();
 
-        ///Sends the question history to the server
-        await sendQuestionHistory();
+        if(!sessionStorage.getItem("isGuest")) {
+            ///Sends the question history to the server
+            await sendQuestionHistory();
+        }
 
         ///Displaying the answers form
         displayAnswerScreen();
@@ -1041,6 +1018,35 @@ async function submitAnswers() {
         $("#frm-answers").hide();
 
         generateErrorBar(error);
+    }
+}
+
+async function getAnswers() {
+    if(sessionStorage.getItem("isGuest")) {
+        var response = {"answers":[[{"a":"2"}],[{"a":"0"},{"a":"1"}],[{"a":"Nibble"},{"a":"Bit"},{"a":"Megabyte"}],[{"a":"5TB"},{"a":"2 nibbles"},{"a":"5GB"},{"a":"2 bytes"}],[{"a":"16384 nibbles"},{"a":"1/128 MB"}],[{"a":"01100101"}],[{"a":"1024 KB"},{"a":"1048576 bytes"}],[{"a":"Base 2"},{"a":"Base 10"},{"a":"Base 2"}],[{"a":"204"}],[{"a":"bit"},{"a":"nibble"},{"a":"byte"},{"a":"kilobyte"}],[{"a":"In binary"}],[{"a":"memory"},{"a":"storage"}],[{"a":"81920 bits"},{"a":"5242880 bytes"},{"a":"8 nibbles"},{"a":"16 bits"}],[{"a":"00010111"},{"a":"01100000"},{"a":"01101111"}],[{"a":"01011001"}],[{"a":"1024"},{"a":"1024"}],[{"a":"255"}],[{"a":"denary"},{"a":"10"}],[{"a":"36"},{"a":"194"},{"a":"177"}],[{"a":"11110110"}]]};
+    } else {
+        ///The full api to be called for the correct answers
+        var api = compileAnswerAPI();
+
+        ///A temporary object to store the results from the api call
+        var response = await callGetAPI(api, "answers");
+    }
+
+    ///For each question 
+    for(var i = 0; i < userSession.numOfQuestions; i++)
+    {
+        ///Add an array of correct answers to the selected question
+        userSession.questions[i].correctAnswers = [];
+
+        ///For each correct answer for this question
+        for(var j = 0; j < response.answers[i].length; j++)
+        {
+            ///Push it to the correct answers array 
+            userSession.questions[i].correctAnswers.push(response.answers[i][j].a);
+        }
+
+        ///Populates the user session object with an initialised array containing whether each question is correct
+        userSession.questions[i].isCorrect = false;
     }
 }
 
@@ -1067,7 +1073,7 @@ function compileAnswerAPI() {
     var uri = "";
     
     ///Loading the variable with the api root, the correct resource and the file path
-    uri = apiRoot + "/answers?filePath=" + userSession.filePath;
+    uri = apiRoot + "/question/answer-recall?filePath=" + userSession.filePath;
 
     ///Loads the uri with the question indexes. Uses multiQueryStringParameters instead of the standard queryStringParameters, hence the repetition of index assignments instead of square brackets
     for (var i = 0; i < userSession.numOfQuestions; i++) {
@@ -1452,16 +1458,15 @@ function displayBasicQuestion(index, answerSet, idStem) {
 
 //Sends user data to the question history storage
 async function sendQuestionHistory() {
+    ///The api to send the data
+    const api = apiRoot + "/question/history/store";
+
     //For every question
     for (var i = 0; i < userSession.numOfQuestions; i++) {
         try{
             //Variables
             ///The data to be posted to the system
             var postBody = compileQuestionHistory(i);
-
-            ///The api to send the data
-            var api = apiRoot + "/question-history";
-
 
             //Data sending
             ///Sending the data to the system
@@ -1470,7 +1475,6 @@ async function sendQuestionHistory() {
             //Hide any errors - a mild gap in logging is understandable and not-necessary for reporting. Retry once but no more than once
             try{
                 var postBody = compileQuestionHistory(i);
-                var api = apiRoot + "/question-history";
     
                 await callPostAPI(api, postBody, "question history", false);
             } catch (e) {
@@ -1493,6 +1497,7 @@ function compileQuestionHistory(index) {
     ///The current time
     questionHistory.timestamp = getTimestamp();
 
+    ///The time spent on the current question
     questionHistory.timeSpent = userSession.questions[index].timer;
 
     ///The data required to work out the ID for the current question
