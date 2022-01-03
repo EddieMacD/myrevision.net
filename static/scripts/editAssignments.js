@@ -32,6 +32,8 @@ async function getTeacherSchool () {
         ///Getting the school via api call
         var school = await callGetAPI(api, "your school");
 
+        school = school.school;
+
         ///Put the school into the school select box
         $("#school-select").append(newSelectItem(school));
 
