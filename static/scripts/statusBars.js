@@ -27,6 +27,9 @@ function clearStatusBar () {
     ///Empties the error bar container
     $("#error-container").empty();
 
+    ///Empties the update bar container
+    $("#update-container").empty();
+
     ///Empties the success bar container
     $("#success-container").empty();
 }
