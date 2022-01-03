@@ -39,6 +39,5 @@ There is also a limited test access from the front page with access to a set of 
 Student Email:      student.mrn@gmail.com
 Student Password:   MyR3v!s!0nT3st
 
-TODO:
 Teacher Email:      teachertest.mrn@gmail.com
 Teacher Password:   MyR3v!s!0nT3st

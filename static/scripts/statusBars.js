@@ -36,11 +36,11 @@ function clearStatusBar () {
 function generateSuccessBar(text) {
     //Variables
     ///An array to store the success bar construct
-    var errorBar = [];
+    var successBar = [];
 
     //HTML
     ///Pushes a row, a column and a label to the success bar. Each with the respective style classes and the inputted text in the label
-    errorBar.push(
+    successBar.push(
         "<div class='row success-row'>",
             "<div class='col-xs-12 success-col'>",
                 "<label class='success-label'>" + text + "</label>",
@@ -49,7 +49,30 @@ function generateSuccessBar(text) {
     );
 
     ///Appends the success bar to the correct container at the top of the page
-    $("#success-container").append(errorBar.join(""));
+    $("#success-container").append(successBar.join(""));
+
+    hideLoader();
+}
+
+//Generates a bar at the top of the screen to show the user neutral information
+///text: the message that is to be displayed
+function generateUpdateBar(text) {
+    //Variables
+    ///An array to store the update bar construct
+    var updateBar = [];
+
+    //HTML
+    ///Pushes a row, a column and a label to the update bar. Each with the respective style classes and the inputted text in the label
+    updateBar.push(
+        "<div class='row update-row'>",
+            "<div class='col-xs-12 update-col'>",
+                "<label class='update-label'>" + text + "</label>",
+            "</div>",
+        "</div>",
+    );
+
+    ///Appends the update bar to the correct container at the top of the page
+    $("#update-container").append(updateBar.join(""));
 
     hideLoader();
 }

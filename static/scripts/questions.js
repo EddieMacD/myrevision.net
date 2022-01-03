@@ -481,6 +481,77 @@ async function startQuestions() {
     }
 }
 
+async function startAssignment() {
+    try {
+        clearStatusBar();
+
+        //Disable the button
+        ///Prevents double-clicks which cause generation bugs
+        $(".btn-questions").attr("disabled", "disabled");
+
+
+        //Variables
+        var assignmentFilters = await getAssignmentFilters();
+    
+
+        ///Stores whether the user wants the timer to be shown in the user session (only shown since the timer can be used for teacher analytics)
+        userSession.isTimerShown = false;
+
+        ///The number of questions to be generated - taken from user input. Stored in the user session
+        userSession.numOfQuestions = assignmentFilters.numOfQuestions;
+
+        ///The location of the questions inside the object store
+        userSession.filePath = assignmentFilters.filePath;
+
+        ///The full api to be called for questions
+        var api = compileQuestionAPI();
+
+
+        //Data handling
+        ///A temporary object to store all of the input from the api, once the data has been returned. Test data prevents unnecessary APi calls whilst having all question types
+        var results = await callPostAPI(api, assignmentFilters, "questions");
+        
+        ///Logging for testing
+        //console.log(JSON.stringify(results.questions));
+
+        ///Populating the user session object with the data from the api call
+        userSession.questions = results.questions.questions;
+
+        ///For each question 
+        for(var i = 0; i < userSession.numOfQuestions; i++)
+        {
+            ///Apply the index to the question in user session (the object structure is different client side and server side)
+            userSession.questions[i].index = results.questions.indexes[i];
+        }
+        
+        //Updating the user display
+        displayQuestionScreen();
+    } catch (error) {
+        //Fixing site changes
+        $("#frm-filter").hide();
+        $("#frm-questions").hide();
+
+        //Error messages
+        generateErrorBar(error);
+    }
+}
+
+async function getAssignmentFilters() {
+    try {
+        clearStatusBar();
+
+        var api = apiRoot + "/assignment/read/details?assignmentID=" + userSession.assignmentID + "&senderUsername=" + userSession.auth.username;
+
+        var data = await callGetAPI(api, "assignment data");
+
+        var assignmentFilters = JSON.parse(JSON.parse(data[3].stringValue));
+
+        return assignmentFilters;
+    } catch (e) {
+        generateErrorBar(e);
+    }
+}
+
 async function startTestQuestions() {
     try {
         clearStatusBar();
@@ -1478,7 +1549,7 @@ async function sendQuestionHistory() {
     
                 await callPostAPI(api, postBody, "question history", false);
             } catch (e) {
-
+                console.log(e);
             }
         }
     }
@@ -1538,6 +1609,8 @@ function getAssignment() {
     if(userSession.assignmentID) {
         ///Set thereturn variable to the assignment ID
         assignmentID = userSession.assignmentID;
+
+        sessionStorage.removeItem("assignmentID");
     }
 
     return assignmentID;
@@ -1551,11 +1624,11 @@ window.onload = function(){
 
 //Runs when the page loads
 async function initialise(){
+    //Set the loader to 1 (on by default)
+    userSession.loaderVal = 1;
+
     //If the user is a guest
     if(sessionStorage.getItem("isGuest")) {
-        //Set the loader to 1 (on by default)
-        userSession.loaderVal = 1;
-
         //Function calls
         ///Run the guest access questions - no API calls
         startTestQuestions();
@@ -1563,14 +1636,17 @@ async function initialise(){
         ///Hide the loader
         hideLoader();
     } else {
-        //Set the loader to 1 (on by default)
-        userSession.loaderVal = 1;
-
         //Function calls
         ///Initialise the user
         initialiseAuth(); 
 
-        ///Loads the qualification values into the input box
-        loadQualification();
+        if(sessionStorage.getItem("assignmentID"))
+        {
+            userSession.assignmentID = sessionStorage.getItem("assignmentID")
+            startAssignment();
+        } else {
+            ///Loads the qualification values into the input box
+            loadQualification();
+        }
     }
 }

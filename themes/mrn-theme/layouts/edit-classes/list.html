@@ -86,7 +86,7 @@
                     </div>
                 </div>
 
-                <div class="edit-class-box">
+                <div class="edit-class-box" id="add-to-class-container">
                     <!-- Top row for adding to a class -->
                     <div class="row edit-class-header" data-toggle="collapse" data-target="#frm-add-to-class"
                         aria-expanded="false" aria-controls="frm-add-to-class">
@@ -224,11 +224,14 @@
                     </div>
                 </div>
 
+                <!-- Delete class -->
                 <div class="row" id="class-delete-row">
+                    <!-- Checkbox to check -->
                     <div class="col-xs-8">
                         <label class="form-group-label" for="class-delete-check">Are you sure you want to delete this class:  </label>
                         <input type="checkbox" class="delete-box" id="class-delete-check" onclick="deleteClassCheck()">
                     </div>
+                    <!-- Buton to delete class -->
                     <div class="col-xs-4">
                         <button class="btn btn-delete-class" id="delete-class-btn" disabled="disabled" onclick="deleteClass()">Delete Class</button>
                     </div>

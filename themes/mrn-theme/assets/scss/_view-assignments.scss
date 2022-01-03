@@ -1,20 +1,20 @@
-.edit-assignment-select {
+.view-assignment-select {
     margin-bottom: 20px;
 }
 
-.edit-assignment-header[aria-expanded=false] {
+.view-assignment-header[aria-expanded=false] {
     .ion-android-arrow-dropup-circle {
         display: none;
     }
 }
 
-.edit-assignment-header[aria-expanded=true] {
+.view-assignment-header[aria-expanded=true] {
     .ion-android-arrow-dropdown-circle {
         display: none;
     }
 }
 
-.edit-assignment-box {
+.view-assignment-box {
     margin: 15px;
 
     padding-left: 10px;
@@ -29,7 +29,7 @@
     background-image: radial-gradient(circle at center, $block-background, lighten($block-background, 5%));
 }
 
-.edit-assignment-header-label {
+.view-assignment-header-label {
     font-size: 20px;
 
     color: $secondary-color;
@@ -37,7 +37,7 @@
     text-transform: capitalize;
 }
 
-.frm-edit-assignment {
+.frm-view-assignment {
     border-top-color: $border-color;
     border-top-style: solid;
     border-top-width: 1px;
@@ -82,16 +82,6 @@
     overflow-x: auto;
 }
 
-.btn-remove:hover, .btn-remove:focus {
-    background-color: $primary-color;
-    color: $light-primary;
-}
-
-.btn-add:hover, .btn-add:focus {
-    background-color: $primary-color;
-    color: $light-primary;
-}
-
 .btn-next:hover, .btn-next:focus, .btn-prev:hover, .btn-prev:focus{
     background-color: $tertiary-color;
     color: $light-primary;
@@ -107,22 +97,6 @@
     color: $tertiary-color;
 }
 
-.btn-delete-assignment{
-    background-color: lighten($incorrect, 50%);
-    color: darken($incorrect, 20%);
-
-    float: right;
-}
-
-.btn-delete-assignment:hover, .btn-delete-assignment:focus {
-    background-color: darken($incorrect, 20%);
-    color: lighten($incorrect, 50%);
-}
-
-.delete-box {
-    vertical-align: top;
-}
-
 .assignment-change-data-row-bottom {
     margin-bottom: 30px;
 }
@@ -133,72 +107,4 @@
     margin-top: 30px;
     margin-bottom: 10px;
     border-top: $border-color 1px solid;
-}
-
-.topic-header-collapse{
-    border-style: solid;
-    border-color: $border-color-subtle;
-    border-width: 1px;
-    border-radius: 1px;
-
-    min-height: 32px;
-
-    background-color: $light;
-
-    vertical-align: bottom;
-
-    padding-left: 12px;
-    padding-right: 12px;
-}
-
-.topic-header-left{
-    text-align: left;
-}
-
-.topic-header-middle{
-    text-align: center;
-}
-
-.topic-header-right{
-    text-align: right;
-}
-
-.topic-header-right[aria-expanded=false] .ion-chevron-up{
-    display: none;
-}
-
-.topic-header-right[aria-expanded=true] .ion-chevron-down{
-    display: none;
-}
-
-.topic-symbol{
-    font-size: 10px;
-    color: $text-subtle;
-    padding-left: 27px;
-}
-
-.assignment-topic-select{
-    border-style: solid;
-    border-color: $border-color-subtle;
-    border-width: 1px;
-    border-radius: 1px;
-
-    padding: 10px;
-    background-color: $light;
-}
-
-.topic-row{
-    flex-wrap: wrap;
-    align-items: top;
-}
-
-.edit-assignment-details{
-    margin-top: 30px;
-    margin-bottom: 50px;
-
-    padding-top: 20px;
-    padding-bottom: 20px;
-
-    border-top: $border-color 1px solid;
-    border-bottom: $border-color 1px solid;
 }

@@ -108,8 +108,6 @@ async function submitUser () {
         postBody.DOB = getDOB();
         postBody.accessLevel = getAccessLevel();
 
-        console.log(postBody);
-
         ///Calling the API to create a user
         await callPostAPI(api, postBody, "a user", false);
 

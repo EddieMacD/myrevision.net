@@ -156,7 +156,7 @@ function startIdler(idlerValue) {
 
     //Idler
     ///Sets an interval for the idler based on the idler iteration value. Set to userSession for easy stopping if necessary
-    userSession.idler = setInterval(() => {
+    userSession.idler = setInterval(async () => {
         ///Add the elapsed time to the idler
         userSession.idlerValue += parseInt(Date.now() - userSession.idlerStart);
 
@@ -171,6 +171,8 @@ function startIdler(idlerValue) {
 
         ///If the idler value is greater than the idler limit
         if(userSession.idlerValue > idlerLimit) {
+            signIn();
+
             ///Call the cold start api - keep the backend alive
             callColdStartAPI();
 

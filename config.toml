@@ -159,8 +159,13 @@ weight = 6
 ###################### english student navigation ########################
 
 [[Languages.en.menu.student]]
-name = "Do Questions"
+name = "Questions"
 URL = "questions"
+weight = 6
+
+[[Languages.en.menu.student]]
+name = "View Assignments"
+URL = "view-assignments"
 weight = 1
 
 ##################### english  teacher navigation #########################
@@ -171,7 +176,7 @@ URL = "questions"
 weight = 6
 
 [[Languages.en.menu.teacher]]
-weight = 2
+weight = 5
 name = "Manage Users"
 hasChildren = true
   
@@ -186,3 +191,8 @@ hasChildren = true
   parent = "Manage Users"
   name = "Edit Classes"
   URL = "edit-classes"
+
+[[Languages.en.menu.teacher]]
+weight = 4
+URL = "edit-assignments"
+name = "Edit Assignments"

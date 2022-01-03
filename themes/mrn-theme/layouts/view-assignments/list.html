@@ -1,0 +1,165 @@
+{{ define "main" }}
+
+{{ $data := index site.Data site.Language.Lang }}
+
+<script language="javascript" src="../scripts/viewAssignments.js"></script>
+
+<!-- Main content -->
+<section class="main-content section">
+	<!-- Edit the content's of an assignment or delete it container -->
+	<div class="container" id="view-assignment-container">
+        <div class="view-assignment-box">
+            <!-- Top row for adding to a class -->
+            <div class="row view-assignment-header" data-toggle="collapse" data-target="#frm-select-assignment"
+                aria-expanded="false" aria-controls="frm-select-assignment">
+                <div class="col-xs-8">
+                    <label class="view-assignment-header-label">Select Assignment</label>
+                </div>
+                <div class="col-xs-4">
+                    <i class="ion-android-arrow-dropdown-circle symbol"></i>
+                    <i class="ion-android-arrow-dropup-circle symbol"></i>
+                </div>
+            </div>
+
+            <!-- Collapsible input form -->
+            <div class="frm-view-assignment collapse" id="frm-select-assignment">
+                <!-- Input number shown on a user page -->
+                <div class="row filter-row">
+                    <div class="col-xs-3">
+                        <label class="form-group-label" for="frm-assignment-page-num">Number of Assignments Shown:
+                        </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <select name="frm-assignment-page-num" id="frm-assignment-page-num" class="form-control"
+                            onchange="setAssignmentsPage(0)">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Class page container -->
+                <div id="frm-assignment-page"></div>
+
+                <!-- Page makers for changing page -->
+                <div class="row page-marker-row">
+                    <div class="col-xs-2">
+                        <label class="form-group-label" for="assignment-page-markers">Change Page: </label>
+                    </div>
+                    <div class="col-xs-10" id="assignment-page-markers"></div>
+                </div>
+
+                <!-- Next and Previous buttons -->
+                <div class="row btn-row">
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-prev" id="assignment-btn-prev" onclick="newAssignmentPage(-1)"><i class="ion-arrow-left-b arrow"></i> Previous</button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-next" id="assignment-btn-next" onclick="newAssignmentPage(1)">Next <i class="ion-arrow-right-b arrow"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="view-assignment-details">
+            <!-- Assignment Name input -->
+            <div class="row filter-row">
+                <div class="col-xs-3">
+                    <label class="form-group-label" for="view-assignment-name">Name: </label>
+                </div>
+                <div class="col-xs-9">
+                    <input class="form-control" id="view-assignment-name" type="text" disabled="disabled"></input>
+                </div>
+            </div>
+
+            <!-- Assignment Description input -->
+            <div class="row filter-row">
+                <div class="col-xs-3">
+                    <label class="form-group-label" for="view-assignment-description">Description: </label>
+                </div>
+                <div class="col-xs-9">
+                    <input class="form-control" id="view-assignment-description" type="text" disabled="disabled"></input>
+                </div>
+            </div>
+
+            <!-- DOB input -->
+            <div class="row filter-row date-row">
+                <div class="col-xs-3">
+                    <label class="form-group-label" for="view-assignment-deadline">Deadline: </label>
+                </div>
+                <div class="col-xs-9">
+                    <input type="datetime-local" id="view-assignment-deadline" name="view-assignment-deadline" min="2022-01-01T00:00:000" max="2030-01-01T00:00:000" disabled="disabled"></input>
+                </div>
+            </div>
+
+            <!-- Assignment set filters -->
+            <div class="view-assignment-box">
+                <!-- Top row for filters -->
+                <div class="row view-assignment-header" data-toggle="collapse" data-target="#frm-selected-filters" aria-expanded="false" aria-controls="frm-selected-filters">
+                    <div class="col-xs-8">
+                        <label class="view-assignment-header-label">See Question Filters</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <i class="ion-android-arrow-dropdown-circle symbol"></i>
+                        <i class="ion-android-arrow-dropup-circle symbol"></i>
+                    </div>
+                </div>
+
+                <!-- Collapsible filter form -->
+                <div class="frm-view-class collapse" id="frm-selected-filters">
+                    <!-- Qualification list -->
+                    <div class="row filter-row">
+                        <div class="col-xs-3">
+                            <label class="form-group-label" for="qualification">Qualification: </label>
+                        </div>
+                        <div class="col-xs-9">
+                            <input type="text" id="selected-qualification" class="form-control" disabled="disabled"></input>
+                        </div>
+                    </div>
+
+                    <!-- Exam board list -->
+                    <div class="row filter-row">
+                        <div class="col-xs-3">
+                            <label class="form-group-label" for="examBoard">Exam Board: </label>
+                        </div>
+                        <div class="col-xs-9">
+                            <input type="text" id="selected-examBoard" class="form-control" disabled="disabled"></input>
+                        </div>
+                    </div>
+
+                    <!-- Subject list -->
+                    <div class="row filter-row">
+                        <div class="col-xs-3">
+                            <label class="form-group-label" for="subject">Subject: </label>
+                        </div>
+                        <div class="col-xs-9">
+                            <input type="text" id="selected-subject" class="form-control" disabled="disabled"></input>
+                        </div>
+                    </div>
+
+                    <!-- Number of questions input -->
+                    <div class="row filter-row spacer">
+                        <div class="col-sm-3">
+                            <label for="numberOfQuestions" class="form-group-label">Number of Questions: </label>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" id="selected-numberOfQuestions" class="form-control" disabled="disabled"></input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit button -->
+            <div class="row">
+                <div class="col-xs-2 mx-auto">
+                    <button type="submit" class="btn btn-submit" onclick="startAssignment()">Start Assignment</button>
+                </div>
+            </div>
+        </div>
+	</div>
+</section>
+
+{{ end }}

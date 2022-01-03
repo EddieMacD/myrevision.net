@@ -6,93 +6,199 @@
 
 <!-- Main content -->
 <section class="main-content section">
-    <div class="container" id="school-input-container" style="display: none;">
-        <div class="row">
-            <div class="col-xs-12">
-                <select name="school-select" id="school-select" class="form-control school-select" onchange="getClasses()"></select>
-            </div>
-        </div>
-    </div>
+	<div class="container" id="school-input-container" style="display: none;">
+		<div class="row">
+			<div class="col-xs-3">
+				<label class="form-group-label" for="school-select">School Name: </label>
+			</div>
+			<div class="col-xs-9">
+				<select name="school-select" id="school-select" class="form-control edit-assignment-select" onchange="getClasses()"></select>
+			</div>
+		</div>
+	</div>
 
-    <!-- Add a new class input container -->
-    <div class="container" id="add-class-container">
-        <div class="edit-class-box">
-            <!-- Top row for the add class input -->
-            <div class="row edit-class-header" data-toggle="collapse" data-target="#frm-add-class" aria-expanded="false"
-                aria-controls="frm-add-class">
-                <div class="col-xs-8">
-                    <label class="edit-class-header-label">Add a New Class</label>
-                </div>
-                <div class="col-xs-4">
-                    <i class="ion-android-arrow-dropdown-circle symbol"></i>
-                    <i class="ion-android-arrow-dropup-circle symbol"></i>
-                </div>
-            </div>
+	<div class="container" id="class-input-container">
+		<div class="row">
+			<div class="col-xs-3">
+				<label class="form-group-label" for="class-name-select">Class Name: </label>
+			</div>
+			<div class="col-xs-9">
+				<select name="class-name-select" id="class-name-select" class="form-control edit-assignment-select " onchange="getAssignmentPage(0)"></select>
+			</div>
+		</div>
+	</div>
 
-            <!-- Collapsible input form -->
-            <div class="frm-edit-class collapse" id="frm-add-class">
-                <!-- Class Name input -->
+	<!-- Add a new assignment input container -->
+	<div class="container" id="add-assignment-container">
+		<div class="edit-assignment-box">
+			<!-- Top row for the add assignment input -->
+			<div class="row edit-assignment-header" data-toggle="collapse" data-target="#frm-add-assignment" aria-expanded="false" aria-controls="frm-add-assignment">
+				<div class="col-xs-8">
+					<label class="edit-assignment-header-label">Create a New Assignment</label>
+				</div>
+				<div class="col-xs-4">
+					<i class="ion-android-arrow-dropdown-circle symbol"></i>
+					<i class="ion-android-arrow-dropup-circle symbol"></i>
+				</div>
+			</div>
+
+			<!-- Collapsible input form -->
+			<div class="frm-edit-assignment collapse" id="frm-add-assignment">
+                <!-- Assignment Name input -->
                 <div class="row filter-row">
                     <div class="col-xs-3">
-                        <label class="form-group-label" for="class-name-input">Class Name: </label>
+                        <label class="form-group-label" for="new-assignment-name">Name: </label>
                     </div>
                     <div class="col-xs-9">
-                        <input class="form-control" id="class-name-input" type="text"></input>
+                        <input class="form-control" id="new-assignment-name" type="text"></input>
                     </div>
                 </div>
 
-                <!-- Topic input -->
+                <!-- Assignment Description input -->
                 <div class="row filter-row">
                     <div class="col-xs-3">
-                        <label class="form-group-label" for="topic-input">Topic: </label>
+                        <label class="form-group-label" for="new-assignment-description">Description: </label>
                     </div>
                     <div class="col-xs-9">
-                        <input class="form-control" id="topic-input" type="text"></input>
+                        <input class="form-control" id="new-assignment-description" type="text"></input>
                     </div>
                 </div>
-                <!-- Submit button -->
-                <div class="row">
-                    <div class="col-xs-2 mx-auto">
-                        <button type="submit" class="btn btn-submit" onclick="submitClass()">Add New Class</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Edit the content's of a class or delete it container -->
-    <div class="container" id="edit-class-container">
-        <div class="edit-class-box">
-            <!-- Top row for editing a class -->
-            <div class="row edit-class-header" data-toggle="collapse" data-target="#frm-edit-class"
-                aria-expanded="false" aria-controls="frm-edit-class">
-                <div class="col-xs-8">
-                    <label class="edit-class-header-label">Edit a Class</label>
-                </div>
-                <div class="col-xs-4">
-                    <i class="ion-android-arrow-dropdown-circle symbol"></i>
-                    <i class="ion-android-arrow-dropup-circle symbol"></i>
-                </div>
-            </div>
-
-            <!-- Collapsible input form -->
-            <div class="frm-edit-class collapse" id="frm-edit-class">
-                <div class="row" id="class-select-row">
+                <!-- DOB input -->
+                <div class="row filter-row date-row">
                     <div class="col-xs-3">
-                        <label class="form-group-label" for="class-name-select">Class Name: </label>
+                        <label class="form-group-label" for="new-assignment-deadline">Deadline: </label>
                     </div>
                     <div class="col-xs-9">
-                        <select name="class-name-select" id="class-name-select" class="form-control"
-                            onchange="setUserPages()"></select>
+                        <input type="datetime-local" id="new-assignment-deadline" name="new-assignment-deadline" value="2022-12-25T17:00" min="2022-01-01T00:00"
+                            max="2030-01-01"></input>
                     </div>
                 </div>
 
-                <div class="edit-class-box">
-                    <!-- Top row for adding to a class -->
-                    <div class="row edit-class-header" data-toggle="collapse" data-target="#frm-add-to-class"
-                        aria-expanded="false" aria-controls="frm-add-to-class">
+				<!-- Assignment set filters -->
+				<div class="edit-assignment-box">
+                    <!-- Top row for filters -->
+                    <div class="row edit-class-header" data-toggle="collapse" data-target="#frm-assignment-filters" aria-expanded="false" aria-controls="frm-assignment-filters">
                         <div class="col-xs-8">
-                            <label class="edit-class-header-label">Add to a Class</label>
+                            <label class="edit-class-header-label">Set Question Filters</label>
+                        </div>
+                        <div class="col-xs-4">
+                            <i class="ion-android-arrow-dropdown-circle symbol"></i>
+                            <i class="ion-android-arrow-dropup-circle symbol"></i>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible filter form -->
+                    <div class="frm-edit-class collapse" id="frm-assignment-filters">
+						<!-- Qualification input -->
+						<div class="row filter-row">
+							<div class="col-xs-3">
+								<label class="form-group-label" for="qualification">Qualification: </label>
+							</div>
+							<div class="col-xs-9">
+								<select name="qualification" id="qualification" class="form-control" onchange="newQualification()"></select>
+							</div>
+						</div>
+
+						<!-- Exam board input -->
+						<div class="row filter-row">
+							<div class="col-xs-3">
+								<label class="form-group-label" for="examBoard">Exam Board: </label>
+							</div>
+							<div class="col-xs-9">
+								<select name="examBoard" id="examBoard" class="form-control" onchange="newExamBoard()"></select>
+							</div>
+						</div>
+
+						<!-- Subject input -->
+						<div class="row filter-row">
+							<div class="col-xs-3">
+								<label class="form-group-label" for="subject">Subject: </label>
+							</div>
+							<div class="col-xs-9">
+								<select name="subject" id="subject" class="form-control" onchange="newSubject()"></select>
+							</div>
+						</div>
+
+						<!-- Topic input -->
+						<div class="row assignment-topic-header" id="topic-header">
+							<div class="col-xs-3">
+								<label class="form-group-label" data-toggle="collapse" data-target="#topic-select" aria-expanded="false" aria-controls="topic-select">Topics: </label>
+							</div>
+							<div class="col-xs-9">
+								<div class="topic-header-collapse">
+									<div class="row">
+										<div class="col-xs-6 topic-header-left" data-toggle="collapse" data-target="#topic-select" aria-expanded="false" aria-controls="topic-select">
+											<label id="num-topics-selected">Selected: n</label>
+										</div>
+										<div class="col-xs-4 topic-header-middle">
+											<input type="checkbox" class="check-box select-all" onchange="selectAll('sections')" id="sections"/>
+											<label for="sections" class="check-box-label">Select All</label>
+										</div>
+										<div class="col-xs-2 topic-header-right" data-toggle="collapse" data-target="#topic-select" aria-expanded="false" aria-controls="topic-select">
+											<i class="ion-chevron-down topic-symbol"></i><i class="ion-chevron-up topic-symbol"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3"></div>
+							<div class="col-xs-9">
+								<div class="assignment-topic-select collapse" id="topic-select"></div>
+							</div>
+						</div>
+
+						<!-- Number of questions input -->
+						<div class="row filter-row spacer">
+							<div class="col-sm-3">
+								<label for="numberOfQuestions" class="form-group-label">Number of Questions: </label>
+							</div>
+							<div class="col-sm-9">
+								<select name="numberOfQuestions" id="numberOfQuestions" class="form-control">
+									<option value="5">5</option>
+									<option value="10">10</option>
+									<option value="15">15</option>
+									<option value="20">20</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Submit button -->
+				<div class="row">
+					<div class="col-xs-2 mx-auto">
+						<button type="submit" class="btn btn-submit" onclick="createAssignment()">Add New Assignment</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Edit the content's of an assignment or delete it container -->
+	<div class="container" id="edit-assignment-container">
+		<div class="edit-assignment-box">
+			<!-- Top row for editing an assignment -->
+			<div class="row edit-assignment-header" data-toggle="collapse" data-target="#frm-edit-assignment" aria-expanded="false" aria-controls="frm-edit-assignment">
+				<div class="col-xs-8">
+					<label class="edit-assignment-header-label">Edit an Assignment</label>
+				</div>
+				<div class="col-xs-4">
+					<i class="ion-android-arrow-dropdown-circle symbol"></i>
+					<i class="ion-android-arrow-dropup-circle symbol"></i>
+				</div>
+			</div>
+
+			<!-- Collapsible input form -->
+			<div class="frm-edit-assignment collapse" id="frm-edit-assignment">
+
+                <div class="edit-assignment-box">
+                    <!-- Top row for adding to a class -->
+                    <div class="row edit-assignment-header" data-toggle="collapse" data-target="#frm-select-assignment"
+                        aria-expanded="false" aria-controls="frm-select-assignment">
+                        <div class="col-xs-8">
+                            <label class="edit-assignment-header-label">Select Assignment</label>
                         </div>
                         <div class="col-xs-4">
                             <i class="ion-android-arrow-dropdown-circle symbol"></i>
@@ -101,16 +207,16 @@
                     </div>
 
                     <!-- Collapsible input form -->
-                    <div class="frm-edit-class collapse" id="frm-add-to-class">
+                    <div class="frm-edit-assignment collapse" id="frm-select-assignment">
                         <!-- Input number shown on a user page -->
                         <div class="row filter-row">
                             <div class="col-xs-3">
-                                <label class="form-group-label" for="frm-add-user-page-num">Number of Users Shown:
+                                <label class="form-group-label" for="frm-assignment-page-num">Number of Assignments Shown:
                                 </label>
                             </div>
                             <div class="col-xs-9">
-                                <select name="frm-add-user-page-num" id="frm-add-user-page-num" class="form-control"
-                                    onchange="setAddUserPage(0)">
+                                <select name="frm-assignment-page-num" id="frm-assignment-page-num" class="form-control"
+                                    onchange="setAssignmentsPage(0)">
                                     <option value="10">10</option>
                                     <option value="20">20</option>
                                     <option value="30">30</option>
@@ -121,96 +227,139 @@
                         </div>
 
                         <!-- Class page container -->
-                        <div id="frm-add-user-page"></div>
+                        <div id="frm-assignment-page"></div>
 
                         <!-- Page makers for changing page -->
                         <div class="row page-marker-row">
                             <div class="col-xs-2">
-                                <label class="form-group-label" for="add-page-markers">Change Page: </label>
+                                <label class="form-group-label" for="assignment-page-markers">Change Page: </label>
                             </div>
-                            <div class="col-xs-10" id="add-page-markers"></div>
+                            <div class="col-xs-10" id="assignment-page-markers"></div>
                         </div>
 
                         <!-- Next and Previous buttons -->
                         <div class="row btn-row">
                             <div class="col-xs-6">
-                                <button type="button" class="btn btn-prev" id="add-btn-prev" onclick="newAddUserPage(-1)"><i class="ion-arrow-left-b arrow"></i> Previous</button>
+                                <button type="button" class="btn btn-prev" id="assignment-btn-prev" onclick="newAssignmentPage(-1)"><i class="ion-arrow-left-b arrow"></i> Previous</button>
                             </div>
                             <div class="col-xs-6">
-                                <button type="button" class="btn btn-next" id="add-btn-next" onclick="newAddUserPage(1)">Next <i class="ion-arrow-right-b arrow"></i></button>
+                                <button type="button" class="btn btn-next" id="assignment-btn-next" onclick="newAssignmentPage(1)">Next <i class="ion-arrow-right-b arrow"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="edit-class-box">
-                    <!-- Top row for removing from a class -->
-                    <div class="row edit-class-header" data-toggle="collapse" data-target="#frm-remove-from-class"
-                        aria-expanded="false" aria-controls="frm-remove-from-class">
-                        <div class="col-xs-8">
-                            <label class="edit-class-header-label">Remove from a Class</label>
-                        </div>
-                        <div class="col-xs-4">
-                            <i class="ion-android-arrow-dropdown-circle symbol"></i>
-                            <i class="ion-android-arrow-dropup-circle symbol"></i>
-                        </div>
-                    </div>
+				<div class="edit-assignment-details">
+					<!-- Assignment Name input -->
+					<div class="row filter-row">
+						<div class="col-xs-3">
+							<label class="form-group-label" for="edit-assignment-name">Name: </label>
+						</div>
+						<div class="col-xs-9">
+							<input class="form-control" id="edit-assignment-name" type="text"></input>
+						</div>
+					</div>
+	
+					<!-- Assignment Description input -->
+					<div class="row filter-row">
+						<div class="col-xs-3">
+							<label class="form-group-label" for="edit-assignment-description">Description: </label>
+						</div>
+						<div class="col-xs-9">
+							<input class="form-control" id="edit-assignment-description" type="text"></input>
+						</div>
+					</div>
+	
+					<!-- DOB input -->
+					<div class="row filter-row date-row">
+						<div class="col-xs-3">
+							<label class="form-group-label" for="edit-assignment-deadline">Deadline: </label>
+						</div>
+						<div class="col-xs-9">
+							<input type="datetime-local" id="edit-assignment-deadline" name="edit-assignment-deadline" min="2022-01-01T00:00:000" max="2030-01-01T00:00:000"></input>
+						</div>
+					</div>
+	
+					<!-- Assignment set filters -->
+					<div class="edit-assignment-box">
+						<!-- Top row for filters -->
+						<div class="row edit-assignment-header" data-toggle="collapse" data-target="#frm-selected-filters" aria-expanded="false" aria-controls="frm-selected-filters">
+							<div class="col-xs-8">
+								<label class="edit-assignment-header-label">See Question Filters</label>
+							</div>
+							<div class="col-xs-4">
+								<i class="ion-android-arrow-dropdown-circle symbol"></i>
+								<i class="ion-android-arrow-dropup-circle symbol"></i>
+							</div>
+						</div>
+	
+						<!-- Collapsible filter form -->
+						<div class="frm-edit-class collapse" id="frm-selected-filters">
+							<!-- Qualification list -->
+							<div class="row filter-row">
+								<div class="col-xs-3">
+									<label class="form-group-label" for="qualification">Qualification: </label>
+								</div>
+								<div class="col-xs-9">
+									<input type="text" id="selected-qualification" class="form-control" disabled="disabled"></input>
+								</div>
+							</div>
+	
+							<!-- Exam board list -->
+							<div class="row filter-row">
+								<div class="col-xs-3">
+									<label class="form-group-label" for="examBoard">Exam Board: </label>
+								</div>
+								<div class="col-xs-9">
+									<input type="text" id="selected-examBoard" class="form-control" disabled="disabled"></input>
+								</div>
+							</div>
+	
+							<!-- Subject list -->
+							<div class="row filter-row">
+								<div class="col-xs-3">
+									<label class="form-group-label" for="subject">Subject: </label>
+								</div>
+								<div class="col-xs-9">
+									<input type="text" id="selected-subject" class="form-control" disabled="disabled"></input>
+								</div>
+							</div>
+		
+							<!-- Number of questions input -->
+							<div class="row filter-row spacer">
+								<div class="col-sm-3">
+									<label for="numberOfQuestions" class="form-group-label">Number of Questions: </label>
+								</div>
+								<div class="col-sm-9">
+									<input type="text" id="selected-numberOfQuestions" class="form-control" disabled="disabled"></input>
+								</div>
+							</div>
+						</div>
+					</div>
 
-                    <!-- Collapsible input form -->
-                    <div class="frm-edit-class collapse" id="frm-remove-from-class">
-                        <!-- Input number shown on a user page -->
-                        <div class="row filter-row">
-                            <div class="col-xs-3">
-                                <label class="form-group-label" for="frm-remove-user-page-num">Number of Users Shown:
-                                </label>
-                            </div>
-                            <div class="col-xs-9">
-                                <select name="frm-remove-user-page-num" id="frm-remove-user-page-num"
-                                    class="form-control" onchange="setRemoveUserPage(0)">
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="30">30</option>
-                                    <option value="40">40</option>
-                                    <option value="50">50</option>
-                                </select>
-                            </div>
-                        </div>
+					<!-- Submit button -->
+					<div class="row">
+						<div class="col-xs-2 mx-auto">
+							<button type="submit" class="btn btn-submit" onclick="editAssignment()">Edit Assignment Details</button>
+						</div>
+					</div>
+				</div>
 
-                        <!-- Class page container -->
-                        <div id="frm-remove-user-page"></div>
-
-                        <!-- Page makers for changing page -->
-                        <div class="row remove-page-marker-row">
-                            <div class="col-xs-2">
-                                <label class="form-group-label" for="remove-page-markers">Change Page: </label>
-                            </div>
-                            <div class="col-xs-10" id="remove-page-markers"></div>
-                        </div>
-
-                        <!-- Next and Previous buttons -->
-                        <div class="row btn-row">
-                            <div class="col-xs-6">
-                                <button type="button" class="btn btn-prev" id="remove-btn-prev" onclick="newRemoveUserPage(-1)"><i class="ion-arrow-left-b arrow"></i> Previous</button>
-                            </div>
-                            <div class="col-xs-6">
-                                <button type="button" class="btn btn-next" id="remove-btn-next" onclick="newRemoveUserPage(1)">Next <i class="ion-arrow-right-b arrow"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row" id="class-delete-row">
-                    <div class="col-xs-8">
-                        <label class="form-group-label" for="class-delete-check">Are you sure you want to delete this class:  </label>
-                        <input type="checkbox" class="delete-box" id="class-delete-check" onclick="deleteClassCheck()">
-                    </div>
-                    <div class="col-xs-4">
-                        <button class="btn btn-delete-class" id="delete-class-btn" disabled="disabled" onclick="deleteClass()">Delete Class</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+				<!-- Delete assignment -->
+				<div class="row" id="assignment-delete-row">
+					<!-- Checkbox to check -->
+					<div class="col-xs-8">
+						<label class="form-group-label" for="assignment-delete-check">Are you sure you want to delete this assignment:  </label>
+						<input type="checkbox" class="delete-box" id="assignment-delete-check" onclick="deleteAssignmentCheck()">
+					</div>
+					<!-- Buton to delete assignment -->
+					<div class="col-xs-4">
+						<button class="btn btn-delete-assignment" id="delete-assignment-btn" disabled="disabled" onclick="deleteAssignment()">Delete Assignment</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
 
 {{ end }}

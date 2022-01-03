@@ -192,41 +192,47 @@ async function getAddUserPage(offset) {
         ///The API call to get the user page
         var data = await callGetAPI(api, "user data");
 
-        userSession.addUserNum = data.count;
+        if(data.length > 0) {
+            $("#add-to-class-container").show();
 
-        //Displaying User Page
-        ///For each user in the page
-        data.userPage.forEach((element, index) => {
-            ///Add their data to an object - converting it into a form that the function can handle
-            var user = {};
-            user.ID = element[0].longValue;
-            user.firstName = element[1].stringValue;
-            user.lastName = element[2].stringValue;
-            user.accessLevel = element[3].stringValue;
+            userSession.addUserNum = data.count;
 
-            ///Append a delete user row containing their information to the delete user page
-            $("#frm-add-user-page").append(generateAddUserRow(user, index));
-        });
+            //Displaying User Page
+            ///For each user in the page
+            data.userPage.forEach((element, index) => {
+                ///Add their data to an object - converting it into a form that the function can handle
+                var user = {};
+                user.ID = element[0].longValue;
+                user.firstName = element[1].stringValue;
+                user.lastName = element[2].stringValue;
+                user.accessLevel = element[3].stringValue;
 
-        ///Generate the page markers to go on the bottom of the delete page
-        generateAddPageMarkers(data.count, offset/pageSize);
+                ///Append a delete user row containing their information to the delete user page
+                $("#frm-add-user-page").append(generateAddUserRow(user, index));
+            });
 
-        ///If this is the first page
-        if(offset <= 0){
-            ///Disable the previous page button
-            $("#add-btn-prev").attr("disabled", "disabled");
+            ///Generate the page markers to go on the bottom of the delete page
+            generateAddPageMarkers(data.count, offset/pageSize);
+
+            ///If this is the first page
+            if(offset <= 0){
+                ///Disable the previous page button
+                $("#add-btn-prev").attr("disabled", "disabled");
+            } else {
+                ///If this is not the first page make sure the previous page button is enabled
+                $("#add-btn-prev").removeAttr("disabled");
+            }
+        
+            ///If this is the last page
+            if(offset + pageSize >= data.count){
+                ///Disable the next page button
+                $("#add-btn-next").attr("disabled", "disabled");
+            } else {
+                ///If this is not the last page make sure the next page button is enabled
+                $("#add-btn-next").removeAttr("disabled");
+            }
         } else {
-            ///If this is not the first page make sure the previous page button is enabled
-            $("#add-btn-prev").removeAttr("disabled");
-        }
-    
-        ///If this is the last page
-        if(offset + pageSize >= data.count){
-            ///Disable the next page button
-            $("#add-btn-next").attr("disabled", "disabled");
-        } else {
-            ///If this is not the last page make sure the next page button is enabled
-            $("#add-btn-next").removeAttr("disabled");
+            $("#add-to-class-container").hide();
         }
 
     } catch (e) {
@@ -546,35 +552,6 @@ function setUserPages() {
     $("#delete-class-btn").attr("disabled", "disabled");
 }
 
-function deleteClassCheck() {
-    if($("#class-delete-check").prop('checked')) {
-        $("#delete-class-btn").removeAttr("disabled");
-    } else {
-        $("#delete-class-btn").attr("disabled", "disabled");;
-    }
-}
-
-async function deleteClass() {
-    try {
-        clearStatusBar();
-
-        //Delete Class
-        ///The URI of the api to delete a class, compelete with all of the relevant parameters
-        var api = apiRoot + "/class/delete?school=" + getSchool() + "&senderUsername=" + userSession.auth.username + "&classID=" + getClassID();
-        
-        ///Calling the API to delete a class
-        await callGetAPI(api, "class data", false);
-
-        ///Show the user that the deletion was successful
-        generateSuccessBar("Class " + $("#class-name-select option:selected").text() + " has been deleted")
-
-        ///Regenerate the class list to reflect the deleted class
-        getClasses();
-    } catch (e) {
-        generateErrorBar(e);
-    }
-}
-
 async function getTopic() {
     try {
         clearStatusBar();
@@ -609,6 +586,37 @@ async function editClassData(valueType) {
         generateErrorBar(e);
     }
 }
+
+
+function deleteClassCheck() {
+    if($("#class-delete-check").prop('checked')) {
+        $("#delete-class-btn").removeAttr("disabled");
+    } else {
+        $("#delete-class-btn").attr("disabled", "disabled");;
+    }
+}
+
+async function deleteClass() {
+    try {
+        clearStatusBar();
+
+        //Delete Class
+        ///The URI of the api to delete a class, compelete with all of the relevant parameters
+        var api = apiRoot + "/class/delete?school=" + getSchool() + "&senderUsername=" + userSession.auth.username + "&classID=" + getClassID();
+        
+        ///Calling the API to delete a class
+        await callGetAPI(api, "class data", false);
+
+        ///Show the user that the deletion was successful
+        generateSuccessBar("Class " + $("#class-name-select option:selected").text() + " has been deleted")
+
+        ///Regenerate the class list to reflect the deleted class
+        getClasses();
+    } catch (e) {
+        generateErrorBar(e);
+    }
+}
+
 //Runs when the code loads - the timeout buffers until the full page loads
 ///Runs the initialise function in case more than one function call is needed
 window.onload = function(){
