@@ -314,3 +314,32 @@
 .question-time{
     text-align: center;
 }
+
+.comment-container {
+    margin-top: 20px;
+    border-top: 1px solid $border-color;
+}
+
+.comment-row {
+    margin-top: 20px;
+}
+
+.btn-send {
+    color: $primary-color;
+    background-color: $light-primary;
+}
+
+.btn-send:hover, .btn-send:focus {
+    color: $light-primary;
+    background-color: $primary-color;
+}
+
+.btn-flag {
+    color: $incorrect;
+    background-color: $light-primary;
+}
+
+.btn-flag:hover, .btn-flag:focus {
+    color: $light-primary;
+    background-color: $incorrect;
+}

@@ -1,0 +1,55 @@
+{{ define "main" }}
+
+{{ $data := index site.Data site.Language.Lang }}
+
+<script language="javascript" src="../scripts/viewNotifications.js"></script>
+
+<!-- Main content -->
+<section class="main-content section">
+    <div class="container" id="view-notifications-container">
+        <div class="view-notifications-box">
+            <!-- Collapsible input form -->
+            <div class="frm-view-notifications" id="frm-view-notifications">
+                <!-- Input number shown on a notification page -->
+                <div class="row filter-row">
+                    <div class="col-xs-3">
+                        <label class="form-group-label" for="frm-notification-page-num">Number of Notifications Shown: </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <select name="frm-notification-page-num" id="frm-notification-page-num" class="form-control"
+                            onchange="setNotificationPage(0)">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Notification page container -->
+                <div id="frm-notification-page"></div>
+
+                <!-- Page makers for changing page -->
+                <div class="row page-marker-row">
+                    <div class="col-xs-2">
+                        <label class="form-group-label" for="page-markers">Change Page: </label>
+                    </div>
+                    <div class="col-xs-10" id="page-markers"></div>
+                </div>
+
+                <!-- Next and Previous buttons -->
+                <div class="row btn-row">
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-prev" onclick="newNotificationPage(-1)"><i class="ion-arrow-left-b arrow"></i> Previous</button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-next" onclick="newNotificationPage(1)">Next <i class="ion-arrow-right-b arrow"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{ end }}

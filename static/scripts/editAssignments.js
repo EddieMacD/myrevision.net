@@ -679,10 +679,12 @@ async function getAssignmentPage(offset) {
         ///The API call to get the user page
         var data = await callGetAPI(api, "assignment data");
 
-        if(data.length > 0) {
+        if(data.count > 0) {
             $("#edit-assignment-container").show();
 
-            userSession.assignmentNum = data.length;
+            userSession.assignmentNum = data.count;
+
+            data = data.assignments;
 
             //Displaying User Page
             ///For each user in the page

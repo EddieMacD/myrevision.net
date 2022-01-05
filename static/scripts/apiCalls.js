@@ -171,8 +171,6 @@ function startIdler(idlerValue) {
 
         ///If the idler value is greater than the idler limit
         if(userSession.idlerValue > idlerLimit) {
-            signIn();
-
             ///Call the cold start api - keep the backend alive
             callColdStartAPI();
 

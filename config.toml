@@ -166,7 +166,12 @@ weight = 6
 [[Languages.en.menu.student]]
 name = "View Assignments"
 URL = "view-assignments"
+weight = 5
+
+[[Languages.en.menu.student]]
 weight = 1
+URL = "view-notifications"
+name = "View Notifications"
 
 ##################### english  teacher navigation #########################
 
@@ -196,3 +201,8 @@ hasChildren = true
 weight = 4
 URL = "edit-assignments"
 name = "Edit Assignments"
+
+[[Languages.en.menu.teacher]]
+weight = 1
+URL = "view-notifications"
+name = "View Notifications"

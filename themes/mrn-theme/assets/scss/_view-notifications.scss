@@ -1,20 +1,16 @@
-.view-assignment-select {
-    margin-bottom: 20px;
-}
-
-.view-assignment-header[aria-expanded=false] {
+.view-notifications-header[aria-expanded=false] {
     .ion-android-arrow-dropup-circle {
         display: none;
     }
 }
 
-.view-assignment-header[aria-expanded=true] {
+.view-notifications-header[aria-expanded=true] {
     .ion-android-arrow-dropdown-circle {
         display: none;
     }
 }
 
-.view-assignment-box {
+.view-notifications-box {
     margin: 15px;
 
     padding-left: 10px;
@@ -29,7 +25,7 @@
     background-image: radial-gradient(circle at center, $block-background, lighten($block-background, 5%));
 }
 
-.view-assignment-header-label {
+.notification-header-label {
     font-size: 20px;
 
     color: $secondary-color;
@@ -37,15 +33,11 @@
     text-transform: capitalize;
 }
 
-.frm-view-assignment {
-    border-top-color: $border-color;
-    border-top-style: solid;
-    border-top-width: 1px;
-
+.frm-view-notifications {
     padding: 20px;
 }
 
-.assignment-row {
+.notification-row {
     margin-bottom: 5px;
 
     border-bottom-color: $border-color;
@@ -97,26 +89,12 @@
     color: $tertiary-color;
 }
 
-.assignment-change-data-row-bottom {
-    margin-bottom: 30px;
+.btn-goto {
+    background-color: $hyperlink;
+    color: $primary-color;
 }
 
-.assignment-change-data-row-top {
-    padding-top: 30px;
-
-    margin-top: 30px;
-    margin-bottom: 10px;
-    border-top: $border-color 1px solid;
-}
-
-.btn-refresh {
-    float: right;
-
-    color: $refresh;
-    background-color: $light-primary;
-}
-
-.btn-refresh:hover, .btn-refresh:focus {
-    color: $light-primary;
-    background-color: $refresh;
+.btn-goto:hover, .btn-goto:focus {
+    background-color: $primary-color;
+    color: $hyperlink;
 }

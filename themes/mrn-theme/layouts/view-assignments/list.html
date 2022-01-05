@@ -8,7 +8,13 @@
 <section class="main-content section">
 	<!-- Edit the content's of an assignment or delete it container -->
 	<div class="container" id="view-assignment-container">
-        <div class="view-assignment-box">
+        <div class="row" id="refresh-button-row">
+            <div class="col-xs-12">
+                <button class="btn btn-refresh" onclick="getAssignmentPage(0)"><i class="ion-refresh"></i></button>
+            </div>
+        </div>
+
+        <div class="view-assignment-box" id="select-assignment-box">
             <!-- Top row for adding to a class -->
             <div class="row view-assignment-header" data-toggle="collapse" data-target="#frm-select-assignment"
                 aria-expanded="false" aria-controls="frm-select-assignment">

@@ -1,0 +1,15 @@
+{{ define "main" }}
+
+<!-- {{ partial "page-title.html" . }} -->
+
+{{ $data := index site.Data site.Language.Lang }}
+
+<script language="javascript" src="../scripts/questionHistory.js"></script>
+
+<!-- Main content -->
+<section class="main-content section">
+    <!-- A container for the answer blocks. All answer blocks are programatically generated -->
+    <div class="container-fluid" id="answer-container"></div>
+</section>
+
+{{ end }}

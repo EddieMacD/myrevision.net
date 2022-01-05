@@ -1230,7 +1230,7 @@ function markAnswers() {
 }
 
 //Displays/generates the answer form
-function displayAnswerScreen() {
+async function displayAnswerScreen() {
     //Constants
     ///The score boundary for red text
     const lowScore = 0.33;
@@ -1274,15 +1274,43 @@ function displayAnswerScreen() {
     }
 
     //Form generation
+    ///Get teacher list - for commenting purposes
+    var teacherList = await getTeacherList();
+
     ///For each question add an answer block to the page
     for (var i = 0; i < userSession.numOfQuestions; i++) {
-        $("#answer-container").append(buildAnswerDiv(i));
+        $("#answer-container").append(buildAnswerDiv(i, teacherList));
     }
+}
+
+async function getTeacherList() {
+    var api = apiRoot + "/teacher-list?email=" + userSession.auth.email;
+
+    var data = await callGetAPI(api, "answers");
+
+    var teacherList = "";
+
+    data.teachers.forEach((element) => {
+        teacherList += newSelectItemValue((element[0].stringValue + " " + element[1].stringValue), element[2].longValue);
+    })
+
+    return teacherList
+}
+
+//Compiles a string containing a select item with corresponding text and value, with a different text and value
+///text: The label of the option
+///value: The value of the option
+function newSelectItemValue(text, value) {
+    //String compilation
+    ///Correctly formats HTML to be appended to the input box, returned at the end of the function
+    var option = "<option value='" + value + "'>" + text + "</option>";
+
+    return option
 }
 
 //Generates an answer block for a given question
 ///index: the index for the question that the block is being generated for
-function buildAnswerDiv(index) {
+function buildAnswerDiv(index, teacherList) {
     //Variables
     ///A string array for each line of the box. To be combined then returned at the end of the function.
     var answerDiv = [];
@@ -1359,6 +1387,30 @@ function buildAnswerDiv(index) {
                         '</div>',
                     '</div>',
                 '</div>', 
+                '<div class="comment-container">',
+                    '<div class="comment-row row">',
+                        '<div class="col-xs-4">',
+                            '<label for="teacher-select' + index + '" class="comment-label">Select teacher to comment to: </label>',
+                        '</div>',
+                        '<div class="col-xs-7">',
+                            '<select name="teacher-select' + index + '" id="teacher-select' + index + '" class="form-control">' + teacherList + '</select>',
+                        '</div>',
+                        '<div class="col-xs-1">',
+                            '<button class="btn btn-flag" onclick="sendFlag(' + index + ')"><i class="ion-ios-flag"></i></button>',
+                        '</div>',
+                    '</div>',
+                        '<div class="comment-row row">',
+                            '<div class="col-xs-2">',
+                                '<label for="comment-box' + index + '" class="comment-label">Type comment: </label>',
+                            '</div>',
+                            '<div class="col-xs-9">',
+                                '<input id="comment-box' + index + '" type="text" class="form-control"></input>',
+                            '</div>',
+                            '<div class="col-xs-1">',
+                                '<button class="btn btn-send" onclick="sendComment(' + index + ')"><i class="ion-android-send"></i></button>',
+                            '</div>',
+                        '</div>',
+                '</div>',
             '</div>',
         '</div>'
     );
@@ -1553,6 +1605,10 @@ async function sendQuestionHistory() {
             }
         }
     }
+
+    if(userSession.assignmentID) {
+        completeAssignment();
+    }
 }
 
 //Compile the data form a certain question into a form that can be sent to the system
@@ -1614,6 +1670,58 @@ function getAssignment() {
     }
 
     return assignmentID;
+}
+
+async function completeAssignment() {
+    try {
+        clearStatusBar();
+
+        var mark = userSession.numCorrect + "/" + userSession.numOfQuestions;
+
+        //Mark Read
+        var api = apiRoot + "/assignment/notification-create?type=complete&assignmentID=" + userSession.assignmentID + "&senderUserEmail=" + userSession.auth.email + "&mark=" + mark;
+        
+        await callGetAPI(api, "notification", false);
+
+        generateSuccessBar("Assignment successfully completed with a mark of " + mark)
+    } catch (e) {
+        generateErrorBar(e);
+    }
+}
+
+async function sendComment(index) {
+    try {
+        var filePath = userSession.filePath;
+        var fileName = userSession.questions[index].index;
+        var recieverID =$("#teacher-select" + index).val();
+        var senderUserEmail = userSession.auth.email;
+        var comment = $("#comment-box" + index).val();
+
+        var api = apiRoot + "/comment/create?filePath=" + filePath + "&fileName=" + fileName + "&recieverID=" + recieverID + "&senderUserEmail=" + senderUserEmail + "&comment=" + comment;
+
+        await callGetAPI(api, "comment");
+
+        generateSuccessBar("Comment successfully sent");
+    } catch (e) {
+        generateErrorBar(e);
+    }
+}
+
+async function sendFlag(index) {
+    try {
+        var filePath = userSession.filePath;
+        var fileName = userSession.questions[index].index;
+        var recieverID = $("#teacher-select" + index).val();
+        var senderUserEmail = userSession.auth.email;
+
+        var api = apiRoot + "/flag/create?filePath=" + filePath + "&fileName=" + fileName + "&recieverID=" + recieverID + "&senderUserEmail=" + senderUserEmail ;
+
+        await callGetAPI(api, "flag");
+
+        generateSuccessBar("Flag successfully sent");
+    } catch (e) {
+        generateErrorBar(e);
+    }
 }
 
 //Runs when the code loads - the timeout buffers until the full page loads

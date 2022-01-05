@@ -18,10 +18,12 @@ async function getAssignmentPage(offset) {
         ///The API call to get the user page
         var data = await callGetAPI(api, "assignment data");
 
-        if(data.length > 0) {
+        if(data.count > 0) {
             $("#view-assignment-container").show();
 
-            userSession.assignmentNum = data.length;
+            userSession.assignmentNum = data.count;
+
+            data = data.assignments;
 
             //Displaying User Page
             ///For each user in the page
@@ -58,6 +60,7 @@ async function getAssignmentPage(offset) {
                 $("#assignment-btn-next").removeAttr("disabled");
             }
 
+            showList();
             $("#assignment-0").prop('checked', true);
             selectAssignment(0);
         } else {
@@ -183,6 +186,9 @@ async function selectAssignment(index) {
         assignmentData.deadline = data[2].stringValue;
         assignmentData.filters = JSON.parse(JSON.parse(data[3].stringValue));
 
+        userSession.assignmentID = getSelectedID();
+
+
         showSelectedAssignment(assignmentData);
     } catch (e) {
         generateErrorBar(e);
@@ -208,7 +214,7 @@ function showSelectedAssignment(assignmentData) {
 
     $("#selected-subject").val(filePath.substring(0, filePath.indexOf("/")));
 
-    $("#selected-numberOfQuestions").val(assignmentData.filters.numOfQuestions)
+    $("#selected-numberOfQuestions").val(assignmentData.filters.numOfQuestions);
 }
 
 function getSelectedID() {
@@ -220,8 +226,39 @@ function getSelectedName() {
 }
 
 function startAssignment() {
-    sessionStorage.setItem("assignmentID", getSelectedID());
+    sessionStorage.setItem("assignmentID", userSession.assignmentID);
     window.location.replace(baseURL + "questions");
+}
+
+async function getLinkedAssignment (assignmentID) {
+    try {
+        clearStatusBar();
+
+        var api = apiRoot + "/assignment/read/details?assignmentID=" + assignmentID + "&senderUsername=" + userSession.auth.username;
+
+        var data = await callGetAPI(api, "assignment data");
+
+        var assignmentData = {};
+        assignmentData.name = data[0].stringValue;
+        assignmentData.info = data[1].stringValue;
+        assignmentData.deadline = data[2].stringValue;
+        assignmentData.filters = JSON.parse(JSON.parse(data[3].stringValue));
+
+        userSession.assignmentID = assignmentID;
+
+        showSelectedAssignment(assignmentData);
+        hideList();
+    } catch (e) {
+        generateErrorBar(e);
+    }
+}
+
+function hideList() {
+    $("#select-assignment-box").hide();
+}
+
+function showList() {
+    $("#select-assignment-box").show();
 }
 
 //Runs when the code loads - the timeout buffers until the full page loads
@@ -237,6 +274,11 @@ async function initialise(){
     //Function calls
     await initialiseAuth(); 
 
-    //Gets assignments
-    getAssignmentPage(0);
+    if(sessionStorage.getItem("assignmentID")) {
+        getLinkedAssignment(sessionStorage.getItem("assignmentID"));
+        sessionStorage.removeItem("assignmentID")
+    } else {
+        //Gets assignments
+        getAssignmentPage(0);
+    }
 }
