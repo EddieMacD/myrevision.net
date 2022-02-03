@@ -169,6 +169,9 @@ function startIdler(idlerValue) {
         ///Set the new idler start time
         userSession.idlerStart = Date.now();
 
+        ///Re-signs in every idler cycle - to prevent the authorisation window from stagnating
+        signIn();
+
         ///If the idler value is greater than the idler limit
         if(userSession.idlerValue > idlerLimit) {
             ///Call the cold start api - keep the backend alive

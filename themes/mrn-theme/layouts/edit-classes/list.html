@@ -82,7 +82,7 @@
                         <label class="form-group-label" for="class-name-select">Class Name: </label>
                     </div>
                     <div class="col-xs-9">
-                        <select name="class-name-select" id="class-name-select" class="form-control" onchange="() => {setUserPages(); getTopic();}"></select>
+                        <select name="class-name-select" id="class-name-select" class="form-control" onchange="changeClasses()"></select>
                     </div>
                 </div>
 
@@ -142,7 +142,7 @@
                     </div>
                 </div>
 
-                <div class="edit-class-box">
+                <div class="edit-class-box" id="remove-from-class-container">
                     <!-- Top row for removing from a class -->
                     <div class="row edit-class-header" data-toggle="collapse" data-target="#frm-remove-from-class"
                         aria-expanded="false" aria-controls="frm-remove-from-class">

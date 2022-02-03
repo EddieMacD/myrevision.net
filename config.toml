@@ -182,23 +182,16 @@ weight = 6
 
 [[Languages.en.menu.teacher]]
 weight = 5
-name = "Manage Users"
-hasChildren = true
-  
-  [[Languages.en.menu.teacher]]
-  weight = 1
-  parent = "Manage Users"
-  name = "Edit Users"
-  URL = "edit-users"
-
-  [[Languages.en.menu.teacher]]
-  weight = 2
-  parent = "Manage Users"
-  name = "Edit Classes"
-  URL = "edit-classes"
+URL = "edit-users"
+name = "Edit Users"
 
 [[Languages.en.menu.teacher]]
 weight = 4
+URL = "edit-classes"
+name = "Edit Classes"
+
+[[Languages.en.menu.teacher]]
+weight = 3
 URL = "edit-assignments"
 name = "Edit Assignments"
 

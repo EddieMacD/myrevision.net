@@ -194,7 +194,7 @@ async function getAddUserPage(offset) {
         ///The API call to get the user page
         var data = await callGetAPI(api, "user data");
 
-        if(data.length > 0) {
+        if(data.count > 0) {
             $("#add-to-class-container").show();
 
             userSession.addUserNum = data.count;
@@ -383,43 +383,48 @@ async function getRemoveUserPage(offset) {
         ///The API call to get the user page
         var data = await callGetAPI(api, "user data");
 
-        userSession.removeUserNum = data.count;
+        if(data.count > 0) {
+            $("#remove-from-class-container").show();
 
-        //Displaying User Page
-        ///For each user in the page
-        data.userPage.forEach((element, index) => {
-            ///Add their data to an object - converting it into a form that the function can handle
-            var user = {};
-            user.ID = element[0].longValue;
-            user.firstName = element[1].stringValue;
-            user.lastName = element[2].stringValue;
-            user.accessLevel = element[3].stringValue;
+            userSession.removeUserNum = data.count;
 
-            ///Append a delete user row containing their information to the delete user page
-            $("#frm-remove-user-page").append(generateRemoveUserRow(user, index));
-        });
+            //Displaying User Page
+            ///For each user in the page
+            data.userPage.forEach((element, index) => {
+                ///Add their data to an object - converting it into a form that the function can handle
+                var user = {};
+                user.ID = element[0].longValue;
+                user.firstName = element[1].stringValue;
+                user.lastName = element[2].stringValue;
+                user.accessLevel = element[3].stringValue;
 
-        ///Generate the page markers to go on the bottom of the delete page
-        generateRemovePageMarkers(data.count, offset/pageSize);
+                ///Append a delete user row containing their information to the delete user page
+                $("#frm-remove-user-page").append(generateRemoveUserRow(user, index));
+            });
 
-        ///If this is the first page
-        if(offset <= 0){
-            ///Disable the previous page button
-            $("#remove-btn-prev").attr("disabled", "disabled");
+            ///Generate the page markers to go on the bottom of the delete page
+            generateRemovePageMarkers(data.count, offset/pageSize);
+
+            ///If this is the first page
+            if(offset <= 0){
+                ///Disable the previous page button
+                $("#remove-btn-prev").attr("disabled", "disabled");
+            } else {
+                ///If this is not the first page make sure the previous page button is enabled
+                $("#remove-btn-prev").removeAttr("disabled");
+            }
+        
+            ///If this is the last page
+            if(offset + pageSize >= data.count){
+                ///Disable the next page button
+                $("#remove-btn-next").attr("disabled", "disabled");
+            } else {
+                ///If this is not the last page make sure the next page button is enabled
+                $("#remove-btn-next").removeAttr("disabled");
+            }
         } else {
-            ///If this is not the first page make sure the previous page button is enabled
-            $("#remove-btn-prev").removeAttr("disabled");
+            $("#remove-from-class-container").hide();
         }
-    
-        ///If this is the last page
-        if(offset + pageSize >= data.count){
-            ///Disable the next page button
-            $("#remove-btn-next").attr("disabled", "disabled");
-        } else {
-            ///If this is not the last page make sure the next page button is enabled
-            $("#remove-btn-next").removeAttr("disabled");
-        }
-
     } catch (e) {
         generateErrorBar(e);
     }
@@ -617,6 +622,11 @@ async function deleteClass() {
     } catch (e) {
         generateErrorBar(e);
     }
+}
+
+function changeClasses() {
+    setUserPages();
+    getTopic();
 }
 
 //Runs when the code loads - the timeout buffers until the full page loads

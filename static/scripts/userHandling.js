@@ -9,7 +9,7 @@ userSession.auth = {};
 var baseURL = 'https://myrevision.net/';
 
 ///Where the login should take the user
-var loginLocation = 'student-home/';
+var loginLocation = 'redirects/';
 
 ///Data required to access the authentication pipeline
 var authData = {

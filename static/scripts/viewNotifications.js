@@ -25,8 +25,6 @@ async function getNotificationPage(offset) {
 
             data = data.notifications;
 
-            console.log(data);
-
             //Displaying Notification Page
             ///For each Notification in the page
             data.forEach((element, index) => {
