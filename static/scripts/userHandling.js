@@ -132,7 +132,7 @@ async function initialiseAuth() {
             } else {
                 //If the user is a guest
                 ///If the current page is not the home page
-                if(window.location.href != baseURL)
+                if (window.location.href != baseURL && !window.location.href.includes("privacy-policy"))
                 {
                     ///Send them back to the home page
                     window.location.replace(baseURL);
@@ -172,7 +172,7 @@ async function initialiseAuth() {
             sessionStorage.setItem("auth", JSON.stringify(userSession.auth));
 
             ///If the user doesn't have a valid access level and are not on the home page
-            if(!validAccess.includes(userSession.auth.accessLevel) && window.location.href != baseURL)
+            if (!validAccess.includes(userSession.auth.accessLevel) && window.location.href != baseURL && !window.location.href.includes("privacy-policy"))
             {
                 ///Send them back to the home page
                 window.location.replace(baseURL);
