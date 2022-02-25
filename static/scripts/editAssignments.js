@@ -95,29 +95,40 @@ function getSchool() {
     return $("#school-select").val();
 }
 
+//Gets a list of classes for a particular school
 async function getClasses() {
     try {
+        //Get Classes
+        ///The URI for the API to recall a list of classes, passing in the user's school as a parameter
         var api = apiRoot + "/class/recall?school=" + getSchool();
 
+        ///The API is called and the list of classes is returned and extracted
         var classData = await callGetAPI(api, "classes");
-
         classData = classData.userClasses;
 
+        ///If there are classes in the list
         if(classData != false) {
+            ///Empty out the class select box
             $("#class-name-select").empty();
 
+            ///For each class in the list
             classData.forEach((element) => {
+                ///Add a select item containing that class information
                 $("#class-name-select").append(newSelectItemValue(element[1].stringValue, element[0].longValue))
             })
 
+            ///Reset the assignment page
             userSession.assignmentPageOffset = 0;
-
-            loadQualification();
             getAssignmentPage(0);
+
+            ///Load the filters
+            loadQualification();
         } else {
+            ///Hide the rest of the page
             $("#edit-assignment-container").hide();
             $("#add-assignment-container").hide();
             
+            ///Tell the user why they can't create an assignment
             generateUpdateBar("This school has no classes. Please create a class to create assignments for");
         }
     } catch (e) {
@@ -553,34 +564,35 @@ function updateMassSelectors(isSelected, boxClass){
     }
 }
 
-//Get the new user's email from the user input box
+//Get the ID of the class from the class selector box
 function getClassID() {
     return $("#class-name-select").val();
 }
 
-//Get the new user's email from the user input box
+//Get the name of the class from the class selector box
 function getClassName() {
     return $("#class-name-select option:selected").text();
 }
 
+//Creates an assignment
 async function createAssignment() {
     try {
         clearStatusBar();
 
         //Variables
-        ///The api to be called in order to add a new user
+        ///The api to be called in order to create an assignment
         var api = apiRoot + "/assignment/create";
 
-        ///The post body for creating a user, with all of the required information
+        ///The post body for creating an assignment, with all of the required information
         var postBody = {};
         postBody.senderUsername = userSession.auth.username;
         postBody.classID = getClassID();
         postBody.assignmentData = getAssignmentData();
 
-        ///Calling the API to create a user
+        ///Calling the API to create an assignment
         await callPostAPI(api, postBody, "an assignment", false);
 
-        ///Refresh the user page for edititng assignments
+        ///Refresh the page for editing assignments
         await getAssignmentPage(0);
 
         ///Show the user that success has been had
@@ -590,6 +602,7 @@ async function createAssignment() {
     }
 }
 
+//Collates data for creating an assignment
 function getAssignmentData() {
     //Assignment Data
     ///Object to store the assignment data
@@ -623,6 +636,7 @@ function getDeadline() {
     return deadline.substring(0, 23);
 }
 
+//Compiles filters and returns an object
 function getFilters() {
     //Filter Compilation
     ///Object to store the filters
@@ -659,12 +673,12 @@ function compileTopics() {
     return themes;
 }
 
-//Get a page of users for the delete user portion of the page
+//Get a page of assignments for the edit assignment portion of the page
 ///offset: how many items have been on previous pages
 async function getAssignmentPage(offset) {
     try {
-        //Get User Page
-        ///Clear the current user page
+        //Get Assignment Page
+        ///Clear the current assignment page
         $("#frm-assignment-page").empty();
 
         ///Get the page size from the select box
@@ -673,10 +687,10 @@ async function getAssignmentPage(offset) {
         ///Set the offset to the user session object
         userSession.assignmentPageOffset = offset;
 
-        ///The URI for the API to get a user page, complete with query string parameters
+        ///The URI for the API to get a assignment page, complete with query string parameters
         var api = apiRoot + "/assignment/read/page?classID=" + getClassID() + "&offset=" + offset + "&amount=" + pageSize;
 
-        ///The API call to get the user page
+        ///The API call to get the assignment page
         var data = await callGetAPI(api, "assignment data");
 
         if(data.count > 0) {
@@ -686,8 +700,8 @@ async function getAssignmentPage(offset) {
 
             data = data.assignments;
 
-            //Displaying User Page
-            ///For each user in the page
+            //Displaying Assignment Page
+            ///For each assignment in the page
             data.forEach((element, index) => {
                 ///Add their data to an object - converting it into a form that the function can handle
                 var assignment = {};
@@ -696,7 +710,7 @@ async function getAssignmentPage(offset) {
                 assignment.info = element[2].stringValue;
                 assignment.deadline = element[3].stringValue;
 
-                ///Append a delete user row containing their information to the delete user page
+                ///Append an edit assignment row containing their information to the edit assignment page
                 $("#frm-assignment-page").append(generateAssignmentRow(assignment, index));
             });
 
@@ -733,23 +747,23 @@ async function getAssignmentPage(offset) {
     }
 }
 
-//Generate a delete user row for the user page
-///user: the data of the user to be displayed on the row
-///index: the number of the user on the page
+//Generate an edit assignment row for the assignment page
+///assignment: the data of the assignment to be displayed on the row
+///index: the number of the assignment on the page
 function generateAssignmentRow(assignment, index) {
-    //Generate User Row
+    //Generate Assignment Row
     ///Array to store each line of the row - concatenated and returned at the end of the function
     var assignmentRow = [];
 
-    ///Push the delete row to the array
+    ///Push the assignment row to the array
     assignmentRow.push(
         '<div class="row assignment-row">',
-            ///Contains a user's first name, last name, email, date of birth and access level
+            ///Contains an assignment's ID, name, description, amd deadline
             '<div class="col-xs-1" id="assignment-id-' + index + '">' + assignment.ID + '</div>',
             '<div class="col-xs-2" id="assignment-name-' + index + '">' + assignment.name + '</div>',
             '<div class="col-xs-6" id="assignment-info-' + index + '">' + assignment.info + '</div>',
             '<div class="col-xs-2" id="assignment-deadline-' + index + '">' + assignment.deadline + '</div>',
-            ///Also contains a button that allows the viewer to delete this user
+            ///Also contains a button that allows the viewer to select this assignment
             '<div class="col-xs-1">',
                 '<input type="radio" id="assignment-' + index + '" name="assignment-select" value="assignment-' + assignment.ID + '" onclick="selectAssignment(' + index + ')">',
             '</div>',
@@ -759,43 +773,43 @@ function generateAssignmentRow(assignment, index) {
     return assignmentRow.join("");
 }
 
-//Changes the user page by + or - 1
+//Changes the assignment page by + or - 1
 ///Change: how many pages to change by
 function newAssignmentPage(change) {
     //Variables
-    ///The number of users on a page, determined by a select box
-    var pageSize = $("#frm-add-user-page-num").val();
+    ///The number of assignments on a page, determined by a select box
+    var pageSize = $("#frm-assignment-page-num").val();
 
-    ///How many users to change by
+    ///How many assignments to change by
     var changeBy = pageSize * change;
 
-    ///How many users are now in previous pages
+    ///How many assignments are now in previous pages
     var offset = userSession.assignmentPageOffset + changeBy;
 
 
     //Change page
     ///If the new offset is a valid number
     if(offset >= 0 || offset <= userSession.assignmentNum){
-        ///Change the user page
+        ///Change the assignment page
         getAssignmentPage(offset);    
     }
 }
 
-//Sets the user page to a new page
+//Sets the assignment page to a new page
 ///pageNumber: the number of the page you are now changing to
 function setAssignmentPage(pageNumber) {
     //Variables
-    ///The number of users on a page, determined by a select box
-    var pageSize = $("#frm-add-user-page-num").val();
+    ///The number of assignments on a page, determined by a select box
+    var pageSize = $("#frm-assignment-page-num").val();
 
-    ///The number of users now on previous pages
+    ///The number of assignments now on previous pages
     var offset = pageSize * pageNumber;
 
 
     //Change Page
     ///If the new offset is a valid number
     if(offset >= 0 || offset <= userSession.assignmentUserNum){
-        ///Change the user page
+        ///Change the assignment page
         getAssignmentPage(offset);    
     }
 }
@@ -807,10 +821,10 @@ function generateAssignmentPageMarkers (currentPage) {
     ///Empty out the current page marker row
     $("#assignment-page-markers").empty();
 
-    ///The number of users on a page, determined by a select box
+    ///The number of assignments on a page, determined by a select box
     var pageSize = $("#frm-assignment-page-num").val();
 
-    ///How many markers to generate - truncated by parse int so one is added if there are extraneous users
+    ///How many markers to generate - truncated by parse int so one is added if there are extraneous assignments
     var numOfMarkers = parseInt(userSession.assignmentNum / pageSize);
 
     if(userSession.assignmentNum % pageSize != 0) {
@@ -831,66 +845,89 @@ function generateAssignmentPageMarkers (currentPage) {
     }
 }
 
+//Selects an assignment
+///index: the index of the assignment that was selected
 async function selectAssignment(index) {
     try {
         clearStatusBar();
+
+        //Get Details
+        ///The index of the assignment is assigned to userSession
         userSession.selectedAssignment = index;
 
+        ///The URI for the API to read the details of an assignment
         var api = apiRoot + "/assignment/read/details?assignmentID=" + getSelectedID() + "&senderUsername=" + userSession.auth.username;
 
+        ///Getting the details about the assignment from the back end
         var data = await callGetAPI(api, "assignment data");
 
+        ///The details of the assignment are compiled into an object
         var assignmentData = {};
         assignmentData.name = data[0].stringValue;
         assignmentData.info = data[1].stringValue;
         assignmentData.deadline = data[2].stringValue;
         assignmentData.filters = JSON.parse(JSON.parse(data[3].stringValue));
 
+        ///The compiled data is passed to this function to show it to the user
         showSelectedAssignment(assignmentData);
     } catch (e) {
         generateErrorBar(e);
     }
 }
 
+//Shows an assignment to the user
+///assignmentData: the details of the assignment
 function showSelectedAssignment(assignmentData) {
+    //Show Assignmnent Data
+    ///The name and description are shown in their respective slots
     $("#edit-assignment-name").val(assignmentData.name);
     $("#edit-assignment-description").val(assignmentData.info);
 
+    ///The date is converted into a format that is accepted by the date input
     var temp = new Date (assignmentData.deadline)
     temp = temp.toISOString();
     temp = temp.substring(0, 22)
     $("#edit-assignment-deadline").val(temp);
 
+    //Show Filters
+    ///The file path is extracted from the object
     var filePath = assignmentData.filters.filePath;
 
+    ///The qualification is extracted from the string and shown before it is removed
     $("#selected-qualification").val(filePath.substring(0, filePath.indexOf("/")));
     filePath = filePath.substring(filePath.indexOf("/") + 1);
 
+    ///The exam board is extracted from the string and shown before it is removed
     $("#selected-examBoard").val(filePath.substring(0, filePath.indexOf("/")));
     filePath = filePath.substring(filePath.indexOf("/") + 1);
 
+    ///The subject is shown as the last part of the string
     $("#selected-subject").val(filePath.substring(0, filePath.indexOf("/")));
 
+    ///The number of questions is also shown to the user
     $("#selected-numberOfQuestions").val(assignmentData.filters.numOfQuestions)
 }
 
+//Gets the ID of the selected assignment
 function getSelectedID() {
     return $("#assignment-id-" + userSession.selectedAssignment).text();
 }
 
+//Gets the name of the selected assignment
 function getSelectedName() {
     return $("#assignment-name-" + userSession.selectedAssignment).text();
 }
 
+//Edits the metadata of an assignment
 async function editAssignment() {
     try {
         clearStatusBar();
 
         //Variables
-        ///The api to be called in order to add a new user
+        ///The api to be called in order to edit an assignment
         var api = apiRoot + "/assignment/edit";
 
-        ///The post body for creating a user, with all of the required information
+        ///The post body for editing an assignment, with all of the required information
         var postBody = {};
         postBody.senderUsername = userSession.auth.username;
         postBody.classID = getClassID();
@@ -898,10 +935,10 @@ async function editAssignment() {
 
         //console.log(JSON.stringify(JSON.stringify(postBody)));
 
-        ///Calling the API to create a user
+        ///Calling the API to edit an assignment
         await callPostAPI(api, postBody, "an assignment", false);
 
-        ///Refresh the user page for edititng assignments
+        ///Refresh the assignment page for edititng assignments
         getAssignmentPage(0);
 
         ///Show the user that success has been had
@@ -911,6 +948,7 @@ async function editAssignment() {
     }
 }
 
+//Compiles the data required to edit an assignment
 function getEditAssignmentData() {
     //Assignment Data
     ///Object to store the assignment data
@@ -930,7 +968,7 @@ function getEditAssignmentData() {
     return assignmentData;
 }
 
-//Gets the current deadline in a format that the backend finds friendly
+//Gets the deadline in a format that the backend finds friendly
 function getEditDeadline() {
     //Deadline
     ///The deadline as a time
@@ -943,14 +981,19 @@ function getEditDeadline() {
     return deadline.substring(0, 23);
 }
 
+//Enables or disables the delete button for assignments
 function deleteAssignmentCheck() {
+    //Button Handler
+    ///If the checkbix is checked, enable the button
     if($("#assignment-delete-check").prop('checked')) {
         $("#delete-assignment-btn").removeAttr("disabled");
     } else {
+        ///If not then disable the button
         $("#delete-assignment-btn").attr("disabled", "disabled");;
     }
 }
 
+//Deletes an assignment
 async function deleteAssignment() {
     try {
         clearStatusBar();

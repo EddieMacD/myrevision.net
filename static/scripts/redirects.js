@@ -1,4 +1,7 @@
+//Manages the redirects based on the user's access level
 function redirect () {
+    //Manage Redirects
+    ///Guests go back to the home page, students go to questions, teachers go to assignments, and admins go to assignments aswell
     switch (userSession.auth.accessLevel) {
         case "guest":
             window.location.replace(baseURL);

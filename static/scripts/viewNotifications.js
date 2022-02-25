@@ -26,7 +26,7 @@ async function getNotificationPage(offset) {
             data = data.notifications;
 
             //Displaying Notification Page
-            ///For each Notification in the page
+            ///For each notification in the page
             data.forEach((element, index) => {
                 ///Add their data to an object - converting it into a form that the function can handle
                 var notification = {};
@@ -177,22 +177,35 @@ function generatePageMarkers (numOfItems, currentPage) {
     }
 }
 
+//Mark a notification as read
+///notificationID: the ID of the notification that is being marked as read
 async function markRead(notificationID) {
     try {
         clearStatusBar();
 
         //Mark Read
+        ///The URI of the API to call to mark the notification as read, with the notification ID as a parameter
         var api = apiRoot + "/notification/mark-read?notificationID=" + notificationID;
         
+        ///Calling the API
         await callGetAPI(api, "notification", true);
 
+        ///Refreshing the notification page to reflect the change
         getNotificationPage(0);
+
+        generateSuccessBar("Notification successfully read");
     } catch (e) {
         generateErrorBar(e);
     }
 }
 
+//Performs a relevant action for a notification, depending on type of notification
+///type: the type of notification
+///featureID: the ID of the linked feature
+///comment: the comment of the notification
 function notificationAction(type, featureID, comment) {
+    //Action
+    ///Switching on notification type - stores attributes in session storage then changes to the relevant page
     switch (type) {
         case "flag":
             sessionStorage.setItem("historyID", featureID);
@@ -213,18 +226,7 @@ function notificationAction(type, featureID, comment) {
         case "ass_edit":
             sessionStorage.setItem("assignmentID", featureID);
             window.location.replace(baseURL + "view-assignments");
-            break;
-
-        case "ass_delete":
-            sessionStorage.setItem("assignmentID", featureID);
-            window.location.replace(baseURL + "view-assignments");
-            break;
-
-        case "ass_complete":
-            sessionStorage.setItem("assignmentID", featureID);
-            window.location.replace(baseURL + "edit-assignments");
-            break;
-        
+            break;        
     }
 }
 

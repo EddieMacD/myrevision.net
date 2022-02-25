@@ -1,9 +1,9 @@
-//Get a page of users for the delete user portion of the page
+//Get a page of assignments for the view assignment portion of the page
 ///offset: how many items have been on previous pages
 async function getAssignmentPage(offset) {
     try {
-        //Get User Page
-        ///Clear the current user page
+        //Get Assignment Page
+        ///Clear the current assignment page
         $("#frm-assignment-page").empty();
 
         ///Get the page size from the select box
@@ -12,21 +12,23 @@ async function getAssignmentPage(offset) {
         ///Set the offset to the user session object
         userSession.assignmentPageOffset = offset;
 
-        ///The URI for the API to get a user page, complete with query string parameters
+        ///The URI for the API to get an outstanding assignment page, complete with query string parameters
         var api = apiRoot + "/assignment/read/list?email=" + userSession.auth.email + "&offset=" + offset + "&amount=" + pageSize;
 
-        ///The API call to get the user page
+        ///The API call to get the assignment page
         var data = await callGetAPI(api, "assignment data");
 
+        ///If there are assignments outstanding
         if(data.count > 0) {
+            ///Show the select assignment list
             $("#view-assignment-container").show();
 
+            ///Unpackage the data from the back-end, storing the count in the user session and moving the assignments to the front of the temporary variable
             userSession.assignmentNum = data.count;
-
             data = data.assignments;
 
-            //Displaying User Page
-            ///For each user in the page
+            //Displaying Assignment Page
+            ///For each assignment in the page
             data.forEach((element, index) => {
                 ///Add their data to an object - converting it into a form that the function can handle
                 var assignment = {};
@@ -35,7 +37,7 @@ async function getAssignmentPage(offset) {
                 assignment.info = element[2].stringValue;
                 assignment.deadline = element[3].stringValue;
 
-                ///Append a delete user row containing their information to the delete user page
+                ///Append a view assignment row containing their information to the view assignment page
                 $("#frm-assignment-page").append(generateAssignmentRow(assignment, index));
             });
 
@@ -60,12 +62,13 @@ async function getAssignmentPage(offset) {
                 $("#assignment-btn-next").removeAttr("disabled");
             }
 
+            ///Show the assignments, select the first one and show that assignment's details
             showList();
             $("#assignment-0").prop('checked', true);
             selectAssignment(0);
         } else {
+            ///If there are no assignments outstanding then hide the assignment selector and inform the user
             $("#view-assignment-container").hide();
-
             generateUpdateBar("You don't have any assignments to complete");
         }
     } catch (e) {
@@ -84,12 +87,12 @@ function generateAssignmentRow(assignment, index) {
     ///Push the delete row to the array
     assignmentRow.push(
         '<div class="row assignment-row">',
-            ///Contains a user's first name, last name, email, date of birth and access level
+            ///Contains an assignment's ID, name, description, and deadline
             '<div class="col-xs-1" id="assignment-id-' + index + '">' + assignment.ID + '</div>',
             '<div class="col-xs-2" id="assignment-name-' + index + '">' + assignment.name + '</div>',
             '<div class="col-xs-6" id="assignment-info-' + index + '">' + assignment.info + '</div>',
             '<div class="col-xs-2" id="assignment-deadline-' + index + '">' + assignment.deadline + '</div>',
-            ///Also contains a button that allows the viewer to delete this user
+            ///Also contains a button that allows the viewer to select this assignment
             '<div class="col-xs-1">',
                 '<input type="radio" id="assignment-' + index + '" name="assignment-select" value="assignment-' + assignment.ID + '" onclick="selectAssignment(' + index + ')">',
             '</div>',
@@ -99,43 +102,43 @@ function generateAssignmentRow(assignment, index) {
     return assignmentRow.join("");
 }
 
-//Changes the user page by + or - 1
+//Changes the assignment page by + or - 1
 ///Change: how many pages to change by
 function newAssignmentPage(change) {
     //Variables
-    ///The number of users on a page, determined by a select box
+    ///The number of assignments on a page, determined by a select box
     var pageSize = $("#frm-add-user-page-num").val();
 
     ///How many users to change by
     var changeBy = pageSize * change;
 
-    ///How many users are now in previous pages
+    ///How many assignments are now in previous pages
     var offset = userSession.assignmentPageOffset + changeBy;
 
 
     //Change page
     ///If the new offset is a valid number
     if(offset >= 0 || offset <= userSession.assignmentNum){
-        ///Change the user page
+        ///Change the assignments page
         getAssignmentPage(offset);    
     }
 }
 
-//Sets the user page to a new page
+//Sets the assignment page to a new page
 ///pageNumber: the number of the page you are now changing to
 function setAssignmentPage(pageNumber) {
     //Variables
-    ///The number of users on a page, determined by a select box
-    var pageSize = $("#frm-add-user-page-num").val();
+    ///The number of assignments on a page, determined by a select box
+    var pageSize = $("#frm-assignment-page-num").val();
 
-    ///The number of users now on previous pages
+    ///The number of assignments now on previous pages
     var offset = pageSize * pageNumber;
 
 
     //Change Page
     ///If the new offset is a valid number
     if(offset >= 0 || offset <= userSession.assignmentUserNum){
-        ///Change the user page
+        ///Change the assignment page
         getAssignmentPage(offset);    
     }
 }
@@ -147,10 +150,10 @@ function generateAssignmentPageMarkers (currentPage) {
     ///Empty out the current page marker row
     $("#assignment-page-markers").empty();
 
-    ///The number of users on a page, determined by a select box
+    ///The number of assignments on a page, determined by a select box
     var pageSize = $("#frm-assignment-page-num").val();
 
-    ///How many markers to generate - truncated by parse int so one is added if there are extraneous users
+    ///How many markers to generate - truncated by parse int so one is added if there are extraneous assignments
     var numOfMarkers = parseInt(userSession.assignmentNum / pageSize);
 
     if(userSession.assignmentNum % pageSize != 0) {
@@ -171,81 +174,113 @@ function generateAssignmentPageMarkers (currentPage) {
     }
 }
 
+//Select an assignment to show it's details
+///index: the index of the assignment on the list
 async function selectAssignment(index) {
     try {
         clearStatusBar();
+
+        //Select Assignment
+        ///Set index and the assignment ID to the user session object 
         userSession.selectedAssignment = index;
+        userSession.assignmentID = getSelectedID();
 
-        var api = apiRoot + "/assignment/read/details?assignmentID=" + getSelectedID() + "&senderUsername=" + userSession.auth.username;
 
+        ///The URI for the API to read the assignment's details, with the releveant parameters
+        var api = apiRoot + "/assignment/read/details?assignmentID=" + userSession.assignmentID + "&senderUsername=" + userSession.auth.username;
+
+        ///Calling the API to get assignment details
         var data = await callGetAPI(api, "assignment data");
 
+        ///Unpacking the assignment data from the back-end
         var assignmentData = {};
         assignmentData.name = data[0].stringValue;
         assignmentData.info = data[1].stringValue;
         assignmentData.deadline = data[2].stringValue;
         assignmentData.filters = JSON.parse(JSON.parse(data[3].stringValue));
 
-        userSession.assignmentID = getSelectedID();
-
-
+        ///Show the assignment
         showSelectedAssignment(assignmentData);
     } catch (e) {
         generateErrorBar(e);
     }
 }
 
+//Shows an assignment to the user
+///assignmentData: the details of the assignment
 function showSelectedAssignment(assignmentData) {
-    $("#view-assignment-name").val(assignmentData.name);
-    $("#view-assignment-description").val(assignmentData.info);
+    //Show Assignmnent Data
+    ///The name and description are shown in their respective slots
+    $("#edit-assignment-name").val(assignmentData.name);
+    $("#edit-assignment-description").val(assignmentData.info);
 
-    var temp = new Date (assignmentData.deadline)
+    ///The date is converted into a format that is accepted by the date input
+    var temp = new Date(assignmentData.deadline)
     temp = temp.toISOString();
     temp = temp.substring(0, 22)
-    $("#view-assignment-deadline").val(temp);
+    $("#edit-assignment-deadline").val(temp);
 
+    //Show Filters
+    ///The file path is extracted from the object
     var filePath = assignmentData.filters.filePath;
 
+    ///The qualification is extracted from the string and shown before it is removed
     $("#selected-qualification").val(filePath.substring(0, filePath.indexOf("/")));
     filePath = filePath.substring(filePath.indexOf("/") + 1);
 
+    ///The exam board is extracted from the string and shown before it is removed
     $("#selected-examBoard").val(filePath.substring(0, filePath.indexOf("/")));
     filePath = filePath.substring(filePath.indexOf("/") + 1);
 
+    ///The subject is shown as the last part of the string
     $("#selected-subject").val(filePath.substring(0, filePath.indexOf("/")));
 
-    $("#selected-numberOfQuestions").val(assignmentData.filters.numOfQuestions);
+    ///The number of questions is also shown to the user
+    $("#selected-numberOfQuestions").val(assignmentData.filters.numOfQuestions)
 }
 
+//Gets the ID of the selected assignment
 function getSelectedID() {
     return $("#assignment-id-" + userSession.selectedAssignment).text();
 }
 
+//Gets the name of the selected assignment
 function getSelectedName() {
     return $("#assignment-name-" + userSession.selectedAssignment).text();
 }
 
+//Starts the selected assignment
 function startAssignment() {
+    //Start Assignment
+    ///Sets the assignment ID to the session storage and loads the questions page
     sessionStorage.setItem("assignmentID", userSession.assignmentID);
     window.location.replace(baseURL + "questions");
 }
 
+//Shows an assignment that was linked to from another source
+///assignmentID: the ID of the assignment that was linked to
 async function getLinkedAssignment (assignmentID) {
     try {
         clearStatusBar();
 
+        //Get Assignment
+        ///The URI of the API to call to get the assignment details
         var api = apiRoot + "/assignment/read/details?assignmentID=" + assignmentID + "&senderUsername=" + userSession.auth.username;
 
+        ///Calling the API to get assignment details
         var data = await callGetAPI(api, "assignment data");
 
+        ///Unpacking the assignment data
         var assignmentData = {};
         assignmentData.name = data[0].stringValue;
         assignmentData.info = data[1].stringValue;
         assignmentData.deadline = data[2].stringValue;
         assignmentData.filters = JSON.parse(JSON.parse(data[3].stringValue));
 
+        ///Setting the assignment ID to session storage
         userSession.assignmentID = assignmentID;
 
+        ///Showing the selected assignment and hiding the selector list
         showSelectedAssignment(assignmentData);
         hideList();
     } catch (e) {
@@ -253,10 +288,12 @@ async function getLinkedAssignment (assignmentID) {
     }
 }
 
+//Hides the select assignment list
 function hideList() {
     $("#select-assignment-box").hide();
 }
 
+//Shows the select assignment list
 function showList() {
     $("#select-assignment-box").show();
 }
@@ -274,11 +311,13 @@ async function initialise(){
     //Function calls
     await initialiseAuth(); 
 
+    ///If the session storage contains an assignment ID
     if(sessionStorage.getItem("assignmentID")) {
+        ///Get the linked assignment from the ID and remove the ID from session storage
         getLinkedAssignment(sessionStorage.getItem("assignmentID"));
         sessionStorage.removeItem("assignmentID")
     } else {
-        //Gets assignments
+        ///If not then get an assignment page
         getAssignmentPage(0);
     }
 }

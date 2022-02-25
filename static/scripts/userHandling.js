@@ -1,7 +1,4 @@
 //Globals variables
-///Stores user data throughout the running of the website
-var userSession = {};
-
 ///Stores the user's data to do with their authentication and their access level
 userSession.auth = {};
 

@@ -1,30 +1,36 @@
+//Gets an instance of question history for a specific ID
+///questionID: 
 async function getHistory(historyID) {
     try {
-        //Get User Page
-        ///Clear the current notification page
-        $("#frm-notification-page").empty();
+        clearStatusBar();
 
+        //Get History
+        ///The URI for the API to get the history, complete with the historyID
         var api = apiRoot + "/question/history/recall?historyID=" + historyID;
 
+        ///The question history data is retrieved from the back-end
         var data = await callGetAPI(api, "user data");
 
-        console.log(data);
-
+        ///The question history data is put into the userSession object 
         userSession.questionData = data.questionData.question;
         userSession.timeSpent = data.historyData.timeSpent;
-
         userSession.userAnswers = data.historyData.userAnswer;
         userSession.correctAnswers = extractAnswers(data.questionData.answer)
 
+        ///The answer is marked
         markAnswer();
 
+        ///The history is shown to the user
         $("#answer-container").append(buildHistoryDiv(data.fileData));
     } catch (e) {
         generateErrorBar(e);
     }
 }
 
+//Marks a single answer
 function markAnswer () {
+    //Mark answer
+    ///If no answer was given then do nothing
     if(userSession.userAnswers.length != 0)
     {
         ///Set a boolean flag variable to true - represents whether the user has gotten the whole question correct. Defaults to correct
@@ -104,11 +110,12 @@ function buildHistoryDiv(fileData) {
         icon = 'ion-checkmark-round green-text symbol'
     }
 
+    ///If the user commented on the question then show the comment
     if(sessionStorage.getItem("comment")) {
         commentBox.push(
             '<div class="row comment-container">',
                 '<div class="col-xs-12 comment-row">',
-                    '<input type="text" disabled="disabled" value="' + sessionStorage.getItem("comment") + '" class="comment-bo form-control">',
+                    '<input type="text" disabled="disabled" value="' + sessionStorage.getItem("comment") + '" class="comment-box form-control">',
                 '</div>',
             '</div>'
         );
@@ -228,10 +235,16 @@ function convertQuestionIndex(fileData) {
     return fileIndex;
 }
 
+//Extracts the answers from the retrieve question history
+///answer: the data from the file
 function extractAnswers(answer) {
+    //Extract answers
+    ///Array for the answers to be put in
     var answerSet = [];
 
+    ///For each answer in the array
     answer.forEach((element) => {
+        ///Push the text to the answer set
         answerSet.push(element.a);
     });
 
@@ -380,11 +393,14 @@ async function initialise(){
     ///Initialise the user
     initialiseAuth(); 
 
+    ///If there is question history in the session storage
     if(sessionStorage.getItem("historyID"))
     {
+        ///Get the ID from the session storage and remove it from the session storage
         var historyID = sessionStorage.getItem("historyID");
         sessionStorage.removeItem("historyID");
 
+        ///Get the history for that ID
         getHistory(historyID);
     } else {
         window.location.replace(baseURL + loginLocation);

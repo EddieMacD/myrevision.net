@@ -167,6 +167,7 @@ async function newSubject() {
     }
 }
 
+//Generates and displays the topic section and topic boxes
 function loadTopicDisplay() {
     //Variables
     ///Array containing all of the HTML for the topic display
@@ -481,6 +482,7 @@ async function startQuestions() {
     }
 }
 
+//Start an assignment question set
 async function startAssignment() {
     try {
         clearStatusBar();
@@ -536,14 +538,19 @@ async function startAssignment() {
     }
 }
 
+//Get the filters for an assignment
 async function getAssignmentFilters() {
     try {
         clearStatusBar();
 
+        //Get Assignment Details
+        ///The URI for the API to get assignment details, with the relevant parameters
         var api = apiRoot + "/assignment/read/details?assignmentID=" + userSession.assignmentID + "&senderUsername=" + userSession.auth.username;
 
+        ///Calling the API to get the assignment details
         var data = await callGetAPI(api, "assignment data");
 
+        ///Extracting the filters of the assignment from the details
         var assignmentFilters = JSON.parse(JSON.parse(data[3].stringValue));
 
         return assignmentFilters;
@@ -552,11 +559,13 @@ async function getAssignmentFilters() {
     }
 }
 
+//The start for the test access question set
 async function startTestQuestions() {
     try {
         clearStatusBar();
 
         //Data handling
+        ///The file path, stored in the user session
         userSession.filePath = "iGCSE/Cambridge/Computer Science";
 
         ///A temporary object to store all of the input from the api, once the data has been returned. Test data prevents unnecessary APi calls whilst having all question types
@@ -1092,8 +1101,12 @@ async function submitAnswers() {
     }
 }
 
+//Gets the answers for the questions the user completed
 async function getAnswers() {
+    //Get Answers
+    ///If the user is a guest
     if(sessionStorage.getItem("isGuest")) {
+        ///Use the pre-set object (users without accounts can't call most APIs)
         var response = {"answers":[[{"a":"2"}],[{"a":"0"},{"a":"1"}],[{"a":"Nibble"},{"a":"Bit"},{"a":"Megabyte"}],[{"a":"5TB"},{"a":"2 nibbles"},{"a":"5GB"},{"a":"2 bytes"}],[{"a":"16384 nibbles"},{"a":"1/128 MB"}],[{"a":"01100101"}],[{"a":"1024 KB"},{"a":"1048576 bytes"}],[{"a":"Base 2"},{"a":"Base 10"},{"a":"Base 2"}],[{"a":"204"}],[{"a":"bit"},{"a":"nibble"},{"a":"byte"},{"a":"kilobyte"}],[{"a":"In binary"}],[{"a":"memory"},{"a":"storage"}],[{"a":"81920 bits"},{"a":"5242880 bytes"},{"a":"8 nibbles"},{"a":"16 bits"}],[{"a":"00010111"},{"a":"01100000"},{"a":"01101111"}],[{"a":"01011001"}],[{"a":"1024"},{"a":"1024"}],[{"a":"255"}],[{"a":"denary"},{"a":"10"}],[{"a":"36"},{"a":"194"},{"a":"177"}],[{"a":"11110110"}]]};
     } else {
         ///The full api to be called for the correct answers
@@ -1229,7 +1242,7 @@ function markAnswers() {
     }
 }
 
-//Displays/generates the answer form
+//Displays and generates the answer form
 async function displayAnswerScreen() {
     //Constants
     ///The score boundary for red text
@@ -1283,14 +1296,21 @@ async function displayAnswerScreen() {
     }
 }
 
+//Gets a list of teachers in the same school as the user
 async function getTeacherList() {
+    //Get Teachers
+    ///The URI for the API to get a list of teachers, 
     var api = apiRoot + "/teacher-list?email=" + userSession.auth.email;
 
+    ///Calling the API to get a list of teachers
     var data = await callGetAPI(api, "answers");
 
+    ///A variable to store a list of teachers
     var teacherList = "";
 
+    ///For each teacher
     data.teachers.forEach((element) => {
+        ///Add a select item to the teacher list with the teacher's information embedded
         teacherList += newSelectItemValue((element[0].stringValue + " " + element[1].stringValue), element[2].longValue);
     })
 
@@ -1387,19 +1407,23 @@ function buildAnswerDiv(index, teacherList) {
                         '</div>',
                     '</div>',
                 '</div>', 
+                ///The feedback container
                 '<div class="comment-container">',
                     '<div class="comment-row row">',
+                        ///The teacher select label then select box 
                         '<div class="col-xs-4">',
                             '<label for="teacher-select' + index + '" class="comment-label">Select teacher to comment to: </label>',
                         '</div>',
                         '<div class="col-xs-7">',
                             '<select name="teacher-select' + index + '" id="teacher-select' + index + '" class="form-control">' + teacherList + '</select>',
                         '</div>',
+                        ///Flag button
                         '<div class="col-xs-1">',
                             '<button class="btn btn-flag" onclick="sendFlag(' + index + ')"><i class="ion-ios-flag"></i></button>',
                         '</div>',
                     '</div>',
                         '<div class="comment-row row">',
+                            ///Comment box label, text box, and submit button 
                             '<div class="col-xs-2">',
                                 '<label for="comment-box' + index + '" class="comment-label">Type comment: </label>',
                             '</div>',
@@ -1606,6 +1630,7 @@ async function sendQuestionHistory() {
         }
     }
 
+    ///If this set was an assignment set then mark the assignment as complete
     if(userSession.assignmentID) {
         completeAssignment();
     }
@@ -1663,61 +1688,79 @@ function getAssignment() {
     
     ///If there is an existing assignment ID - if this is an assignment
     if(userSession.assignmentID) {
-        ///Set thereturn variable to the assignment ID
+        ///Set the return variable to the assignment ID and remove it from the session storage
         assignmentID = userSession.assignmentID;
-
         sessionStorage.removeItem("assignmentID");
     }
 
     return assignmentID;
 }
 
+//Complete the assignment
 async function completeAssignment() {
     try {
         clearStatusBar();
 
+        //Complete Assignment
+        ///The mark that the user got, formatted as a string
         var mark = userSession.numCorrect + "/" + userSession.numOfQuestions;
 
-        //Mark Read
+        ///The URI for the API to create a notification, with the required parameters
         var api = apiRoot + "/assignment/notification-create?type=complete&assignmentID=" + userSession.assignmentID + "&senderUserEmail=" + userSession.auth.email + "&mark=" + mark;
         
+        ///Calling the API to create the notification
         await callGetAPI(api, "notification", false);
 
+        ///Notify the user that they have completed an assignment
         generateSuccessBar("Assignment successfully completed with a mark of " + mark)
     } catch (e) {
         generateErrorBar(e);
     }
 }
 
+//Send a comment to a particular teacher
+///index: the index of the answer box
 async function sendComment(index) {
     try {
+        //Send Comment
+        ///Compile the data that is needed to send a comment
         var filePath = userSession.filePath;
         var fileName = userSession.questions[index].index;
         var recieverID =$("#teacher-select" + index).val();
         var senderUserEmail = userSession.auth.email;
         var comment = $("#comment-box" + index).val();
 
+        ///Put the data in the URI for the API
         var api = apiRoot + "/comment/create?filePath=" + filePath + "&fileName=" + fileName + "&recieverID=" + recieverID + "&senderUserEmail=" + senderUserEmail + "&comment=" + comment;
 
+        ///Call the API to create a comment
         await callGetAPI(api, "comment");
 
+        ///Notify the user that their comment was made
         generateSuccessBar("Comment successfully sent");
     } catch (e) {
         generateErrorBar(e);
     }
 }
 
+//Send a flag to a particular teacher
+///index: the index of the answer box
 async function sendFlag(index) {
     try {
+        //Send Flag
+        ///Compile the data that is needed to send a flag
         var filePath = userSession.filePath;
         var fileName = userSession.questions[index].index;
         var recieverID = $("#teacher-select" + index).val();
         var senderUserEmail = userSession.auth.email;
 
+        ///Put the data in the URI for the API
         var api = apiRoot + "/flag/create?filePath=" + filePath + "&fileName=" + fileName + "&recieverID=" + recieverID + "&senderUserEmail=" + senderUserEmail ;
 
+        ///Call the API to create a flag
         await callGetAPI(api, "flag");
 
+        ///Notify the user that their flag was made
         generateSuccessBar("Flag successfully sent");
     } catch (e) {
         generateErrorBar(e);
@@ -1748,8 +1791,10 @@ async function initialise(){
         ///Initialise the user
         initialiseAuth(); 
 
+        ///If there is an assignment
         if(sessionStorage.getItem("assignmentID"))
         {
+            ///Store the assignment ID in the user session and start the assignmnent
             userSession.assignmentID = sessionStorage.getItem("assignmentID")
             startAssignment();
         } else {

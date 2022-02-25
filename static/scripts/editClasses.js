@@ -105,6 +105,7 @@ async function submitClass () {
         ///Calling the API to create a class
         await callGetAPI(api, "a class", false);
 
+        ///Refresh the class list
         await getClasses();
 
         ///Show the user that success has been had
@@ -129,6 +130,7 @@ function getClassSubject() {
     return $("#topic-input").val();
 }
 
+//Get the ID of the selected class
 function getClassID() {
     return $("#class-name-select").val();
 }
@@ -174,7 +176,7 @@ function newSelectItemValue(text, value) {
     return option
 }
 
-//Get a page of users for the delete user portion of the page
+//Get a page of users for the add user portion of the page
 ///offset: how many items have been on previous pages
 async function getAddUserPage(offset) {
     try {
@@ -199,7 +201,7 @@ async function getAddUserPage(offset) {
 
             userSession.addUserNum = data.count;
 
-            //Displaying User Page
+            //Displaying Add Page
             ///For each user in the page
             data.userPage.forEach((element, index) => {
                 ///Add their data to an object - converting it into a form that the function can handle
@@ -209,7 +211,7 @@ async function getAddUserPage(offset) {
                 user.lastName = element[2].stringValue;
                 user.accessLevel = element[3].stringValue;
 
-                ///Append a delete user row containing their information to the delete user page
+                ///Append an add user row containing their information to the add user page
                 $("#frm-add-user-page").append(generateAddUserRow(user, index));
             });
 
@@ -242,7 +244,7 @@ async function getAddUserPage(offset) {
     }
 }
 
-//Generate a delete user row for the user page
+//Generate an add user row for the user page
 ///user: the data of the user to be displayed on the row
 ///index: the number of the user on the page
 function generateAddUserRow(user, index) {
@@ -253,7 +255,7 @@ function generateAddUserRow(user, index) {
     ///Push the delete row to the array
     userRow.push(
         '<div class="row user-row">',
-            ///Contains a user's first name, last name, email, date of birth and access level
+            ///Contains a user's first name, last name, and access level
             '<div class="col-xs-4" id="add-user-first-name-' + index + '">' + user.firstName + '</div>',
             '<div class="col-xs-4" id="add-user-last-name-' + index + '">' + user.lastName + '</div>',
             '<div class="col-xs-3" id="add-user-access-level-' + index + '">' + user.accessLevel + '</div>',
@@ -267,7 +269,7 @@ function generateAddUserRow(user, index) {
     return userRow.join("");
 }
 
-//Changes the user page by + or - 1
+//Changes the add user page by + or - 1
 ///Change: how many pages to change by
 function newAddUserPage(change) {
     //Variables
@@ -289,7 +291,7 @@ function newAddUserPage(change) {
     }
 }
 
-//Sets the user page to a new page
+//Sets the add user page to a new page
 ///pageNumber: the number of the page you are now changing to
 function setAddUserPage(pageNumber) {
     //Variables
@@ -299,17 +301,16 @@ function setAddUserPage(pageNumber) {
     ///The number of users now on previous pages
     var offset = pageSize * pageNumber;
 
-
     //Change Page
     ///If the new offset is a valid number
     if(offset >= 0 || offset <= userSession.addUserNum){
-        ///Change the user page
+        ///Change the add user page
         getAddUserPage(offset);    
     }
 }
 
-//Generates the page markers that go underneath the delete page
-///numOfItems: how many users there are for the current school
+//Generates the page markers that go underneath the add page
+///numOfItems: how many users there are for the current school not in the selected class
 ///currentPage: which page is currently selected
 function generateAddPageMarkers (numOfItems, currentPage) {
     //Generate Page Markers
@@ -340,35 +341,36 @@ function generateAddPageMarkers (numOfItems, currentPage) {
     }
 }
 
-//Deletes a user
-///index: the number of the user in the delete user page
+//Adds a user to a class
+///index: the number of the user in the add user page
+///userID: the ID of the user being added to a class
 async function addUserToClass(index, userID) {
     try {
         clearStatusBar();
 
-        //Delete User
-        ///The URI of the api to delete a user, compelete with all of the relevant parameters
+        //Add User to Class
+        ///The URI of the api to add a user to a class, compelete with all of the relevant parameters
         var api = apiRoot + "/class/create-link?senderUsername=" + userSession.auth.username + "&classID=" + getClassID() + "&userID=" + userID;
         
-        ///Calling the API to delete a user
+        ///Calling the API to add a user to a class
         await callGetAPI(api, "user data");
 
-        ///Show the user that the deletion was successful
+        ///Show the user that the addition was successful
         generateSuccessBar("User " + $("#add-user-first-name-" + index).text() + " " + $("#add-user-last-name-" + index).text() + " has been added to class " + $( "#class-name-select option:selected" ).text())
 
-        ///Regenerate the user pages to reflect the deleted user
+        ///Regenerate the user pages to reflect the added user
         setUserPages();
     } catch (e) {
         generateErrorBar(e);
     }
 }
 
-//Get a page of users for the delete user portion of the page
+//Get a page of users for the remove user portion of the page
 ///offset: how many items have been on previous pages
 async function getRemoveUserPage(offset) {
     try {
         //Get User Page
-        ///Clear the current user page
+        ///Clear the current remove user page
         $("#frm-remove-user-page").empty();
 
         ///Get the page size from the select box
@@ -377,7 +379,7 @@ async function getRemoveUserPage(offset) {
         ///Set the offset to the user session object
         userSession.removePageOffset = offset;
 
-        ///The URI for the API to get a user page, complete with query string parameters
+        ///The URI for the API to get a remove user page, complete with query string parameters
         var api = apiRoot + "/class/user-page?school=" + getSchool() + "&classID=" + getClassID() + "&offset=" + offset + "&amount=" + pageSize + "&pageType=remove";
 
         ///The API call to get the user page
@@ -398,11 +400,11 @@ async function getRemoveUserPage(offset) {
                 user.lastName = element[2].stringValue;
                 user.accessLevel = element[3].stringValue;
 
-                ///Append a delete user row containing their information to the delete user page
+                ///Append a remove user row containing their information to the remove user page
                 $("#frm-remove-user-page").append(generateRemoveUserRow(user, index));
             });
 
-            ///Generate the page markers to go on the bottom of the delete page
+            ///Generate the page markers to go on the bottom of the remove page
             generateRemovePageMarkers(data.count, offset/pageSize);
 
             ///If this is the first page
@@ -430,7 +432,7 @@ async function getRemoveUserPage(offset) {
     }
 }
 
-//Generate a delete user row for the user page
+//Generate a remove user row for the user page
 ///user: the data of the user to be displayed on the row
 ///index: the number of the user on the page
 function generateRemoveUserRow(user, index) {
@@ -441,7 +443,7 @@ function generateRemoveUserRow(user, index) {
     ///Push the remove user row to the array
     userRow.push(
         '<div class="row user-row">',
-            ///Contains a user's first name, last name, email, date of birth and access level
+            ///Contains a user's first name, last name, and access level
             '<div class="col-xs-4" id="remove-user-first-name-' + index + '">' + user.firstName + '</div>',
             '<div class="col-xs-4" id="remove-user-last-name-' + index + '">' + user.lastName + '</div>',
             '<div class="col-xs-3" id="remove-user-access-level-' + index + '">' + user.accessLevel + '</div>',
@@ -455,7 +457,7 @@ function generateRemoveUserRow(user, index) {
     return userRow.join("");
 }
 
-//Changes the user page by + or - 1
+//Changes the remove user page by + or - 1
 ///Change: how many pages to change by
 function newRemoveUserPage(change) {
     //Variables
@@ -477,7 +479,7 @@ function newRemoveUserPage(change) {
     }
 }
 
-//Sets the user page to a new page
+//Sets the remove user page to a new page
 ///pageNumber: the number of the page you are now changing to
 function setRemoveUserPage(pageNumber) {
     //Variables
@@ -497,7 +499,7 @@ function setRemoveUserPage(pageNumber) {
 }
 
 //Generates the page markers that go underneath the delete page
-///numOfItems: how many users there are for the current school
+///numOfItems: how many users there are for the current school in the selected class
 ///currentPage: which page is currently selected
 function generateRemovePageMarkers (numOfItems, currentPage) {
     //Generate Page Markers
@@ -523,51 +525,60 @@ function generateRemovePageMarkers (numOfItems, currentPage) {
             $("#remove-page-markers").append('<a class="page-marker-selected">' + i + '</a>');
         } else {     
             ///If it is not the currently selected page append a normal page marker
-            $("#remove-page-markers").append('<a class="page-marker" onclick="setAddUserPage(' + i + ')">' + i + '</a>');
+            $("#remove-page-markers").append('<a class="page-marker" onclick="setRemoveUserPage(' + i + ')">' + i + '</a>');
         }
     }
 }
 
-//Deletes a user
-///index: the number of the user in the delete user page
+//Remove a user from the class
+///index: the number of the user in the remove user page
 async function removeUserFromClass(index, userID) {
     try {
         clearStatusBar();
 
-        //Delete User
-        ///The URI of the api to delete a user, compelete with all of the relevant parameters
+        //Remove User
+        ///The URI of the api to remove a user, compelete with all of the relevant parameters
         var api = apiRoot + "/class/delete-link?senderUsername=" + userSession.auth.username + "&classID=" + getClassID() + "&userID=" + userID;
         
-        ///Calling the API to delete a user
+        ///Calling the API to remove a user
         await callGetAPI(api, "user data");
 
-        ///Show the user that the deletion was successful
+        ///Show the user that the removal was successful
         generateSuccessBar("User " + $("#add-user-first-name-" + index).text() + " " + $("#add-user-last-name-" + index).text() + " has been removed from class " + $("#class-name-select option:selected").text())
 
-        ///Regenerate the user page to reflect the deleted user
+        ///Regenerate the user pages to reflect the deleted user
         setUserPages();
     } catch (e) {
         generateErrorBar(e);
     }
 }
 
+//Reset both user pages
 function setUserPages() {
+    //Set Pages
+    ///Set both user pages to their currently stored user session values
     setAddUserPage(userSession.addPageOffset);
     setRemoveUserPage(userSession.removePageOffset);
 
+    ///Reset the class delete button to be disabled and the check box unchecked
     $("#class-delete-check").prop("checked", false);
     $("#delete-class-btn").attr("disabled", "disabled");
 }
 
+//Get the topic of the current class
 async function getTopic() {
     try {
         clearStatusBar();
 
+        //Get Topic
+        ///The URI for the API to get the class topic, passing in the class ID
         var api = apiRoot + "/class/get-subject?classID=" + getClassID();
         
+        ///Get the topic of the class from the back-end and store it in a variable
         var topic = await callGetAPI(api, "class data");
         topic = topic.topic;
 
+        ///Set the name and subject edit boxes to show the correct values
         $("#change-name-input").val($("#class-name-select option:selected").text());
         $("#change-subject-input").val(topic);
     } catch (e) {
@@ -575,19 +586,26 @@ async function getTopic() {
     }
 }
 
+//Edit some class metadata
+///valueType: whether the name of subject of the class is being edited
 async function editClassData(valueType) {
     try {
         clearStatusBar();
 
+        //Edit class
+        ///The new value that is being changed too
         var newValue = $("#change-" + valueType + "-input").val();
 
+        ///The api to be called in order to edit a class - with queryStringParameters
         var api = apiRoot + "/class/edit?senderUsername=" + userSession.auth.username + "&classID=" + getClassID() + "&school=" + getSchool() + "&newValue=" + newValue + "&valueType=" + valueType;
 
         ///Calling the API to delete a user
         await callGetAPI(api, "class data");
 
+        ///Reset the class list
         await getClasses();
 
+        ///Notify the user that the data was changed
         generateSuccessBar("Class " + valueType + " successfully changed to \"" + newValue + "\"")
     } catch (e) {
         generateErrorBar(e);
@@ -603,6 +621,7 @@ function deleteClassCheck() {
     }
 }
 
+//Delete a class
 async function deleteClass() {
     try {
         clearStatusBar();
@@ -624,7 +643,9 @@ async function deleteClass() {
     }
 }
 
+//Functions to run when a class is changed
 function changeClasses() {
+    //Resets the user page and gets the topic
     setUserPages();
     getTopic();
 }
