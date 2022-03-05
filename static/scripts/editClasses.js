@@ -135,29 +135,38 @@ function getClassID() {
     return $("#class-name-select").val();
 }
 
+//Gets a list of classes for a particular school
 async function getClasses() {
     try {
+        //Variables
+        ///The URI for the API to get the class list
         var api = apiRoot + "/class/recall?school=" + getSchool();
 
+        ///Calling the API to get the list of classes
         var classData = await callGetAPI(api, "classes");
-
         classData = classData.userClasses;
 
+        ///If there is data in the list
         if(classData != false) {
+            ///Populate the select box with a fresh list
             $("#class-name-select").empty();
 
             classData.forEach((element) => {
                 $("#class-name-select").append(newSelectItemValue(element[1].stringValue, element[0].longValue))
             })
 
+            ///Show the edit class box
             $("#edit-class-container").show();
 
+            ///Reset the user pages
             userSession.addPageOffset = 0;
             userSession.removePageOffset = 0;
-
             setUserPages();
+
+            ///Get the class's topic
             getTopic();
         } else {
+            ///If there are no classes in the list hide the edit class container
             $("#edit-class-container").hide();
         }
     } catch (e) {

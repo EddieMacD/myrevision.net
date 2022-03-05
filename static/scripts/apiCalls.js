@@ -2,9 +2,6 @@
 ///The root for all of the API URIs used for the system
 const apiRoot = "https://api.myrevision.net";
 
-///Stores user data throughout the running of the website
-var userSession = {};
-
 //A standard initialise function - runs unless a webpage's code has an override
 function initialiseBasic() {
     //Initialisation

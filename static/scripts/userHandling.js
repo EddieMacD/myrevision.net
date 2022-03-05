@@ -1,4 +1,7 @@
 //Globals variables
+///Stores user data throughout the running of the website
+var userSession = {};
+
 ///Stores the user's data to do with their authentication and their access level
 userSession.auth = {};
 
@@ -76,10 +79,6 @@ async function initialiseAuth() {
     //Variables
     ///The user's access token
     var accessToken = "";
-
-    ///For testing
-    //console.log('initialiseAuth...');
-    //console.log('parsing: ' + window.location.href);
 
     ///Remove any guest status from a user - to be added again later if necessary
     sessionStorage.removeItem("isGuest");
