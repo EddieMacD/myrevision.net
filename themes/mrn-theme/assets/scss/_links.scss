@@ -1,0 +1,56 @@
+.links-title {
+    font-weight: 500;
+    font-size: 40px;
+    color: $secondary-color;
+
+    line-height: 60px;
+    letter-spacing: 5px;
+
+    padding-bottom: 15px;
+
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.links-row {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.links-section {
+    font-weight: 300;
+    font-size: 30px;
+    color: $tertiary-color;
+
+    line-height: 30px;
+    padding-top: 20px;
+    margin-top: 20px;
+
+    text-transform: uppercase;
+    text-align: center;
+
+    border-top: 1px solid $border-color;
+}
+
+.links-description {
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.links-link {
+    font-size: 15px;
+    background-color: $hyperlink;
+    color: lighten($primary-color, 15%);
+
+    border-radius: 5px;
+    padding: 5px;
+
+    display: block;
+}
+
+.links-link:hover, .links-link:focus {
+    background-color: lighten($hyperlink, 5%);
+    color: $primary-color;
+}

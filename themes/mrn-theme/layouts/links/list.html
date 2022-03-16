@@ -1,0 +1,47 @@
+{{ define "main" }}
+
+{{ $data := index site.Data site.Language.Lang }}
+
+{{ if $data.links.links.enable }}
+{{ with $data.links.links }}
+<section class="main-content section">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 links-title">
+                {{ .title | markdownify }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 links-description"> 
+                {{ .description | markdownify }} 
+            </div>
+        </div>
+
+        {{ range .sections }}
+            <div class="row">
+                <div class="col-xs-12 links-section">
+                    {{ .title | markdownify }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 links-description"> 
+                    {{ .description | markdownify }} 
+                </div>
+            </div>
+
+            {{ range .links }}
+                <div class="row links-row">
+                    <div class="col-xs-8 mx-auto">
+                        <a href="{{ .URL }}" class="links-link">{{ .name | markdownify }}</a>
+                    </div>
+                </div>
+            {{ end }}
+        {{ end }}
+    </div>
+</section>
+{{ end }}
+{{ end }}
+
+{{ end }}

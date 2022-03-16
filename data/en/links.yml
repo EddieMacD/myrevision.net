@@ -1,0 +1,73 @@
+links:
+  enable: true
+  title: "Links"
+  description: "All of the links for the MyRevisionDotNet project documentation."
+  sections:
+   - title: "Contact Us"
+     description: "If you have any questions about the MyRevisionDotNet project please contact us"
+     links:
+      - name: "Contact Form"
+        URL: "https://myrevision.net/contact-us"
+
+   - title: "Analysis"
+     description: "All links used for the analysis section. Includes all reviewed existing products and information about the UK's Data Protection Act, as well as information on the advanced serverless plugins."
+     links:
+      - name: "Hegarty Maths"
+        URL: "https://hegartymaths.com/"
+
+      - name: "Seneca"
+        URL: "https://senecalearning.com/"
+
+      - name: "Issac Computer Science"
+        URL: "https://isaaccomputerscience.org/"
+
+      - name: "MyMaths"
+        URL: "https://www.mymaths.co.uk/"
+
+      - name: "Data Protection Act"
+        URL: "https://www.gov.uk/data-protection"
+       
+      - name: "Bootstrap"
+        URL: "https://getbootstrap.com/docs/5.1/layout/grid/"
+              
+      - name: "jQuery"
+        URL: "https://jquery.com/"
+
+   - title: "Documented Design"
+     description: "All links used for the documented design section. Includes information on AWS Amplify."
+     links:
+      - name: "AWS Amplify CI/CD"
+        URL: "https://aws.amazon.com/amplify/hosting/"
+
+   - title: "Technical Solution"
+     description: "All links used for the technical solution section. Includes all source code for the project, both client-side and server-side."
+     links:
+      - name: "Client Side Source Code"
+        URL: "https://github.com/EddieMacD/myrevision.net"
+
+      - name: "Client Side HTML"
+        URL: "https://github.com/EddieMacD/myrevision.net/tree/master/themes/mrn-theme/layouts"
+
+      - name: "Client Side SCSS"
+        URL: "https://github.com/EddieMacD/myrevision.net/tree/master/themes/mrn-theme/assets/scss"
+
+      - name: "Client Side JavaScript"
+        URL: "https://github.com/EddieMacD/myrevision.net/tree/master/static/scripts"
+
+      - name: "Client Side MarkDown"
+        URL: "https://github.com/EddieMacD/myrevision.net/tree/master/content/english"
+
+      - name: "Client Side YAML"
+        URL: "https://github.com/EddieMacD/myrevision.net/tree/master/data/en"
+      
+      - name: "Server Side Source Code"
+        URL: "https://github.com/EddieMacD/myrevision.net-lambda"
+              
+      - name: "Ionicons V2"
+        URL: "https://ionic.io/ionicons/v2"
+
+   - title: "Testing"
+     description: "All links used for the testing section. Includes the MyRevisionDotNet YouTube channel."
+     links:
+      - name: "MyRevisionDotNet YouTube Channel"
+        URL: "https://github.com/EddieMacD/myrevision.net-lambda"
