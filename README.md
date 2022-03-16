@@ -41,3 +41,5 @@ Student Password:   MyR3v!s!0nT3st
 
 Teacher Email:      teachertest.mrn@gmail.com
 Teacher Password:   MyR3v!s!0nT3st
+
+Other information can be found at [myrevision.net/links](https://myrevison.net/links)
