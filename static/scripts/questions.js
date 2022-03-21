@@ -1368,7 +1368,7 @@ function buildAnswerDiv(index, teacherList) {
     }
 
     if (!sessionStorage.getItem("isGuest")) {
-        var feedbackBox = {};
+        var feedbackBox = [];
 
         feedbackBox.push(
             ///The feedback container
