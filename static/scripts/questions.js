@@ -1346,6 +1346,9 @@ function buildAnswerDiv(index, teacherList) {
     ///The part of the header bar that contains the bookmark information and flagging - stored in a variable since the contents are determined by user input
     var bookmarked = '';
 
+    ///The feedback box - not to be shown to guests
+    var feedbackBox = [];
+
 
     //Variable selection
     ///If the user got the question correct
@@ -1368,8 +1371,6 @@ function buildAnswerDiv(index, teacherList) {
     }
 
     if (!sessionStorage.getItem("isGuest")) {
-        var feedbackBox = [];
-
         feedbackBox.push(
             ///The feedback container
             '<div class="comment-container">',
@@ -1401,7 +1402,7 @@ function buildAnswerDiv(index, teacherList) {
             '</div>',
         );
 
-        feedbackBox.join("");
+        feedbackBox = feedbackBox.join("");
     }
 
 
