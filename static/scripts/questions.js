@@ -1286,15 +1286,9 @@ async function displayAnswerScreen() {
         }
     }
 
-    //Form generation
-    ///Get teacher list - for commenting purposes
-    if (!sessionStorage.getItem("isGuest")) {
-        var teacherList = await getTeacherList();
-    }
-
     ///For each question add an answer block to the page
     for (var i = 0; i < userSession.numOfQuestions; i++) {
-        $("#answer-container").append(buildAnswerDiv(i, teacherList));
+        $("#answer-container").append(buildAnswerDiv(i));
     }
 }
 
@@ -1332,7 +1326,7 @@ function newSelectItemValue(text, value) {
 
 //Generates an answer block for a given question
 ///index: the index for the question that the block is being generated for
-function buildAnswerDiv(index, teacherList) {
+function buildAnswerDiv(index) {
     //Variables
     ///A string array for each line of the box. To be combined then returned at the end of the function.
     var answerDiv = [];
@@ -1380,7 +1374,7 @@ function buildAnswerDiv(index, teacherList) {
                         '<label for="teacher-select' + index + '" class="comment-label">Select teacher to comment to: </label>',
                     '</div>',
                     '<div class="col-xs-7">',
-                        '<select name="teacher-select' + index + '" id="teacher-select' + index + '" class="form-control">' + teacherList + '</select>',
+            '<select name="teacher-select' + index + '" id="teacher-select' + index + '" class="form-control">' + getTeacherList() + '</select>',
                     '</div>',
                     ///Flag button
                     '<div class="col-xs-1">',
