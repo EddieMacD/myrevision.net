@@ -1286,7 +1286,7 @@ async function displayAnswerScreen() {
         }
     }
 
-    if(sessionStorage.getItem("isGuest")) {
+    if(!sessionStorage.getItem("isGuest")) {
         var teacherList = await getTeacherList();
     }
 
