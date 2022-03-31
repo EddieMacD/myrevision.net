@@ -83,7 +83,7 @@ function generateNotificationRow(notification, index) {
         var comment = notification.info.match(/"[\w ]+"/)[0];
         comment = comment.substring(1, (comment.length - 1))
         linkRow = '<button type="button" class="btn btn-goto" onclick="notificationAction(\'' + notification.type + '\', ' + notification.featureID + ', \'' + comment + '\')"><i class="ion-link"></i></button>';
-    } else if(notification.type != "ass_delete" || notification.type != "ass_complete") {
+    } else if(notification.type != "ass_delete" && notification.type != "ass_complete") {
         linkRow = '<button type="button" class="btn btn-goto" onclick="notificationAction(\'' + notification.type + '\', ' + notification.featureID + ')"><i class="ion-link"></i></button>';
     }
 
