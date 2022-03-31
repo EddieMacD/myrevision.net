@@ -80,7 +80,7 @@ function generateNotificationRow(notification, index) {
     var linkRow = '';
 
     if(notification.type === "comment") {
-        var comment = notification.info.match(/"[\w ]+"/)[0];
+        var comment = notification.info.match(/"[\w\W]+"/)[0];
         comment = comment.substring(1, (comment.length - 1))
         linkRow = '<button type="button" class="btn btn-goto" onclick="notificationAction(\'' + notification.type + '\', ' + notification.featureID + ', \'' + comment + '\')"><i class="ion-link"></i></button>';
     } else if(notification.type != "ass_delete" && notification.type != "ass_complete") {
