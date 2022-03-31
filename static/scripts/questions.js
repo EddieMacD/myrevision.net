@@ -1286,9 +1286,13 @@ async function displayAnswerScreen() {
         }
     }
 
+    if(sessionStorage.getItem("isGuest")) {
+        var teacherList = getTeacherList();
+    }
+
     ///For each question add an answer block to the page
     for (var i = 0; i < userSession.numOfQuestions; i++) {
-        $("#answer-container").append(buildAnswerDiv(i));
+        $("#answer-container").append(buildAnswerDiv(i, teacherList));
     }
 }
 
@@ -1326,7 +1330,7 @@ function newSelectItemValue(text, value) {
 
 //Generates an answer block for a given question
 ///index: the index for the question that the block is being generated for
-function buildAnswerDiv(index) {
+function buildAnswerDiv(index, teacherList) {
     //Variables
     ///A string array for each line of the box. To be combined then returned at the end of the function.
     var answerDiv = [];
@@ -1365,8 +1369,6 @@ function buildAnswerDiv(index) {
     }
 
     if (!sessionStorage.getItem("isGuest")) {
-        var teacherList = await getTeacherList();
-
         feedbackBox.push(
             ///The feedback container
             '<div class="comment-container">',
