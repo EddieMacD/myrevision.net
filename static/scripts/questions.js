@@ -1287,7 +1287,7 @@ async function displayAnswerScreen() {
     }
 
     if(sessionStorage.getItem("isGuest")) {
-        var teacherList = getTeacherList();
+        var teacherList = await getTeacherList();
     }
 
     ///For each question add an answer block to the page
