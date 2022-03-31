@@ -1365,6 +1365,8 @@ function buildAnswerDiv(index) {
     }
 
     if (!sessionStorage.getItem("isGuest")) {
+        var teacherList = await getTeacherList();
+
         feedbackBox.push(
             ///The feedback container
             '<div class="comment-container">',
@@ -1374,7 +1376,7 @@ function buildAnswerDiv(index) {
                         '<label for="teacher-select' + index + '" class="comment-label">Select teacher to comment to: </label>',
                     '</div>',
                     '<div class="col-xs-7">',
-            '<select name="teacher-select' + index + '" id="teacher-select' + index + '" class="form-control">' + getTeacherList() + '</select>',
+            '<select name="teacher-select' + index + '" id="teacher-select' + index + '" class="form-control">' + teacherList + '</select>',
                     '</div>',
                     ///Flag button
                     '<div class="col-xs-1">',
