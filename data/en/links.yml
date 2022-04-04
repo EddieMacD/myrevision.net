@@ -34,10 +34,13 @@ links:
         URL: "https://jquery.com/"
 
    - title: "Documented Design"
-     description: "All links used for the documented design section. Includes information on AWS Amplify."
+     description: "All links used for the documented design section. Includes information on AWS Amplify and Hugo Shortcodes."
      links:
       - name: "AWS Amplify CI/CD"
         URL: "https://aws.amazon.com/amplify/hosting/"
+      
+      - name: "Hugo Shortcodes"
+        URL: "https://gohugo.io/content-management/shortcodes"
 
    - title: "Technical Solution"
      description: "All links used for the technical solution section. Includes all source code for the project, both client-side and server-side."
