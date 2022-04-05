@@ -9,7 +9,10 @@ function generateErrorBar(text) {
     ///Pushes a row, a column and a label to the error bar. Each with the respective style classes and the inputted text in the label
     errorBar.push(
         "<div class='row error-row'>",
-            "<div class='col-xs-12 error-col'>",
+            "<div class='col-xs-1 error-col'>",
+                "<i class='error-label ion-android-warning'></i>",
+            "</div>",       
+            "<div class='col-xs-11 error-col'>",
                 "<label class='error-label'>" + text + "</label>",
             "</div>",
         "</div>",
