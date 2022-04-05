@@ -9,13 +9,11 @@ function generateErrorBar(text) {
     ///Pushes a row, a column and a label to the error bar. Each with the respective style classes and the inputted text in the label
     errorBar.push(
         "<div class='row error-row'>",
-            "<div class='error-col'>",
-                "<div class='col-xs-1'>",
-                    "<i class='error-label ion-android-warning'></i>",
-                "</div>",
-                "<div class='col-xs-11'>",
-                    "<label class='error-label'>" + text + "</label>",
-                "</div>",
+            "<div class='col-xs-1'>",
+                "<i class='error-label ion-android-warning'></i>",
+            "</div>",
+            "<div class='col-xs-11'>",
+                "<label class='error-label'>" + text + "</label>",
             "</div>",
         "</div>",
     );
@@ -50,7 +48,10 @@ function generateSuccessBar(text) {
     ///Pushes a row, a column and a label to the success bar. Each with the respective style classes and the inputted text in the label
     successBar.push(
         "<div class='row success-row'>",
-            "<div class='col-xs-12 success-col'>",
+            "<div class='col-xs-1'>",
+                "<i class='success-label ion-checkmark-circled'></i>",
+            "</div>",
+            "<div class='col-xs-11'>",
                 "<label class='success-label'>" + text + "</label>",
             "</div>",
         "</div>",
@@ -73,7 +74,10 @@ function generateUpdateBar(text) {
     ///Pushes a row, a column and a label to the update bar. Each with the respective style classes and the inputted text in the label
     updateBar.push(
         "<div class='row update-row'>",
-            "<div class='col-xs-12 update-col'>",
+            "<div class='col-xs-1'>",
+                "<i class='update-label ion-android-alert'></i>",
+            "</div>",
+            "<div class='col-xs-11'>",
                 "<label class='update-label'>" + text + "</label>",
             "</div>",
         "</div>",
