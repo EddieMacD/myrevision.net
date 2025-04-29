@@ -62,10 +62,6 @@ attributes = ""
 link = "plugins/shuffle/shuffle.min.js"
 attributes = ""
 
-
-
-
-
 #################### default parameters ################################
 [params]
 logo = "/images/logo.png"
