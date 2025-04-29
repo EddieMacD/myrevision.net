@@ -80,10 +80,10 @@ function generateNotificationRow(notification, index) {
     var linkRow = '';
 
     if(notification.type === "comment") {
-        var comment = notification.info.match(/"[\w ]+"/)[0];
+        var comment = notification.info.match(/"[\w\W]+"/)[0];
         comment = comment.substring(1, (comment.length - 1))
         linkRow = '<button type="button" class="btn btn-goto" onclick="notificationAction(\'' + notification.type + '\', ' + notification.featureID + ', \'' + comment + '\')"><i class="ion-link"></i></button>';
-    } else if(notification.type != "ass_delete" || notification.type != "ass_complete") {
+    } else if(notification.type != "ass_delete" && notification.type != "ass_complete") {
         linkRow = '<button type="button" class="btn btn-goto" onclick="notificationAction(\'' + notification.type + '\', ' + notification.featureID + ')"><i class="ion-link"></i></button>';
     }
 
@@ -233,7 +233,7 @@ function notificationAction(type, featureID, comment) {
 //Runs when the code loads - the timeout buffers until the full page loads
 ///Runs the initialise function in case more than one function call is needed
 window.onload = function(){
-    setTimeout(initialise(), 1);
+    setTimeout(initialise, 1);
 };
  
 //Runs when the page loads

@@ -211,14 +211,14 @@ async function selectAssignment(index) {
 function showSelectedAssignment(assignmentData) {
     //Show Assignmnent Data
     ///The name and description are shown in their respective slots
-    $("#edit-assignment-name").val(assignmentData.name);
-    $("#edit-assignment-description").val(assignmentData.info);
+    $("#view-assignment-name").val(assignmentData.name);
+    $("#view-assignment-description").val(assignmentData.info);
 
     ///The date is converted into a format that is accepted by the date input
     var temp = new Date(assignmentData.deadline)
     temp = temp.toISOString();
     temp = temp.substring(0, 22)
-    $("#edit-assignment-deadline").val(temp);
+    $("#view-assignment-deadline").val(temp);
 
     //Show Filters
     ///The file path is extracted from the object
@@ -301,7 +301,7 @@ function showList() {
 //Runs when the code loads - the timeout buffers until the full page loads
 ///Runs the initialise function in case more than one function call is needed
 window.onload = function(){
-    setTimeout(initialise(), 1);
+    setTimeout(initialise, 1);
 };
  
 //Runs when the page loads

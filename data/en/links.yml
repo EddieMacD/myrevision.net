@@ -1,14 +1,8 @@
 links:
   enable: true
   title: "Links"
-  description: "All of the links for the MyRevisionDotNet project documentation."
+  description: "All of the links for the MyRevisionDotNet project documentation. This page is ordered in terms of documentation sections."
   sections:
-   - title: "Contact Us"
-     description: "If you have any questions about the MyRevisionDotNet project please contact us"
-     links:
-      - name: "Contact Form"
-        URL: "https://myrevision.net/contact-us"
-
    - title: "Analysis"
      description: "All links used for the analysis section. Includes all reviewed existing products and information about the UK's Data Protection Act, as well as information on the advanced serverless plugins."
      links:
@@ -34,10 +28,13 @@ links:
         URL: "https://jquery.com/"
 
    - title: "Documented Design"
-     description: "All links used for the documented design section. Includes information on AWS Amplify."
+     description: "All links used for the documented design section. Includes information on AWS Amplify and Hugo Shortcodes."
      links:
       - name: "AWS Amplify CI/CD"
         URL: "https://aws.amazon.com/amplify/hosting/"
+      
+      - name: "Hugo Shortcodes"
+        URL: "https://gohugo.io/content-management/shortcodes"
 
    - title: "Technical Solution"
      description: "All links used for the technical solution section. Includes all source code for the project, both client-side and server-side."
@@ -67,7 +64,13 @@ links:
         URL: "https://ionic.io/ionicons/v2"
 
    - title: "Testing"
-     description: "All links used for the testing section. Includes the MyRevisionDotNet YouTube channel."
+     description: "All links used for the testing section. Includes the MyRevisionDotNet Testing Playlist."
      links:
-      - name: "MyRevisionDotNet YouTube Channel"
-        URL: "https://github.com/EddieMacD/myrevision.net-lambda"
+      - name: "MyRevisionDotNet Testing Playlist"
+        URL: "https://youtube.com/playlist?list=PLElxKydIT_I5tH0UprUr_d3VjftfBYBGE"
+  
+   - title: "Contact Us"
+     description: "If you have any questions about the MyRevisionDotNet project please contact us"
+     links:
+      - name: "Contact Form"
+        URL: "https://myrevision.net/contact-us"

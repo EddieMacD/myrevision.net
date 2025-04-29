@@ -1286,9 +1286,9 @@ async function displayAnswerScreen() {
         }
     }
 
-    //Form generation
-    ///Get teacher list - for commenting purposes
-    var teacherList = await getTeacherList();
+    if(!sessionStorage.getItem("isGuest")) {
+        var teacherList = await getTeacherList();
+    }
 
     ///For each question add an answer block to the page
     for (var i = 0; i < userSession.numOfQuestions; i++) {
@@ -1344,6 +1344,9 @@ function buildAnswerDiv(index, teacherList) {
     ///The part of the header bar that contains the bookmark information and flagging - stored in a variable since the contents are determined by user input
     var bookmarked = '';
 
+    ///The feedback box - not to be shown to guests
+    var feedbackBox = [];
+
 
     //Variable selection
     ///If the user got the question correct
@@ -1363,6 +1366,41 @@ function buildAnswerDiv(index, teacherList) {
 
     if(userSession.questions[index].isBookmarked) {
         bookmarked = '<i class="ion-android-star bookmark"></i>';
+    }
+
+    if (!sessionStorage.getItem("isGuest")) {
+        feedbackBox.push(
+            ///The feedback container
+            '<div class="comment-container">',
+                '<div class="comment-row row">',
+                    ///The teacher select label then select box 
+                    '<div class="col-xs-4">',
+                        '<label for="teacher-select' + index + '" class="comment-label">Select teacher to comment to: </label>',
+                    '</div>',
+                    '<div class="col-xs-7">',
+            '<select name="teacher-select' + index + '" id="teacher-select' + index + '" class="form-control">' + teacherList + '</select>',
+                    '</div>',
+                    ///Flag button
+                    '<div class="col-xs-1">',
+                        '<button class="btn btn-flag" onclick="sendFlag(' + index + ')"><i class="ion-ios-flag"></i></button>',
+                    '</div>',
+                '</div>',
+                '<div class="comment-row row">',
+                    ///Comment box label, text box, and submit button 
+                    '<div class="col-xs-2">',
+                        '<label for="comment-box' + index + '" class="comment-label">Type comment: </label>',
+                    '</div>',
+                    '<div class="col-xs-9">',
+                        '<input id="comment-box' + index + '" type="text" class="form-control"></input>',
+                    '</div>',
+                    '<div class="col-xs-1">',
+                        '<button class="btn btn-send" onclick="sendComment(' + index + ')"><i class="ion-android-send"></i></button>',
+                    '</div>',
+                '</div>',
+            '</div>',
+        );
+
+        feedbackBox = feedbackBox.join("");
     }
 
 
@@ -1407,34 +1445,7 @@ function buildAnswerDiv(index, teacherList) {
                         '</div>',
                     '</div>',
                 '</div>', 
-                ///The feedback container
-                '<div class="comment-container">',
-                    '<div class="comment-row row">',
-                        ///The teacher select label then select box 
-                        '<div class="col-xs-4">',
-                            '<label for="teacher-select' + index + '" class="comment-label">Select teacher to comment to: </label>',
-                        '</div>',
-                        '<div class="col-xs-7">',
-                            '<select name="teacher-select' + index + '" id="teacher-select' + index + '" class="form-control">' + teacherList + '</select>',
-                        '</div>',
-                        ///Flag button
-                        '<div class="col-xs-1">',
-                            '<button class="btn btn-flag" onclick="sendFlag(' + index + ')"><i class="ion-ios-flag"></i></button>',
-                        '</div>',
-                    '</div>',
-                        '<div class="comment-row row">',
-                            ///Comment box label, text box, and submit button 
-                            '<div class="col-xs-2">',
-                                '<label for="comment-box' + index + '" class="comment-label">Type comment: </label>',
-                            '</div>',
-                            '<div class="col-xs-9">',
-                                '<input id="comment-box' + index + '" type="text" class="form-control"></input>',
-                            '</div>',
-                            '<div class="col-xs-1">',
-                                '<button class="btn btn-send" onclick="sendComment(' + index + ')"><i class="ion-android-send"></i></button>',
-                            '</div>',
-                        '</div>',
-                '</div>',
+                feedbackBox,
             '</div>',
         '</div>'
     );
@@ -1770,7 +1781,7 @@ async function sendFlag(index) {
 //Runs when the code loads - the timeout buffers until the full page loads
 ///Runs the initialise function in case more than one function call is needed
 window.onload = function(){
-   setTimeout(initialise(), 1);
+   setTimeout(initialise, 1);
 };
 
 //Runs when the page loads
