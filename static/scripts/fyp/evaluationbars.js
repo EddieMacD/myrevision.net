@@ -65,7 +65,7 @@ async function getData() {
             labels.push(element[0].stringValue);
 
             for(i = 1; i < element.length; i++) {
-                temp.push(parseFloat(element[i].stringValue))
+                temp.push(parseFloat(element[i].doubleValue))
             }
 
             chartData.push(temp);
