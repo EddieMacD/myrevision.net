@@ -32,14 +32,4 @@ Page markdown parameters are provided by:
 Markdown content is *not* rendered, content is provided from /data/* files 
 as defined by layouts from /themes/airspace-hugo/layouts/<pagename>/list.html
 
-== Testing logins ==
-
-There is also a limited test access from the front page with access to a set of 20 sample questions
-
-Student Email:      student.mrn@gmail.com
-Student Password:   MyR3v!s!0nT3st
-
-Teacher Email:      teachertest.mrn@gmail.com
-Teacher Password:   MyR3v!s!0nT3st
-
 Other information can be found at [myrevision.net/links](https://myrevision.net/links)
